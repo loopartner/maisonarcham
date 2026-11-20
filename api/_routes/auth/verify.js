@@ -1,7 +1,7 @@
 // POST /api/auth/verify — confirme l'adresse e-mail. Corps : { token }
-import { handle, readJson, json, error, rateLimit } from '../_lib/http.js';
-import { hasStore } from '../_lib/store.js';
-import { consumeEmailToken, getUser, saveUser } from '../_lib/auth.js';
+import { handle, readJson, json, error, rateLimit } from '../../_lib/http.js';
+import { hasStore } from '../../_lib/store.js';
+import { consumeEmailToken, getUser, saveUser } from '../../_lib/auth.js';
 
 export const POST = handle(async (request) => {
   if (!hasStore()) return error("Ce service n'est pas encore activé.", 503);

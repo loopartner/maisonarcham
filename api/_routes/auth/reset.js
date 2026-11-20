@@ -1,9 +1,9 @@
 // POST /api/auth/reset — nouveau mot de passe à partir du lien reçu par e-mail. Corps : { token, password }
 // Ferme toutes les sessions ouvertes et confirme l'adresse e-mail (le lien prouve l'accès à la boîte).
-import { handle, readJson, json, error, rateLimit } from '../_lib/http.js';
-import { hasStore } from '../_lib/store.js';
-import { consumeEmailToken, getUser, saveUser, hashPassword, passwordProblem, destroyAllSessions } from '../_lib/auth.js';
-import { sendPasswordChangedEmail } from '../_lib/account-mail.js';
+import { handle, readJson, json, error, rateLimit } from '../../_lib/http.js';
+import { hasStore } from '../../_lib/store.js';
+import { consumeEmailToken, getUser, saveUser, hashPassword, passwordProblem, destroyAllSessions } from '../../_lib/auth.js';
+import { sendPasswordChangedEmail } from '../../_lib/account-mail.js';
 
 export const POST = handle(async (request) => {
   if (!hasStore()) return error("Ce service n'est pas encore activé.", 503);

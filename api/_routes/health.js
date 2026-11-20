@@ -1,8 +1,8 @@
 // GET /api/health — indique quels services sont branchés (oui / non), sans jamais afficher de clé.
-import { env } from './_lib/env.js';
-import { json } from './_lib/http.js';
-import { hasStore } from './_lib/store.js';
-import { hasMail } from './_lib/mail.js';
+import { env } from '../_lib/env.js';
+import { json } from '../_lib/http.js';
+import { hasStore } from '../_lib/store.js';
+import { hasMail } from '../_lib/mail.js';
 
 export function GET(request) {
   const sk = env('STRIPE_SECRET_KEY');

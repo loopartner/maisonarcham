@@ -1,12 +1,12 @@
 // POST /api/stripe-webhook — appelé par Stripe après un paiement.
 // Enregistre la commande, lui donne un numéro (MA-10001…) et envoie les e-mails de confirmation.
 import crypto from 'node:crypto';
-import { env } from './_lib/env.js';
-import { json, error, escapeHtml } from './_lib/http.js';
-import { redis, hasStore } from './_lib/store.js';
-import { sendMail, layout } from './_lib/mail.js';
-import { nextOrderNumber, saveOrder } from './_lib/orders.js';
-import { PRODUCTS } from './_lib/catalogue.js';
+import { env } from '../_lib/env.js';
+import { json, error, escapeHtml } from '../_lib/http.js';
+import { redis, hasStore } from '../_lib/store.js';
+import { sendMail, layout } from '../_lib/mail.js';
+import { nextOrderNumber, saveOrder } from '../_lib/orders.js';
+import { PRODUCTS } from '../_lib/catalogue.js';
 
 function verify(payload, header, secret, toleranceSec = 300) {
   const parts = Object.fromEntries(String(header || '').split(',').map((p) => p.split('=')).filter((p) => p.length === 2).map(([k, v]) => [k, v]));

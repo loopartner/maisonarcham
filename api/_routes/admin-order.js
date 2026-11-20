@@ -3,11 +3,11 @@
 // Corps   : { number: 'MA-10001', status: 'expediee', trackingUrl: 'https://...' }
 // Le client reçoit un e-mail quand la commande passe en « expediee ».
 import crypto from 'node:crypto';
-import { env } from './_lib/env.js';
-import { handle, readJson, json, error, escapeHtml, HttpError } from './_lib/http.js';
-import { hasStore } from './_lib/store.js';
-import { getOrder, saveOrder, STATUSES } from './_lib/orders.js';
-import { sendMail, layout } from './_lib/mail.js';
+import { env } from '../_lib/env.js';
+import { handle, readJson, json, error, escapeHtml, HttpError } from '../_lib/http.js';
+import { hasStore } from '../_lib/store.js';
+import { getOrder, saveOrder, STATUSES } from '../_lib/orders.js';
+import { sendMail, layout } from '../_lib/mail.js';
 
 function authorized(request) {
   const token = env('ADMIN_TOKEN');
@@ -47,7 +47,7 @@ export const POST = handle(async (request) => {
 export const GET = handle(async (request) => {
   if (!authorized(request)) return error('Accès refusé.', 401);
   if (!hasStore()) return error('Base non configurée.', 503);
-  const { redis } = await import('./_lib/store.js');
+  const { redis } = await import('../_lib/store.js');
   const numbers = await redis('LRANGE', 'orders', 0, 49);
   const orders = await Promise.all(numbers.map((n) => getOrder(n)));
   return json({ ok: true, orders: orders.filter(Boolean) });

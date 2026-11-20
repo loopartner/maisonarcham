@@ -3,7 +3,7 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { startFakeUpstash } from './fake-upstash.mjs';
 
-let fake, api = {}, middleware;
+let fake, api = {}, middleware, router;
 const ORIGIN = 'https://maison.test';
 const mails = [];
 
@@ -20,8 +20,9 @@ before(async () => {
     if (String(url).endsWith('/404')) return new Response('<h1>404</h1>', { status: 200 });
     return realFetch(url, init);
   };
-  for (const n of ['register', 'login', 'logout', 'me', 'forgot', 'reset', 'verify']) api[n] = await import(`../api/auth/${n}.js`);
+  for (const n of ['register', 'login', 'logout', 'me', 'forgot', 'reset', 'verify']) api[n] = await import(`../api/_routes/auth/${n}.js`);
   middleware = (await import('../middleware.js')).default;
+  router = { GET: (await import('../api/_router.js')).dispatch, POST: (await import('../api/_router.js')).dispatch };
 });
 after(() => fake.close());
 
@@ -154,4 +155,22 @@ test('limitation : blocage après 8 échecs sur le même compte', async () => {
   assert.equal(last.status, 429);
   const good = await api.login.POST(post({ email: 'direction@maison.test', password: 'ararat2026maison' }));
   assert.equal(good.status, 429, 'même le bon mot de passe attend la fin du blocage');
+});
+
+test('routeur : route connue servie, route inconnue 404, mauvaise méthode 405, pas de remontée de dossier', async () => {
+  const ok = await router.GET(new Request(`${ORIGIN}/api/auth/me`));
+  assert.equal(ok.status, 200);
+  assert.equal((await router.GET(new Request(`${ORIGIN}/api/inexistante`))).status, 404);
+  assert.equal((await router.GET(new Request(`${ORIGIN}/api/_lib/auth`))).status, 404);
+  assert.equal((await router.GET(new Request(`${ORIGIN}/api/constructor`))).status, 404);
+  assert.equal((await router.GET(new Request(`${ORIGIN}/api/auth/login`))).status, 405);
+  const viaRouter = await router.POST(new Request(`${ORIGIN}/api/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN }, body: JSON.stringify({ email: 'x@y.fr', password: 'abc' }) }));
+  assert.equal(viaRouter.status, 401);
+});
+
+test('routeur : chemin réécrit par Vercel (/api/auth/[action]?action=…)', async () => {
+  const r = await router.GET(new Request(`${ORIGIN}/api/auth/[action]?action=me`));
+  assert.equal(r.status, 200);
+  const r2 = await router.GET(new Request(`${ORIGIN}/api/[route]?route=health`));
+  assert.equal(r2.status, 200);
 });

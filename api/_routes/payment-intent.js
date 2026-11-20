@@ -1,9 +1,9 @@
 // POST /api/payment-intent — prépare le paiement par carte sur la page commande.html (Stripe Payment Element).
 // Corps : { items: [{ id, qty }], customer: { email, phone, firstName, lastName, line1, line2, postalCode, city, country } }
 // Réponse : { ok, clientSecret, publishableKey, amount }
-import { env } from './_lib/env.js';
-import { handle, readJson, json, error, rateLimit, isEmail, clean, HttpError } from './_lib/http.js';
-import { PRODUCTS, MAX_QTY } from './_lib/catalogue.js';
+import { env } from '../_lib/env.js';
+import { handle, readJson, json, error, rateLimit, isEmail, clean, HttpError } from '../_lib/http.js';
+import { PRODUCTS, MAX_QTY } from '../_lib/catalogue.js';
 
 export const POST = handle(async (request) => {
   const secret = env('STRIPE_SECRET_KEY');

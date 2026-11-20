@@ -1,8 +1,8 @@
 // GET /api/order?number=MA-10001&email=...   → suivi d'une commande (le numéro ET l'e-mail doivent correspondre)
 // GET /api/order?payment_intent=pi_... (ou session_id=cs_...) → numéro de commande après paiement (page merci)
-import { handle, json, error, rateLimit, isEmail, clean } from './_lib/http.js';
-import { redis, hasStore } from './_lib/store.js';
-import { getOrder, publicOrder } from './_lib/orders.js';
+import { handle, json, error, rateLimit, isEmail, clean } from '../_lib/http.js';
+import { redis, hasStore } from '../_lib/store.js';
+import { getOrder, publicOrder } from '../_lib/orders.js';
 
 export const GET = handle(async (request) => {
   if (!hasStore()) return error("Le suivi en ligne n'est pas encore activé.", 503);

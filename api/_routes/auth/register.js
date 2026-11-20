@@ -1,10 +1,10 @@
 // POST /api/auth/register — création d'un compte client. Corps : { firstName, lastName, email, password, newsletter }
 // Tout nouveau compte est un compte client ; le rôle ne peut jamais être choisi depuis le site.
-import { handle, readJson, json, error, isEmail, normEmail, clean, rateLimit, siteUrl } from '../_lib/http.js';
-import { hasStore, redis } from '../_lib/store.js';
-import { createUser, createSession, passwordProblem, publicUser } from '../_lib/auth.js';
-import { sendVerificationEmail } from '../_lib/account-mail.js';
-import { homeFor } from '../_lib/roles.js';
+import { handle, readJson, json, error, isEmail, normEmail, clean, rateLimit, siteUrl } from '../../_lib/http.js';
+import { hasStore, redis } from '../../_lib/store.js';
+import { createUser, createSession, passwordProblem, publicUser } from '../../_lib/auth.js';
+import { sendVerificationEmail } from '../../_lib/account-mail.js';
+import { homeFor } from '../../_lib/roles.js';
 
 export const POST = handle(async (request) => {
   if (!hasStore()) return error("La création de compte n'est pas encore activée.", 503);

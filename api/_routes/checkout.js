@@ -1,8 +1,8 @@
 // POST /api/checkout — crée une session de paiement Stripe à partir du panier.
 // Corps : { items: [{ id: 'creme-dararat-50', qty: 1 }] }  →  { ok: true, url }
-import { env } from './_lib/env.js';
-import { handle, readJson, json, error, siteUrl, rateLimit, HttpError } from './_lib/http.js';
-import { PRODUCTS, MAX_QTY } from './_lib/catalogue.js';
+import { env } from '../_lib/env.js';
+import { handle, readJson, json, error, siteUrl, rateLimit, HttpError } from '../_lib/http.js';
+import { PRODUCTS, MAX_QTY } from '../_lib/catalogue.js';
 
 export const POST = handle(async (request) => {
   const secret = env('STRIPE_SECRET_KEY');

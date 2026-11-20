@@ -1,9 +1,9 @@
 // POST /api/auth/login — connexion unique pour tous les comptes. Corps : { email, password }
 // Le serveur décide seul de l'espace de destination (client ou administration) selon le rôle du compte.
-import { handle, readJson, json, error, normEmail, rateLimit, clientIp } from '../_lib/http.js';
-import { hasStore, redis } from '../_lib/store.js';
-import { getUserByEmail, verifyPassword, dummyVerify, createSession, saveUser, publicUser, sha256 } from '../_lib/auth.js';
-import { homeFor } from '../_lib/roles.js';
+import { handle, readJson, json, error, normEmail, rateLimit, clientIp } from '../../_lib/http.js';
+import { hasStore, redis } from '../../_lib/store.js';
+import { getUserByEmail, verifyPassword, dummyVerify, createSession, saveUser, publicUser, sha256 } from '../../_lib/auth.js';
+import { homeFor } from '../../_lib/roles.js';
 
 const FAIL = 'E-mail ou mot de passe incorrect.';
 

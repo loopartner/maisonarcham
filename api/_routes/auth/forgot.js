@@ -1,9 +1,9 @@
 // POST /api/auth/forgot — envoie un lien de réinitialisation. Corps : { email }
 // La réponse est toujours la même, que le compte existe ou non.
-import { handle, readJson, json, normEmail, isEmail, rateLimit, siteUrl, error } from '../_lib/http.js';
-import { hasStore } from '../_lib/store.js';
-import { getUserByEmail, sha256 } from '../_lib/auth.js';
-import { sendResetEmail } from '../_lib/account-mail.js';
+import { handle, readJson, json, normEmail, isEmail, rateLimit, siteUrl, error } from '../../_lib/http.js';
+import { hasStore } from '../../_lib/store.js';
+import { getUserByEmail, sha256 } from '../../_lib/auth.js';
+import { sendResetEmail } from '../../_lib/account-mail.js';
 
 export const POST = handle(async (request) => {
   if (!hasStore()) return error("Ce service n'est pas encore activé.", 503);

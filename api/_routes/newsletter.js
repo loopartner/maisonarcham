@@ -1,7 +1,7 @@
 // POST /api/newsletter — inscription à la newsletter. Corps : { email }
-import { env } from './_lib/env.js';
-import { handle, readJson, json, error, isEmail, clean, rateLimit } from './_lib/http.js';
-import { redis, hasStore } from './_lib/store.js';
+import { env } from '../_lib/env.js';
+import { handle, readJson, json, error, isEmail, clean, rateLimit } from '../_lib/http.js';
+import { redis, hasStore } from '../_lib/store.js';
 
 export const POST = handle(async (request) => {
   const audience = env('RESEND_AUDIENCE_ID');

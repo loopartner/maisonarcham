@@ -1,8 +1,8 @@
 // POST /api/contact — formulaire de contact. Corps : { name, email, subject, message }
-import { env } from './_lib/env.js';
-import { handle, readJson, json, error, isEmail, clean, rateLimit, escapeHtml } from './_lib/http.js';
-import { redis, hasStore } from './_lib/store.js';
-import { sendMail, hasMail, layout } from './_lib/mail.js';
+import { env } from '../_lib/env.js';
+import { handle, readJson, json, error, isEmail, clean, rateLimit, escapeHtml } from '../_lib/http.js';
+import { redis, hasStore } from '../_lib/store.js';
+import { sendMail, hasMail, layout } from '../_lib/mail.js';
 
 export const POST = handle(async (request) => {
   const to = env('CONTACT_TO_EMAIL');

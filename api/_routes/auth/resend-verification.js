@@ -1,7 +1,7 @@
 // POST /api/auth/resend-verification — renvoie l'e-mail de confirmation (compte connecté).
-import { handle, json, rateLimit, siteUrl } from '../_lib/http.js';
-import { requireUser } from '../_lib/auth.js';
-import { sendVerificationEmail } from '../_lib/account-mail.js';
+import { handle, json, rateLimit, siteUrl } from '../../_lib/http.js';
+import { requireUser } from '../../_lib/auth.js';
+import { sendVerificationEmail } from '../../_lib/account-mail.js';
 
 export const POST = handle(async (request) => {
   const { user } = await requireUser(request);
