@@ -41,7 +41,7 @@ export const POST = handle(async (request) => {
     }).catch((e) => console.error(e));
   }
   return json({ ok: true, number: order.number, status: order.status });
-});
+}, { csrf: false }); // appelé hors navigateur avec ADMIN_TOKEN ; remplacé par le back-office à l'étape 4
 
 // GET /api/admin-order — liste des 50 dernières commandes
 export const GET = handle(async (request) => {

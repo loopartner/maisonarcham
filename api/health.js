@@ -13,6 +13,8 @@ export function GET(request) {
     cle_publiable: (() => { const pk = env('STRIPE_PUBLISHABLE_KEY'); if (!pk) return sk && sk.startsWith('sk_live_') ? 'non : STRIPE_PUBLISHABLE_KEY (pk_live_…) obligatoire en mode réel' : 'clé de test par défaut'; const same = sk && sk.slice(3, 7) === pk.slice(3, 7); return same ? (pk.startsWith('pk_live_') ? 'oui (mode réel)' : 'oui (mode test)') : 'ERREUR : pas le même mode que la clé secrète'; })(),
     webhook_stripe: env('STRIPE_WEBHOOK_SECRET') ? 'oui' : 'non : STRIPE_WEBHOOK_SECRET absente',
     base_commandes: hasStore() ? 'oui' : 'non : Upstash non relié',
-    emails: hasMail() ? 'oui' : 'non (facultatif)',
+    emails: hasMail() ? 'oui' : 'non : RESEND_API_KEY / MAIL_FROM absents (indispensable pour confirmer les comptes)',
+    comptes_admin: env('ADMIN_EMAILS') ? `${env('ADMIN_EMAILS').split(',').filter(Boolean).length} adresse(s) déclarée(s)` : 'non : ADMIN_EMAILS absente',
+    adresse_du_site: env('SITE_URL') ? 'oui' : 'non : SITE_URL conseillée (liens des e-mails)',
   });
 }

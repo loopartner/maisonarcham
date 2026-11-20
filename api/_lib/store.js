@@ -23,3 +23,29 @@ export async function getJson(key) {
   return v ? JSON.parse(v) : null;
 }
 export const setJson = (key, value) => redis('SET', key, JSON.stringify(value));
+
+// Plusieurs commandes en un seul aller-retour (non atomique). Renvoie le tableau des résultats.
+export async function pipeline(commands) {
+  if (!hasStore()) throw new Error('Base de données non configurée');
+  const res = await fetch(`${url().replace(/\/+$/, '')}/pipeline`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${token()}`, 'content-type': 'application/json' },
+    body: JSON.stringify(commands),
+  });
+  const data = await res.json();
+  if (!res.ok || !Array.isArray(data)) throw new Error(`Redis : ${res.status}`);
+  return data.map((r) => { if (r.error) throw new Error(`Redis : ${r.error}`); return r.result; });
+}
+
+// Plusieurs commandes exécutées de façon atomique (MULTI/EXEC).
+export async function transaction(commands) {
+  if (!hasStore()) throw new Error('Base de données non configurée');
+  const res = await fetch(`${url().replace(/\/+$/, '')}/multi-exec`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${token()}`, 'content-type': 'application/json' },
+    body: JSON.stringify(commands),
+  });
+  const data = await res.json();
+  if (!res.ok || !Array.isArray(data)) throw new Error(`Redis : ${res.status}`);
+  return data.map((r) => { if (r.error) throw new Error(`Redis : ${r.error}`); return r.result; });
+}
