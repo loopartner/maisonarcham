@@ -86,12 +86,13 @@
         <p class="contact-line">E-mail : <mark class="todo">contact@…</mark></p>
         <p class="contact-line">Atelier : <mark class="todo">adresse à compléter</mark>, Paris</p>
       </div>
-      <form class="form" data-fake-form="Merci, votre message a bien été préparé. Le formulaire sera bientôt relié à notre boîte de réception.">
-        <div class="field"><label for="c-name">Prénom et nom</label><input id="c-name" type="text" required></div>
-        <div class="field"><label for="c-email">Adresse e-mail</label><input id="c-email" type="email" required></div>
+      <form class="form" data-api="/api/contact" data-success="Merci, votre message a bien été envoyé. Nous vous répondrons rapidement.">
+        <div class="field"><label for="c-name">Prénom et nom</label><input id="c-name" name="name" type="text" required></div>
+        <div class="field"><label for="c-email">Adresse e-mail</label><input id="c-email" name="email" type="email" required></div>
         <div class="field"><label for="c-subject">Sujet</label>
-          <select id="c-subject"><option>Ma commande</option><option>Nos parfums</option><option>Presse &amp; partenariats</option><option>Autre</option></select></div>
-        <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" rows="5" required></textarea></div>
+          <select id="c-subject" name="subject"><option>Ma commande</option><option>Nos parfums</option><option>Presse &amp; partenariats</option><option>Autre</option></select></div>
+        <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" name="message" rows="5" required></textarea></div>
+        <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit" class="btn btn-block">Envoyer</button>
       </form>
     </section>

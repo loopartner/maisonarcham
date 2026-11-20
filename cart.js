@@ -1,6 +1,6 @@
 /* Maison Archam — panier (partagé entre toutes les pages)
    Le contenu est gardé dans le navigateur du visiteur (localStorage).
-   Le bouton « Commander » n'est pas encore relié à un paiement. */
+   « Commander » envoie le panier à /api/checkout (paiement Stripe). */
 (function () {
   var KEY = 'archam-cart';
   var PRODUCTS = {
@@ -52,6 +52,8 @@
         '<div class="cart-row cart-total"><span>Total</span><span class="cart-sum">0 €</span></div>' +
         '<p class="cart-gift">Un échantillon offert avec chaque commande</p>' +
         '<button type="button" class="btn cart-checkout">Commander</button>' +
+        '<p class="cart-error" role="alert"></p>' +
+        '<p class="cart-secure">Paiement sécurisé par Stripe</p>' +
       '</div>' +
     '</aside>';
   document.body.appendChild(drawer);
@@ -89,6 +91,24 @@
     });
   }
 
+  // Paiement : le serveur recalcule les prix puis renvoie vers la page de paiement sécurisée Stripe
+  function checkout(btn) {
+    var items = load().map(function (i) { return { id: i.id, qty: i.qty }; });
+    var note = drawer.querySelector('.cart-error');
+    btn.disabled = true; btn.textContent = 'Redirection…'; note.textContent = '';
+    fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: items }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (data) {
+        if (data && data.url) { window.location.href = data.url; return; }
+        throw new Error((data && data.error) || 'Le paiement est momentanément indisponible.');
+      })
+      .catch(function (e) {
+        note.textContent = e.message && e.message !== 'Failed to fetch' ? e.message : 'Le paiement est momentanément indisponible.';
+        btn.disabled = false; btn.textContent = 'Commander';
+      });
+  }
+  window.ArchamCart = { clear: function () { save([]); } };
+
   function open() { drawer.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
   function close() { drawer.classList.remove('is-open'); document.body.style.overflow = ''; }
 
@@ -106,10 +126,7 @@
     if ((id = t.getAttribute('data-inc'))) { var l = load().find(function (i) { return i.id === id; }); setQty(id, Math.min(l.qty + 1, 10)); }
     else if ((id = t.getAttribute('data-dec'))) { var m = load().find(function (i) { return i.id === id; }); setQty(id, m.qty - 1); }
     else if ((id = t.getAttribute('data-remove'))) { setQty(id, 0); }
-    else if (t.classList.contains('cart-checkout')) {
-      t.textContent = 'Paiement bientôt disponible';
-      setTimeout(function () { t.textContent = 'Commander'; }, 2500);
-    }
+    else if (t.classList.contains('cart-checkout')) { checkout(t); }
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   window.addEventListener('storage', render);

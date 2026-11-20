@@ -44,9 +44,9 @@
     </section>
 
     <section class="form-section">
-      <form class="form" data-fake-form="Le suivi en ligne sera bientôt disponible. En attendant, contactez-nous : nous vous répondrons rapidement.">
-        <div class="field"><label for="order">Numéro de commande</label><input id="order" type="text" placeholder="Ex. MA-10248" required></div>
-        <div class="field"><label for="order-email">Adresse e-mail</label><input id="order-email" type="email" placeholder="vous@exemple.fr" required></div>
+      <form class="form" data-api="/api/order" data-method="GET">
+        <div class="field"><label for="order">Numéro de commande</label><input id="order" name="number" type="text" placeholder="Ex. MA-10248" autocomplete="off" required></div>
+        <div class="field"><label for="order-email">Adresse e-mail</label><input id="order-email" name="email" type="email" placeholder="vous@exemple.fr" required></div>
         <button type="submit" class="btn btn-block">Suivre ma commande</button>
       </form>
     </section>

@@ -7,6 +7,7 @@
   --line: #d6d6d2;
   --rose: #d9a79b;
   --teal: #2b4146;
+  --sand: #e8dfd2;
   --serif: "Cormorant Garamond", Georgia, serif;
   --sans: "Manrope", system-ui, sans-serif;
   --pad: clamp(24px, 8.333vw, 120px);
@@ -107,15 +108,18 @@ ul { list-style: none; }
   text-transform: uppercase;
 }
 .hero-cta { display: flex; justify-content: flex-start; }
-/* Flacon détouré : 1180×664, posé à 309px du bord gauche et 69px sous le haut du hero */
+/* Flacon détouré : hauteur fixe (664px comme sur la maquette), calé en bas à droite du hero.
+   Il ne dépend plus de la largeur de l'écran, donc il ne déborde plus sur le bandeau en grand écran. */
 .hero-bottle {
   position: absolute;
-  left: 21.46%;
-  top: 69px;
-  width: 81.94%;
+  right: -49px;
+  bottom: -33px;
+  height: 664px;
+  width: auto;
   max-width: none;
   aspect-ratio: 1180 / 664;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: right bottom;
   z-index: 2;
   pointer-events: none;
 }
@@ -213,9 +217,9 @@ ul { list-style: none; }
 .newsletter-form button { position: absolute; right: 0; bottom: 16px; padding: 5px 0 2px; }
 
 /* Footer */
-.footer { background: var(--teal); color: var(--paper); padding: 96px var(--pad); display: flex; flex-direction: column; gap: 96px; }
+.footer { background: var(--sand); color: var(--ink); border-top: 1px solid #ddd2c2; padding: 96px var(--pad); display: flex; flex-direction: column; gap: 96px; }
 .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; }
-.footer h5 { font-size: 10px; line-height: 15px; letter-spacing: 1.5px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 31px; }
+.footer h5 { font-size: 10px; line-height: 15px; letter-spacing: 1.5px; font-weight: 500; text-transform: uppercase; color: rgba(31,42,46,.55); margin-bottom: 31px; }
 .footer ul { display: flex; flex-direction: column; gap: 15px; }
 .footer li a { font-size: 11px; line-height: 16.5px; }
 .footer a:hover { opacity: .6; }
@@ -223,10 +227,10 @@ ul { list-style: none; }
 .footer-bottom {
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
   padding-top: 48px;
-  border-top: 1px solid rgba(255,255,255,.1);
+  border-top: 1px solid rgba(31,42,46,.12);
 }
 .legal { display: flex; flex-wrap: wrap; gap: 16px 40px; }
-.footer-bottom a, .footer-bottom p { font-size: 9px; line-height: 13.5px; letter-spacing: 1.35px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.footer-bottom a, .footer-bottom p { font-size: 9px; line-height: 13.5px; letter-spacing: 1.35px; text-transform: uppercase; color: rgba(31,42,46,.5); }
 
 /* Liens génériques */
 .frame { display: block; }
@@ -429,11 +433,31 @@ a.post:hover h4 { opacity: .7; }
 .contact-line { font-size: 13px; line-height: 21px; }
 .help-contact .form { max-width: none; }
 
+@media (max-width: 1200px) { .nav { gap: 24px; } }
+
+/* Retours serveur */
+.hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.form-msg.is-error { color: #8a3b2e; background: rgba(217,167,155,.18); }
+.cart-error:empty { display: none; }
+.cart-error { font-size: 12px; line-height: 18px; color: #8a3b2e; }
+.cart-secure { font-size: 9px; letter-spacing: 1.35px; text-transform: uppercase; color: rgba(31,42,46,.45); text-align: center; }
+.btn:disabled { opacity: .6; cursor: progress; }
+.form-section { flex-direction: column; align-items: center; gap: 48px; }
+.order-result { width: 100%; max-width: 448px; padding: 32px; background: var(--mist); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.order-status { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 32px; text-transform: uppercase; }
+.order-steps { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; padding: 0; margin: 0; }
+.order-steps li { padding-top: 10px; border-top: 2px solid var(--line); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: rgba(31,42,46,.45); }
+.order-steps li.is-done { border-top-color: var(--ink); color: var(--ink); }
+.order-items { font-size: 13px; line-height: 21px; }
+.order-number { font-family: var(--serif); font-size: 24px; letter-spacing: 1px; }
+.merci-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; margin-top: 16px; }
+
 /* Tablette / mobile */
 @media (max-width: 1024px) {
   .nav { display: none; }
   .hero { height: auto; min-height: 560px; padding-top: 64px; padding-bottom: 64px; }
   .hero-text { width: 60%; }
+  .hero-bottle { height: 92%; right: -80px; }
   .frame { height: 360px; }
   .maison-media { height: 520px; margin-right: 40px; }
   .maison-text { padding-left: 0; }
@@ -443,7 +467,7 @@ a.post:hover h4 { opacity: .7; }
   .logo { font-size: 18px; letter-spacing: 3px; }
   .hero { flex-direction: column; align-items: flex-start; min-height: 0; padding-bottom: 0; }
   .hero-text { width: 100%; gap: 32px; }
-  .hero-bottle { position: relative; left: auto; top: auto; width: 130%; margin: 16px 0 0 -15%; }
+  .hero-bottle { position: relative; right: auto; bottom: auto; height: auto; width: 130%; margin: 16px 0 0 -15%; }
   .trust { margin-top: 0; column-gap: 24px; }
   .trust .dot { display: none; }
   .product, .maison, .journal, .newsletter { padding-top: 80px; padding-bottom: 80px; }
