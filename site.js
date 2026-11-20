@@ -43,6 +43,7 @@
       Array.prototype.forEach.call(dots.children, function (d, k) { d.classList.toggle('is-active', k === Math.min(idx, items.length - 1)); });
     }
     track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('load', update);
     update();
   });
 
