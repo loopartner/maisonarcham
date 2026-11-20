@@ -763,3 +763,22 @@ a.btn { display: inline-block; text-align: center; }
   .account { row-gap: 0; }
   .account-col + .account-col { margin-top: var(--block); padding-top: var(--block); border-top: 1px solid var(--line); }
 }
+
+/* Bandeau moyens de paiement (footer) */
+.footer-pay {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 32px;
+  padding: 24px 0; border-top: 1px solid rgba(31,42,46,.12);
+}
+.pay-label { display: inline-flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 1.5px; font-weight: 500; text-transform: uppercase; }
+.pay-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.pay-list li {
+  height: 28px; padding: 0 12px; display: inline-flex; align-items: center;
+  background: rgba(255,255,255,.55); border: 1px solid rgba(31,42,46,.15); border-radius: 3px;
+  font-size: 10px; letter-spacing: .8px; font-weight: 500; color: var(--ink); white-space: nowrap;
+}
+.footer-pay + .footer-bottom { border-top: 0; padding-top: 0; }
+@media (max-width: 720px) {
+  .footer-pay { flex-direction: column; align-items: flex-start; }
+  .pay-list li { height: 26px; padding: 0 10px; }
+}
+.footer .pay-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
