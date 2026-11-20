@@ -101,13 +101,23 @@
   </footer>
 
   <script>
-    window.addEventListener('load', function () { if (window.ArchamCart) window.ArchamCart.clear(); });
+    window.addEventListener('load', function () { if (window.ArchamCart && !window.ArchamKeepCart) window.ArchamCart.clear(); });
     (function () {
-      var id = new URLSearchParams(location.search).get('session_id');
-      if (!id) return;
+      var q = new URLSearchParams(location.search);
+      if (q.get('redirect_status') && q.get('redirect_status') !== 'succeeded') {
+        document.querySelector('.page-hero h1').textContent = 'Paiement non abouti';
+        document.querySelector('.page-hero .eyebrow').textContent = 'Commande';
+        document.querySelector('.page-hero .page-lead').textContent = "Votre paiement n'a pas été validé et vous n'avez pas été débité·e. Vous pouvez réessayer.";
+        document.querySelector('.merci-links').innerHTML = '<a href="commande.html" class="btn">Réessayer le paiement</a>';
+        window.ArchamKeepCart = true;
+        return;
+      }
+      var param = q.get('payment_intent') ? 'payment_intent=' + encodeURIComponent(q.get('payment_intent'))
+                : q.get('session_id') ? 'session_id=' + encodeURIComponent(q.get('session_id')) : '';
+      if (!param) return;
       var tries = 0;
       (function poll() {
-        fetch('/api/order?session_id=' + encodeURIComponent(id)).then(function (r) { return r.json(); }).then(function (d) {
+        fetch('/api/order?' + param).then(function (r) { return r.json(); }).then(function (d) {
           if (d.number) {
             var el = document.getElementById('merci-number');
             el.textContent = 'Votre numéro de commande : ' + d.number; el.hidden = false;

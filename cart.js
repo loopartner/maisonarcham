@@ -1,6 +1,6 @@
 /* Maison Archam — panier (partagé entre toutes les pages)
    Le contenu est gardé dans le navigateur du visiteur (localStorage).
-   « Commander » envoie le panier à /api/checkout (paiement Stripe). */
+   « Commander » mène à la page commande.html (adresse + paiement). */
 (function () {
   var KEY = 'archam-cart';
   var PRODUCTS = {
@@ -51,8 +51,7 @@
         '<div class="cart-row"><span>Livraison</span><span>Offerte</span></div>' +
         '<div class="cart-row cart-total"><span>Total</span><span class="cart-sum">0 €</span></div>' +
         '<p class="cart-gift">Un échantillon offert avec chaque commande</p>' +
-        '<button type="button" class="btn cart-checkout">Commander</button>' +
-        '<p class="cart-error" role="alert"></p>' +
+        '<a href="commande.html" class="btn cart-checkout">Commander</a>' +
         '<p class="cart-secure">Paiement sécurisé par Stripe</p>' +
       '</div>' +
     '</aside>';
@@ -86,28 +85,25 @@
     drawer.querySelector('.cart-sum').textContent = euro(sum);
     drawer.querySelector('.cart-foot').hidden = count === 0;
     document.querySelectorAll('[data-cart-count]').forEach(function (el) { el.textContent = count; });
+    if (typeof listeners !== 'undefined') listeners.forEach(function (fn) { fn(); });
     document.querySelectorAll('[data-cart-open]').forEach(function (el) {
       el.setAttribute('aria-label', 'Panier (' + count + ' article' + (count > 1 ? 's' : '') + ')');
     });
   }
 
-  // Paiement : le serveur recalcule les prix puis renvoie vers la page de paiement sécurisée Stripe
-  function checkout(btn) {
-    var items = load().map(function (i) { return { id: i.id, qty: i.qty }; });
-    var note = drawer.querySelector('.cart-error');
-    btn.disabled = true; btn.textContent = 'Redirection…'; note.textContent = '';
-    fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: items }) })
-      .then(function (r) { return r.json().catch(function () { return {}; }); })
-      .then(function (data) {
-        if (data && data.url) { window.location.href = data.url; return; }
-        throw new Error((data && data.error) || 'Le paiement est momentanément indisponible.');
-      })
-      .catch(function (e) {
-        note.textContent = e.message && e.message !== 'Failed to fetch' ? e.message : 'Le paiement est momentanément indisponible.';
-        btn.disabled = false; btn.textContent = 'Commander';
+  var listeners = [];
+  window.ArchamCart = {
+    clear: function () { save([]); },
+    lines: function () {
+      return load().filter(function (i) { return PRODUCTS[i.id]; }).map(function (i) {
+        var p = PRODUCTS[i.id];
+        return { id: i.id, qty: i.qty, name: p.name, variant: p.variant, price: p.price, img: p.img, url: p.url };
       });
-  }
-  window.ArchamCart = { clear: function () { save([]); } };
+    },
+    setQty: function (id, qty) { setQty(id, Math.max(0, Math.min(qty, 10))); },
+    onChange: function (fn) { listeners.push(fn); },
+    euro: euro
+  };
 
   function open() { drawer.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
   function close() { drawer.classList.remove('is-open'); document.body.style.overflow = ''; }
@@ -126,7 +122,7 @@
     if ((id = t.getAttribute('data-inc'))) { var l = load().find(function (i) { return i.id === id; }); setQty(id, Math.min(l.qty + 1, 10)); }
     else if ((id = t.getAttribute('data-dec'))) { var m = load().find(function (i) { return i.id === id; }); setQty(id, m.qty - 1); }
     else if ((id = t.getAttribute('data-remove'))) { setQty(id, 0); }
-    else if (t.classList.contains('cart-checkout')) { checkout(t); }
+
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   window.addEventListener('storage', render);

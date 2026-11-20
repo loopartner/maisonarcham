@@ -6,6 +6,7 @@ import { json, error, escapeHtml } from './_lib/http.js';
 import { redis, hasStore } from './_lib/store.js';
 import { sendMail, layout } from './_lib/mail.js';
 import { nextOrderNumber, saveOrder } from './_lib/orders.js';
+import { PRODUCTS } from './_lib/catalogue.js';
 
 function verify(payload, header, secret, toleranceSec = 300) {
   const parts = Object.fromEntries(String(header || '').split(',').map((p) => p.split('=')).filter((p) => p.length === 2).map(([k, v]) => [k, v]));
@@ -26,42 +27,66 @@ export async function POST(request) {
   if (!verify(payload, request.headers.get('stripe-signature'), secret)) return error('Signature invalide.', 400);
 
   const event = JSON.parse(payload);
-  if (event.type !== 'checkout.session.completed' && event.type !== 'checkout.session.async_payment_succeeded') {
+  let ref, build;
+  if (event.type === 'payment_intent.succeeded') {
+    const pi = event.data.object;
+    if (pi.metadata?.source !== 'site') return json({ received: true, ignored: true }); // paiements Checkout gérés plus bas
+    ref = `pi:${pi.id}`;
+    build = async (number) => {
+      const cart = JSON.parse(pi.metadata.cart || '[]');
+      return {
+        email: (pi.metadata.email || pi.receipt_email || '').toLowerCase(),
+        name: pi.shipping?.name || '',
+        phone: pi.shipping?.phone || '',
+        shipping: pi.shipping?.address || null,
+        items: cart.map(([id, qty]) => ({ name: PRODUCTS[id]?.name || id, quantity: qty, amount: (PRODUCTS[id]?.price || 0) * qty })),
+        total: pi.amount_received || pi.amount,
+        currency: pi.currency,
+        paymentIntent: pi.id,
+      };
+    };
+  } else if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
+    const session = event.data.object;
+    if (session.payment_status !== 'paid') return json({ received: true, pending: true });
+    ref = `session:${session.id}`;
+    build = async () => {
+      const li = await fetch(`https://api.stripe.com/v1/checkout/sessions/${session.id}/line_items?limit=50`, {
+        headers: { authorization: `Bearer ${env('STRIPE_SECRET_KEY')}` },
+      }).then((r) => r.json());
+      const shipping = session.collected_information?.shipping_details || session.shipping_details || null;
+      return {
+        email: (session.customer_details?.email || session.customer_email || '').toLowerCase(),
+        name: shipping?.name || session.customer_details?.name || '',
+        phone: session.customer_details?.phone || '',
+        shipping: shipping?.address || null,
+        items: (li.data || []).map((l) => ({ name: l.description, quantity: l.quantity, amount: l.amount_total })),
+        total: session.amount_total,
+        currency: session.currency,
+        stripeSession: session.id,
+        paymentIntent: session.payment_intent,
+      };
+    };
+  } else {
     return json({ received: true });
   }
-  const session = event.data.object;
-  if (session.payment_status !== 'paid') return json({ received: true, pending: true });
-  if (!hasStore()) { console.error('Commande payée mais base non configurée', session.id); return error('Base non configurée.', 503); }
+  if (!hasStore()) { console.error('Paiement reçu mais base non configurée', ref); return error('Base non configurée.', 503); }
 
   // Idempotence : Stripe peut renvoyer le même événement plusieurs fois
-  const lock = await redis('SET', `session:${session.id}`, 'pending', 'NX');
+  const lock = await redis('SET', ref, 'pending', 'NX');
   if (lock === null) return json({ received: true, duplicate: true });
 
   try {
-    const li = await fetch(`https://api.stripe.com/v1/checkout/sessions/${session.id}/line_items?limit=50`, {
-      headers: { authorization: `Bearer ${env('STRIPE_SECRET_KEY')}` },
-    }).then((r) => r.json());
-
     const number = await nextOrderNumber();
-    const email = session.customer_details?.email || session.customer_email || '';
-    const shipping = session.collected_information?.shipping_details || session.shipping_details || null;
     const order = {
       number,
-      email: email.toLowerCase(),
-      name: shipping?.name || session.customer_details?.name || '',
-      phone: session.customer_details?.phone || '',
-      shipping: shipping?.address || null,
-      items: (li.data || []).map((l) => ({ name: l.description, quantity: l.quantity, amount: l.amount_total })),
-      total: session.amount_total,
-      currency: session.currency,
-      stripeSession: session.id,
-      paymentIntent: session.payment_intent,
+      ...(await build(number)),
       status: 'confirmee',
       createdAt: new Date().toISOString(),
       history: [{ status: 'confirmee', at: new Date().toISOString() }],
     };
+    const email = order.email;
     await saveOrder(order);
-    await redis('SET', `session:${session.id}`, number);
+    await redis('SET', ref, number);
     await redis('LPUSH', 'orders', number);
 
     const rows = order.items.map((i) => `<tr><td style="padding:8px 0">${escapeHtml(i.name)} × ${i.quantity}</td><td align="right">${euro(i.amount)}</td></tr>`).join('');
@@ -88,7 +113,7 @@ export async function POST(request) {
     ]);
     return json({ received: true, number });
   } catch (e) {
-    await redis('DEL', `session:${session.id}`); // Stripe réessaiera
+    await redis('DEL', ref); // Stripe réessaiera
     console.error(e);
     return error('Erreur de traitement.', 500);
   }
