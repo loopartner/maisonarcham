@@ -20,19 +20,19 @@
 
   <!-- HEADER -->
   <header class="header">
-    <a href="#" class="logo">Maison Archam</a>
+    <a href="index.html" class="logo">Maison Archam</a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="#maison">La Maison</a>
-      <a href="#parfum">Le Parfum</a>
+      <a href="produit.html">Le Parfum</a>
       <a href="#journal">Journal</a>
       <a href="#">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
       <button type="button" aria-label="Rechercher"><img src="assets/icon-search.svg" width="14" height="14" alt=""></button>
       <button type="button" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></button>
-      <button type="button" class="bag" aria-label="Panier (0 article)">
+      <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
-        <span class="bag-count">0</span>
+        <span class="bag-count" data-cart-count>0</span>
       </button>
     </div>
   </header>
@@ -43,7 +43,7 @@
       <img class="hero-botanical" src="assets/botanical-bg.png" alt="">
       <div class="hero-text">
         <h1>L'art du<br>sillage,<br>L'âme<br>d'Ararat</h1>
-        <div class="hero-cta"><a href="#parfum" class="link-underline">Découvrir le parfum →</a></div>
+        <div class="hero-cta"><a href="produit.html" class="link-underline">Découvrir le parfum →</a></div>
       </div>
       <img class="hero-bottle" src="assets/hero-bottle.webp" alt="Flacon Crème d'Ararat, Maison Archam">
     </section>
@@ -64,13 +64,13 @@
         <p class="eyebrow">Eau de parfum</p>
       </div>
       <div class="product-gallery">
-        <figure class="frame"><img src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat, extrait de parfum 50 ml"></figure>
-        <figure class="frame"><img src="assets/product-water.png" alt="Flacon immergé dans l'eau avec des pétales de rose"></figure>
-        <figure class="frame"><img src="assets/product-box.png" alt="Coffret blanc texturé Maison Archam"></figure>
+        <figure class="frame"><img src="assets/notes-tete-coeur.webp" alt="Bergamote, poivre rose, rose de Damas et abricot"></figure>
+        <a href="produit.html" class="frame"><img src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat"></a>
+        <figure class="frame"><img src="assets/notes-fond.webp" alt="Santal, ambre et musc blanc"></figure>
       </div>
       <div class="product-buy">
         <p class="price">185 €</p>
-        <button type="button" class="btn">Ajouter au panier</button>
+        <button type="button" class="btn" data-add-to-cart="creme-dararat-50">Ajouter au panier</button>
       </div>
     </section>
 
@@ -176,5 +176,6 @@
     </div>
   </footer>
 
+  <script src="cart.js"></script>
 </body>
 </html>

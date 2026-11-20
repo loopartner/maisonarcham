@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crème d'Ararat — Eau de parfum | Maison Archam</title>
+  <meta name="description" content="Crème d'Ararat, eau de parfum 50 ml de Maison Archam Paris. Bergamote, rose de Damas, santal. Livraison et échantillon offerts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Masque proprement une image tant que son fichier n'est pas encore dans /assets
+    document.addEventListener('error', function (e) {
+      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+    }, true);
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">Maison Archam</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html#maison">La Maison</a>
+      <a href="produit.html" aria-current="page">Le Parfum</a>
+      <a href="index.html#journal">Journal</a>
+      <a href="#">Suivre ma commande</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" aria-label="Rechercher"><img src="assets/icon-search.svg" width="14" height="14" alt=""></button>
+      <button type="button" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></button>
+      <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
+        <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
+        <span class="bag-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <nav class="crumbs" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a><span aria-hidden="true">/</span><a href="produit.html">Le Parfum</a><span aria-hidden="true">/</span><span aria-current="page">Crème d'Ararat</span>
+    </nav>
+
+    <!-- FICHE PRODUIT -->
+    <section class="pdp">
+      <div class="pdp-gallery">
+        <div class="pdp-thumbs" role="tablist" aria-label="Photos du produit">
+          <button type="button" class="pdp-thumb is-active" data-src="assets/product-bottle.webp" data-alt="Flacon Crème d'Ararat" aria-label="Photo 1 : le flacon"><img src="assets/product-bottle.webp" alt=""></button>
+          <button type="button" class="pdp-thumb" data-src="assets/notes-tete-coeur.webp" data-alt="Notes de tête et de cœur" aria-label="Photo 2 : notes de tête et de cœur"><img src="assets/notes-tete-coeur.webp" alt=""></button>
+          <button type="button" class="pdp-thumb" data-src="assets/notes-fond.webp" data-alt="Notes de fond" aria-label="Photo 3 : notes de fond"><img src="assets/notes-fond.webp" alt=""></button>
+        </div>
+        <div class="pdp-main"><img id="pdp-main-img" src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat"></div>
+      </div>
+
+      <div class="pdp-info">
+        <p class="eyebrow">Eau de parfum</p>
+        <h1 class="h2-xl">Crème d'Ararat</h1>
+        <p class="pdp-lead">Un sillage lumineux et enveloppant, entre la fraîcheur de la bergamote, la douceur de la rose de Damas et la chaleur du santal.</p>
+        <p class="pdp-price">185 €</p>
+
+        <div class="pdp-field">
+          <span class="pdp-label">Contenance</span>
+          <div class="chips"><button type="button" class="chip is-active" aria-pressed="true">50 ml</button></div>
+        </div>
+
+        <div class="pdp-field">
+          <span class="pdp-label">Quantité</span>
+          <div class="qty" id="pdp-qty-box">
+            <button type="button" id="qty-dec" aria-label="Diminuer la quantité">−</button>
+            <span id="pdp-qty" aria-live="polite">1</span>
+            <button type="button" id="qty-inc" aria-label="Augmenter la quantité">+</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-block" data-add-to-cart="creme-dararat-50" data-qty-from="#pdp-qty">Ajouter au panier</button>
+
+        <ul class="pdp-perks">
+          <li>Livraison offerte</li>
+          <li>Échantillon offert</li>
+          <li>Fabriqué à Paris</li>
+        </ul>
+
+        <div class="accordion">
+          <details open>
+            <summary>Description</summary>
+            <p>Né de l'imaginaire du mont Ararat, Crème d'Ararat s'ouvre sur l'éclat de la bergamote relevé d'un soupçon de poivre rose. En son cœur, la rose de Damas se mêle à la rondeur veloutée du pétale d'abricot, avant de se poser sur un fond de santal, de musc blanc et d'ambre.</p>
+          </details>
+          <details>
+            <summary>Notes olfactives</summary>
+            <dl class="pdp-notes">
+              <dt>Tête</dt><dd>Bergamote, Poivre rose</dd>
+              <dt>Cœur</dt><dd>Rose de Damas, Pétale d'abricot</dd>
+              <dt>Fond</dt><dd>Santal, Musc blanc, Ambre</dd>
+            </dl>
+          </details>
+          <details>
+            <summary>Conseils d'utilisation</summary>
+            <p>Vaporiser à une vingtaine de centimètres de la peau, sur les zones de chaleur : poignets, cou, creux des coudes. Pour un sillage plus durable, appliquer sur une peau hydratée.</p>
+          </details>
+          <details>
+            <summary>Livraison &amp; retours</summary>
+            <p>Livraison offerte sur toutes les commandes, accompagnée d'un échantillon. Pour les retours, consultez nos <a href="#" class="inline-link">conditions générales</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="notes">
+      <div class="note">
+        <img src="assets/note-bergamot.png" width="80" height="80" alt="">
+        <h3>Notes de Tête</h3>
+        <p>Bergamote, Poivre rose</p>
+      </div>
+      <div class="note">
+        <img src="assets/note-rose.png" width="80" height="80" alt="">
+        <h3>Notes de Cœur</h3>
+        <p>Rose de Damas, Pétale d'abricot</p>
+      </div>
+      <div class="note">
+        <img src="assets/note-sandalwood.png" width="80" height="80" alt="">
+        <h3>Notes de Fond</h3>
+        <p>Santal, Musc blanc, Ambre</p>
+      </div>
+    </section>
+
+    <!-- HISTOIRE -->
+    <section class="maison story">
+      <div class="maison-media story-media"><img src="assets/hero-bottle.webp" alt="Flacon Crème d'Ararat sur un bloc de pierre, vanille et caramel"></div>
+      <div class="maison-text">
+        <h2 class="h2-xl">L'âme<br>d'Ararat</h2>
+        <p>Composé dans nos ateliers parisiens, Crème d'Ararat rend hommage à la montagne qui veille sur les terres d'Arménie. Une fragrance pensée comme un souvenir : solaire au premier instant, tendre et habitée à mesure que les heures passent.</p>
+        <a href="index.html#maison" class="link-underline">Découvrir la Maison →</a>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <h2>Recevoir nos lettres</h2>
+      <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset();">
+        <label for="email" class="sr-only">Votre adresse e-mail</label>
+        <input id="email" type="email" placeholder="Votre adresse e-mail" required>
+        <button type="submit" aria-label="S'inscrire"><img src="assets/arrow.svg" width="12" height="12" alt=""></button>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-cols">
+      <div>
+        <h5>Maison</h5>
+        <ul><li><a href="#">Notre histoire</a></li><li><a href="#">La fabrication</a></li><li><a href="#">Nos engagements</a></li></ul>
+      </div>
+      <div>
+        <h5>Aide</h5>
+        <ul><li><a href="#">Livraison &amp; Retours</a></li><li><a href="#">Nous contacter</a></li><li><a href="#">FAQ</a></li></ul>
+      </div>
+      <div>
+        <h5>Suivre ma commande</h5>
+        <ul><li><a href="#">Espace client</a></li><li><a href="#">Statut de livraison</a></li></ul>
+      </div>
+      <div>
+        <h5>Réseaux</h5>
+        <div class="socials">
+          <a href="#" aria-label="Réseau social 1"><img src="assets/social-1.svg" width="15.75" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 2"><img src="assets/social-2.svg" width="13.5" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 3"><img src="assets/social-3.svg" width="11.25" height="18" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="legal">
+        <a href="#">Conditions Générales</a>
+        <a href="#">Politique de Confidentialité</a>
+        <a href="#">Mentions Légales</a>
+      </div>
+      <p>© 2024 Maison Archam Paris</p>
+    </div>
+  </footer>
+
+  <script>
+    // Galerie
+    var mainImg = document.getElementById('pdp-main-img');
+    document.querySelectorAll('.pdp-thumb').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.pdp-thumb').forEach(function (x) { x.classList.remove('is-active'); });
+        b.classList.add('is-active');
+        mainImg.style.visibility = '';
+        mainImg.src = b.dataset.src; mainImg.alt = b.dataset.alt;
+      });
+    });
+    // Quantité
+    var q = document.getElementById('pdp-qty');
+    document.getElementById('qty-dec').onclick = function () { q.textContent = Math.max(1, +q.textContent - 1); };
+    document.getElementById('qty-inc').onclick = function () { q.textContent = Math.min(10, +q.textContent + 1); };
+  </script>
+  <script src="cart.js"></script>
+</body>
+</html>
