@@ -1,0 +1,5 @@
+[
+  { "slug": "heritage-ararat", "category": "Inspiration", "date": "2024-03-28", "title": "L’héritage d’Ararat", "excerpt": "Aux sources de notre nom, une montagne mythique et les parfums de ses vallées.", "image": "/assets/img/ararat-paysage.svg" },
+  { "slug": "cueillette-aube", "category": "Savoir-faire", "date": "2024-05-12", "title": "La cueillette de l’aube", "excerpt": "Certaines fleurs ne livrent leur parfum qu’aux premières heures du jour. Récit d’un geste ancestral.", "image": "/assets/img/notes-tete.webp" },
+  { "slug": "chimie-emotions", "category": "Coulisses", "date": "2024-04-04", "title": "La chimie des émotions", "excerpt": "Entre science et intuition, comment une formule devient un souvenir.", "image": "/assets/img/atelier-mouillettes.svg" }
+]

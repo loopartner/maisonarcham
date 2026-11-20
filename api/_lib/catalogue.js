@@ -4,7 +4,7 @@ export const PRODUCTS = {
     name: "Crème d'Ararat",
     variant: 'Extrait de parfum · 50 ml',
     price: 18500, // en centimes
-    image: '/assets/product-bottle.webp',
+    image: '/assets/img/flacon-produit.webp',
   },
 };
 export const MAX_QTY = 10;

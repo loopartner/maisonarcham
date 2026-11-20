@@ -101,5 +101,26 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', function () { initMenu(); renderCart(); initPasswordToggles(); initLogout(); });
+  // ---------- Inscription à la newsletter (consentement explicite obligatoire) ----------
+  function initNewsletter() {
+    document.querySelectorAll('form[data-newsletter]').forEach(function (form) {
+      const err = form.querySelector('[data-error]');
+      const show = function (m) { if (err) { err.textContent = m || ''; err.hidden = !m; } };
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault(); show('');
+        const email = form.elements.email.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { show('Merci de saisir une adresse e-mail valide.'); form.elements.email.focus(); return; }
+        if (form.elements.consent && !form.elements.consent.checked) { show('Merci d’accepter de recevoir notre correspondance.'); return; }
+        const btn = form.querySelector('button[type="submit"]');
+        busy(btn, true, 'Inscription…');
+        const r = await api('/api/newsletter', { method: 'POST', body: { email: email, consent: true, website: form.elements.website ? form.elements.website.value : '' } });
+        busy(btn, false);
+        if (!r.ok) { show(r.error); return; }
+        const wrap = form.parentElement, done = wrap.querySelector('[data-nl-done]');
+        if (done) { const s = done.querySelector('[data-nl-email]'); if (s) s.textContent = email; done.hidden = false; form.hidden = true; done.setAttribute('tabindex', '-1'); done.focus(); }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () { initMenu(); renderCart(); initPasswordToggles(); initLogout(); initNewsletter(); });
 })();
