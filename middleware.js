@@ -7,6 +7,7 @@
 import { SESSION_COOKIE, roleOf, homeFor } from './api/_lib/roles.js';
 
 export const config = {
+  runtime: 'nodejs',
   matcher: ['/admin', '/admin/:path*', '/compte', '/compte/:path*', '/connexion'],
 };
 
