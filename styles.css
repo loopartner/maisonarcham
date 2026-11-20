@@ -458,7 +458,7 @@ a.post:hover h4 { opacity: .7; }
 .footer-brand img { height: 56px; width: auto; }
 .footer-brand span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(31,42,46,.6); }
 
-.product-intro { max-width: 620px; margin-top: 24px; font-size: 15px; line-height: 26px; color: rgba(31,42,46,.85); }
+.product-intro { max-width: 620px; margin: 0 0 40px; text-align: center; font-size: 15px; line-height: 26px; color: rgba(31,42,46,.85); }
 a.btn { display: inline-block; text-align: center; }
 
 /* Tablette / mobile */
@@ -645,4 +645,4 @@ a.btn { display: inline-block; text-align: center; }
   .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
   .trust .dot { display: none; }
 }
-@media (max-width: 720px) { .product-intro { font-size: 14px; line-height: 23px; margin-top: 16px; } }
+@media (max-width: 720px) { .product-intro { font-size: 14px; line-height: 23px; margin-bottom: 32px; } }
