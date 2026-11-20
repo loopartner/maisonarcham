@@ -22,14 +22,14 @@
   <header class="header">
     <a href="index.html" class="logo">Maison Archam</a>
     <nav class="nav" aria-label="Navigation principale">
-      <a href="#maison">La Maison</a>
+      <a href="maison.html">La Maison</a>
       <a href="produit.html">Le Parfum</a>
-      <a href="#journal">Journal</a>
-      <a href="#">Suivre ma commande</a>
+      <a href="journal.html">Journal</a>
+      <a href="suivi.html">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
-      <button type="button" aria-label="Rechercher"><img src="assets/icon-search.svg" width="14" height="14" alt=""></button>
-      <button type="button" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></button>
+      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
       <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
         <span class="bag-count" data-cart-count>0</span>
@@ -99,7 +99,7 @@
       <div class="maison-text">
         <h2 class="h2-xl">La Maison</h2>
         <p>Depuis nos ateliers parisiens, Maison Archam cultive une approche singulière de la parfumerie de niche. Une quête d'absolu où chaque ingrédient est choisi pour sa pureté, dessinant les contours d'une élégance intemporelle et habitée.</p>
-        <a href="#" class="link-underline">Notre histoire →</a>
+        <a href="maison.html" class="link-underline">Notre histoire →</a>
       </div>
     </section>
 
@@ -107,34 +107,34 @@
     <section class="journal" id="journal">
       <div class="journal-head">
         <h2 class="h2">Le Journal</h2>
-        <a href="#" class="link-underline">Tous les articles →</a>
+        <a href="journal.html" class="link-underline">Tous les articles →</a>
       </div>
       <div class="journal-grid">
-        <article class="post">
+        <a href="journal-cueillette-aube.html" class="post">
           <div class="post-media"><img src="assets/journal-jasmine.png" alt="Jasmin en fleur sous la lune"></div>
           <p class="post-cat">Savoir-Faire</p>
           <h4>La cueillette de l'aube</h4>
           <p class="post-date">12 Mai 2024</p>
-        </article>
-        <article class="post">
+        </a>
+        <a href="journal-chimie-emotions.html" class="post">
           <div class="post-media"><img src="assets/journal-lab.png" alt="Verrerie de laboratoire"></div>
           <p class="post-cat">Coulisses</p>
           <h4>La chimie des émotions</h4>
           <p class="post-date">04 Avril 2024</p>
-        </article>
-        <article class="post">
+        </a>
+        <a href="journal-heritage-ararat.html" class="post">
           <div class="post-media"><img src="assets/journal-ararat.png" alt="Le mont Ararat au lever du soleil"></div>
           <p class="post-cat">Inspiration</p>
           <h4>L'héritage d'Ararat</h4>
           <p class="post-date">28 Mars 2024</p>
-        </article>
+        </a>
       </div>
     </section>
 
     <!-- NEWSLETTER -->
     <section class="newsletter">
       <h2>Recevoir nos lettres</h2>
-      <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset();">
+      <form class="newsletter-form" data-fake-form="Merci, vous êtes inscrit·e.">
         <label for="email" class="sr-only">Votre adresse e-mail</label>
         <input id="email" type="email" placeholder="Votre adresse e-mail" required>
         <button type="submit" aria-label="S'inscrire"><img src="assets/arrow.svg" width="12" height="12" alt=""></button>
@@ -147,15 +147,15 @@
     <div class="footer-cols">
       <div>
         <h5>Maison</h5>
-        <ul><li><a href="#">Notre histoire</a></li><li><a href="#">La fabrication</a></li><li><a href="#">Nos engagements</a></li></ul>
+        <ul><li><a href="maison.html#histoire">Notre histoire</a></li><li><a href="maison.html#fabrication">La fabrication</a></li><li><a href="maison.html#engagements">Nos engagements</a></li></ul>
       </div>
       <div>
         <h5>Aide</h5>
-        <ul><li><a href="#">Livraison &amp; Retours</a></li><li><a href="#">Nous contacter</a></li><li><a href="#">FAQ</a></li></ul>
+        <ul><li><a href="aide.html#livraison">Livraison &amp; Retours</a></li><li><a href="aide.html#contact">Nous contacter</a></li><li><a href="aide.html#faq">FAQ</a></li></ul>
       </div>
       <div>
         <h5>Suivre ma commande</h5>
-        <ul><li><a href="#">Espace client</a></li><li><a href="#">Statut de livraison</a></li></ul>
+        <ul><li><a href="suivi.html#compte">Espace client</a></li><li><a href="suivi.html">Statut de livraison</a></li></ul>
       </div>
       <div>
         <h5>Réseaux</h5>
@@ -168,14 +168,15 @@
     </div>
     <div class="footer-bottom">
       <div class="legal">
-        <a href="#">Conditions Générales</a>
-        <a href="#">Politique de Confidentialité</a>
-        <a href="#">Mentions Légales</a>
+        <a href="cgv.html">Conditions Générales</a>
+        <a href="confidentialite.html">Politique de Confidentialité</a>
+        <a href="mentions-legales.html">Mentions Légales</a>
       </div>
       <p>© 2024 Maison Archam Paris</p>
     </div>
   </footer>
 
+  <script src="site.js"></script>
   <script src="cart.js"></script>
 </body>
 </html>

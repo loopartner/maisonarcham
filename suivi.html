@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivre ma commande | Maison Archam</title>
+  <meta name="description" content="Suivez votre commande Maison Archam ou accédez à votre espace client.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.addEventListener('error', function (e) {
+      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+    }, true);
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">Maison Archam</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="maison.html">La Maison</a>
+      <a href="produit.html">Le Parfum</a>
+      <a href="journal.html">Journal</a>
+      <a href="suivi.html" aria-current="page">Suivre ma commande</a>
+    </nav>
+    <div class="header-actions">
+      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
+        <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
+        <span class="bag-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">Statut de livraison</p>
+      <h1 class="h2-xl">Suivre ma commande</h1>
+        <p class="page-lead">Renseignez votre numéro de commande et l'adresse e-mail utilisée lors de l'achat.</p>
+    </section>
+
+    <section class="form-section">
+      <form class="form" data-fake-form="Le suivi en ligne sera bientôt disponible. En attendant, contactez-nous : nous vous répondrons rapidement.">
+        <div class="field"><label for="order">Numéro de commande</label><input id="order" type="text" placeholder="Ex. MA-10248" required></div>
+        <div class="field"><label for="order-email">Adresse e-mail</label><input id="order-email" type="email" placeholder="vous@exemple.fr" required></div>
+        <button type="submit" class="btn btn-block">Suivre ma commande</button>
+      </form>
+    </section>
+
+    <section class="account" id="compte">
+      <div class="account-col">
+        <h2 class="h2">Espace client</h2>
+        <p class="page-lead">Connectez-vous pour retrouver vos commandes et vos adresses.</p>
+        <form class="form" data-fake-form="L'espace client sera bientôt disponible.">
+          <div class="field"><label for="login-email">Adresse e-mail</label><input id="login-email" type="email" required></div>
+          <div class="field"><label for="login-pass">Mot de passe</label><input id="login-pass" type="password" required></div>
+          <button type="submit" class="btn btn-block">Se connecter</button>
+          <a href="#" class="form-link">Mot de passe oublié ?</a>
+        </form>
+      </div>
+      <div class="account-col">
+        <h2 class="h2">Nouveau client</h2>
+        <p class="page-lead">Créez un compte pour suivre vos commandes et recevoir en avant-première les nouveautés de la Maison.</p>
+        <form class="form" data-fake-form="La création de compte sera bientôt disponible.">
+          <div class="field"><label for="new-name">Prénom et nom</label><input id="new-name" type="text" required></div>
+          <div class="field"><label for="new-email">Adresse e-mail</label><input id="new-email" type="email" required></div>
+          <div class="field"><label for="new-pass">Mot de passe</label><input id="new-pass" type="password" minlength="8" required></div>
+          <button type="submit" class="btn btn-block btn-ghost">Créer mon compte</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-cols">
+      <div>
+        <h5>Maison</h5>
+        <ul><li><a href="maison.html#histoire">Notre histoire</a></li><li><a href="maison.html#fabrication">La fabrication</a></li><li><a href="maison.html#engagements">Nos engagements</a></li></ul>
+      </div>
+      <div>
+        <h5>Aide</h5>
+        <ul><li><a href="aide.html#livraison">Livraison &amp; Retours</a></li><li><a href="aide.html#contact">Nous contacter</a></li><li><a href="aide.html#faq">FAQ</a></li></ul>
+      </div>
+      <div>
+        <h5>Suivre ma commande</h5>
+        <ul><li><a href="suivi.html#compte">Espace client</a></li><li><a href="suivi.html">Statut de livraison</a></li></ul>
+      </div>
+      <div>
+        <h5>Réseaux</h5>
+        <div class="socials">
+          <a href="#" aria-label="Réseau social 1"><img src="assets/social-1.svg" width="15.75" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 2"><img src="assets/social-2.svg" width="13.5" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 3"><img src="assets/social-3.svg" width="11.25" height="18" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="legal">
+        <a href="cgv.html">Conditions Générales</a>
+        <a href="confidentialite.html">Politique de Confidentialité</a>
+        <a href="mentions-legales.html">Mentions Légales</a>
+      </div>
+      <p>© 2024 Maison Archam Paris</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

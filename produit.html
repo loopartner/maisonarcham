@@ -22,14 +22,14 @@
   <header class="header">
     <a href="index.html" class="logo">Maison Archam</a>
     <nav class="nav" aria-label="Navigation principale">
-      <a href="index.html#maison">La Maison</a>
+      <a href="maison.html">La Maison</a>
       <a href="produit.html" aria-current="page">Le Parfum</a>
-      <a href="index.html#journal">Journal</a>
-      <a href="#">Suivre ma commande</a>
+      <a href="journal.html">Journal</a>
+      <a href="suivi.html">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
-      <button type="button" aria-label="Rechercher"><img src="assets/icon-search.svg" width="14" height="14" alt=""></button>
-      <button type="button" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></button>
+      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
       <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
         <span class="bag-count" data-cart-count>0</span>
@@ -100,7 +100,7 @@
           </details>
           <details>
             <summary>Livraison &amp; retours</summary>
-            <p>Livraison offerte sur toutes les commandes, accompagnée d'un échantillon. Pour les retours, consultez nos <a href="#" class="inline-link">conditions générales</a>.</p>
+            <p>Livraison offerte sur toutes les commandes, accompagnée d'un échantillon. Pour les retours, consultez nos <a href="cgv.html" class="inline-link">conditions générales</a>.</p>
           </details>
         </div>
       </div>
@@ -131,14 +131,14 @@
       <div class="maison-text">
         <h2 class="h2-xl">L'âme<br>d'Ararat</h2>
         <p>Composé dans nos ateliers parisiens, Crème d'Ararat rend hommage à la montagne qui veille sur les terres d'Arménie. Une fragrance pensée comme un souvenir : solaire au premier instant, tendre et habitée à mesure que les heures passent.</p>
-        <a href="index.html#maison" class="link-underline">Découvrir la Maison →</a>
+        <a href="maison.html" class="link-underline">Découvrir la Maison →</a>
       </div>
     </section>
 
     <!-- NEWSLETTER -->
     <section class="newsletter">
       <h2>Recevoir nos lettres</h2>
-      <form class="newsletter-form" onsubmit="event.preventDefault(); this.reset();">
+      <form class="newsletter-form" data-fake-form="Merci, vous êtes inscrit·e.">
         <label for="email" class="sr-only">Votre adresse e-mail</label>
         <input id="email" type="email" placeholder="Votre adresse e-mail" required>
         <button type="submit" aria-label="S'inscrire"><img src="assets/arrow.svg" width="12" height="12" alt=""></button>
@@ -151,15 +151,15 @@
     <div class="footer-cols">
       <div>
         <h5>Maison</h5>
-        <ul><li><a href="#">Notre histoire</a></li><li><a href="#">La fabrication</a></li><li><a href="#">Nos engagements</a></li></ul>
+        <ul><li><a href="maison.html#histoire">Notre histoire</a></li><li><a href="maison.html#fabrication">La fabrication</a></li><li><a href="maison.html#engagements">Nos engagements</a></li></ul>
       </div>
       <div>
         <h5>Aide</h5>
-        <ul><li><a href="#">Livraison &amp; Retours</a></li><li><a href="#">Nous contacter</a></li><li><a href="#">FAQ</a></li></ul>
+        <ul><li><a href="aide.html#livraison">Livraison &amp; Retours</a></li><li><a href="aide.html#contact">Nous contacter</a></li><li><a href="aide.html#faq">FAQ</a></li></ul>
       </div>
       <div>
         <h5>Suivre ma commande</h5>
-        <ul><li><a href="#">Espace client</a></li><li><a href="#">Statut de livraison</a></li></ul>
+        <ul><li><a href="suivi.html#compte">Espace client</a></li><li><a href="suivi.html">Statut de livraison</a></li></ul>
       </div>
       <div>
         <h5>Réseaux</h5>
@@ -172,9 +172,9 @@
     </div>
     <div class="footer-bottom">
       <div class="legal">
-        <a href="#">Conditions Générales</a>
-        <a href="#">Politique de Confidentialité</a>
-        <a href="#">Mentions Légales</a>
+        <a href="cgv.html">Conditions Générales</a>
+        <a href="confidentialite.html">Politique de Confidentialité</a>
+        <a href="mentions-legales.html">Mentions Légales</a>
       </div>
       <p>© 2024 Maison Archam Paris</p>
     </div>
@@ -196,6 +196,7 @@
     document.getElementById('qty-dec').onclick = function () { q.textContent = Math.max(1, +q.textContent - 1); };
     document.getElementById('qty-inc').onclick = function () { q.textContent = Math.min(10, +q.textContent + 1); };
   </script>
+  <script src="site.js"></script>
   <script src="cart.js"></script>
 </body>
 </html>

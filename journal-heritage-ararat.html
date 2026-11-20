@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L'héritage d'Ararat | Le Journal | Maison Archam</title>
+  <meta name="description" content="Aux sources de notre nom, une montagne mythique et les parfums de ses vallées.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.addEventListener('error', function (e) {
+      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+    }, true);
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">Maison Archam</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="maison.html">La Maison</a>
+      <a href="produit.html">Le Parfum</a>
+      <a href="journal.html" aria-current="page">Journal</a>
+      <a href="suivi.html">Suivre ma commande</a>
+    </nav>
+    <div class="header-actions">
+      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
+        <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
+        <span class="bag-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <nav class="crumbs" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a><span aria-hidden="true">/</span><a href="journal.html">Journal</a><span aria-hidden="true">/</span><span aria-current="page">L'héritage d'Ararat</span>
+    </nav>
+    <article class="article">
+      <header class="article-head">
+        <p class="eyebrow">Inspiration · 28 Mars 2024</p>
+        <h1 class="h2-xl">L'héritage d'Ararat</h1>
+        <p class="page-lead">Aux sources de notre nom, une montagne mythique et les parfums de ses vallées.</p>
+      </header>
+      <div class="article-media"><img src="assets/journal-ararat.png" alt="Le mont Ararat au lever du soleil"></div>
+      <div class="prose">
+        <p>Le mont Ararat domine l'horizon de toute une région. Ses sommets enneigés veillent sur des vallées où poussent abricotiers, roses et herbes sauvages.</p>
+        <p>Ce paysage est au cœur de notre imaginaire. Il a inspiré Crème d'Ararat, notre première fragrance : la rondeur du pétale d'abricot, la noblesse de la rose de Damas, la chaleur des bois au crépuscule.</p>
+        <p>Plus qu'une référence géographique, Ararat est pour nous une idée : celle d'un repère immuable, d'une élégance qui traverse le temps.</p>
+        <p>Porter Crème d'Ararat, c'est emporter avec soi un fragment de cette lumière.</p>
+      </div>
+      <div class="article-cta">
+        <a href="produit.html" class="link-underline">Découvrir Crème d'Ararat →</a>
+      </div>
+    </article>
+    <section class="journal">
+      <div class="journal-head">
+        <h2 class="h2">À lire aussi</h2>
+        <a href="journal.html" class="link-underline">Tous les articles →</a>
+      </div>
+      <div class="journal-grid journal-grid-2">
+        <a href="journal-cueillette-aube.html" class="post">
+          <div class="post-media"><img src="assets/journal-jasmine.png" alt="Jasmin en fleur sous la lune"></div>
+          <p class="post-cat">Savoir-Faire</p>
+          <h4>La cueillette de l'aube</h4>
+          <p class="post-date">12 Mai 2024</p>
+        </a>
+        <a href="journal-chimie-emotions.html" class="post">
+          <div class="post-media"><img src="assets/journal-lab.png" alt="Verrerie de laboratoire"></div>
+          <p class="post-cat">Coulisses</p>
+          <h4>La chimie des émotions</h4>
+          <p class="post-date">04 Avril 2024</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <h2>Recevoir nos lettres</h2>
+      <form class="newsletter-form" data-fake-form="Merci, vous êtes inscrit·e.">
+        <label for="email" class="sr-only">Votre adresse e-mail</label>
+        <input id="email" type="email" placeholder="Votre adresse e-mail" required>
+        <button type="submit" aria-label="S'inscrire"><img src="assets/arrow.svg" width="12" height="12" alt=""></button>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-cols">
+      <div>
+        <h5>Maison</h5>
+        <ul><li><a href="maison.html#histoire">Notre histoire</a></li><li><a href="maison.html#fabrication">La fabrication</a></li><li><a href="maison.html#engagements">Nos engagements</a></li></ul>
+      </div>
+      <div>
+        <h5>Aide</h5>
+        <ul><li><a href="aide.html#livraison">Livraison &amp; Retours</a></li><li><a href="aide.html#contact">Nous contacter</a></li><li><a href="aide.html#faq">FAQ</a></li></ul>
+      </div>
+      <div>
+        <h5>Suivre ma commande</h5>
+        <ul><li><a href="suivi.html#compte">Espace client</a></li><li><a href="suivi.html">Statut de livraison</a></li></ul>
+      </div>
+      <div>
+        <h5>Réseaux</h5>
+        <div class="socials">
+          <a href="#" aria-label="Réseau social 1"><img src="assets/social-1.svg" width="15.75" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 2"><img src="assets/social-2.svg" width="13.5" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 3"><img src="assets/social-3.svg" width="11.25" height="18" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="legal">
+        <a href="cgv.html">Conditions Générales</a>
+        <a href="confidentialite.html">Politique de Confidentialité</a>
+        <a href="mentions-legales.html">Mentions Légales</a>
+      </div>
+      <p>© 2024 Maison Archam Paris</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

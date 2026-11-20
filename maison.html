@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Maison | Maison Archam Paris</title>
+  <meta name="description" content="Maison Archam, parfumerie de niche née à Paris : notre histoire, notre fabrication et nos engagements.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.addEventListener('error', function (e) {
+      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+    }, true);
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">Maison Archam</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="maison.html" aria-current="page">La Maison</a>
+      <a href="produit.html">Le Parfum</a>
+      <a href="journal.html">Journal</a>
+      <a href="suivi.html">Suivre ma commande</a>
+    </nav>
+    <div class="header-actions">
+      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
+        <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
+        <span class="bag-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">Maison Archam Paris</p>
+      <h1 class="h2-xl">La Maison</h1>
+        <p class="page-lead">Une parfumerie de niche née à Paris, entre l'exigence des matières et la mémoire des terres d'Ararat.</p>
+    </section>
+
+    <section class="maison" id="histoire">
+      <div class="maison-media"><img src="assets/maison-portrait.png" alt="Portrait d'une femme entourée de pétales blancs"></div>
+      <div class="maison-text">
+        <p class="eyebrow">01 — Notre histoire</p>
+        <h2 class="h2-xl">Une quête d'absolu</h2>
+        <p>Depuis nos ateliers parisiens, Maison Archam cultive une approche singulière de la parfumerie de niche. Une quête d'absolu où chaque ingrédient est choisi pour sa pureté, dessinant les contours d'une élégance intemporelle et habitée.</p>
+        <p>Notre nom porte un héritage : celui d'un regard tourné vers le mont Ararat, ses vergers d'abricotiers et ses roses, que nous traduisons en sillages pensés pour durer.</p>
+      </div>
+    </section>
+
+    <section class="steps" id="fabrication">
+      <div class="steps-head">
+        <p class="eyebrow">02 — La fabrication</p>
+        <h2 class="h2">Le temps long</h2>
+      </div>
+      <ol class="steps-grid">
+        <li><span class="step-num">I</span><h3>La sélection</h3><p>Chaque matière première est choisie pour sa qualité olfactive et sa provenance, avant même que la formule ne prenne forme.</p></li>
+        <li><span class="step-num">II</span><h3>La composition</h3><p>Le parfum s'écrit par essais successifs, jusqu'à trouver l'équilibre entre l'éclat des notes de tête et la profondeur du fond.</p></li>
+        <li><span class="step-num">III</span><h3>La macération</h3><p>Le jus repose plusieurs semaines pour que les notes se lient et que le sillage gagne en rondeur.</p></li>
+        <li><span class="step-num">IV</span><h3>Le flaconnage</h3><p>Chaque flacon est rempli, contrôlé et habillé de son étiquette à Paris, avant de rejoindre son écrin.</p></li>
+      </ol>
+    </section>
+
+    <section class="pillars" id="engagements">
+      <div class="steps-head">
+        <p class="eyebrow">03 — Nos engagements</p>
+        <h2 class="h2">Ce qui nous guide</h2>
+      </div>
+      <div class="pillars-grid">
+        <div><h3>Des matières choisies</h3><p>Des ingrédients retenus pour leur pureté et leur qualité, sans compromis sur la tenue du parfum.</p></div>
+        <div><h3>Fabriqué à Paris</h3><p>La composition et la finition de nos parfums sont réalisées dans notre atelier parisien.</p></div>
+        <div><h3>Un geste attentionné</h3><p>Chaque commande voyage gracieusement et s'accompagne d'un échantillon, pour découvrir avant d'oser.</p></div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <h2>Recevoir nos lettres</h2>
+      <form class="newsletter-form" data-fake-form="Merci, vous êtes inscrit·e.">
+        <label for="email" class="sr-only">Votre adresse e-mail</label>
+        <input id="email" type="email" placeholder="Votre adresse e-mail" required>
+        <button type="submit" aria-label="S'inscrire"><img src="assets/arrow.svg" width="12" height="12" alt=""></button>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-cols">
+      <div>
+        <h5>Maison</h5>
+        <ul><li><a href="maison.html#histoire">Notre histoire</a></li><li><a href="maison.html#fabrication">La fabrication</a></li><li><a href="maison.html#engagements">Nos engagements</a></li></ul>
+      </div>
+      <div>
+        <h5>Aide</h5>
+        <ul><li><a href="aide.html#livraison">Livraison &amp; Retours</a></li><li><a href="aide.html#contact">Nous contacter</a></li><li><a href="aide.html#faq">FAQ</a></li></ul>
+      </div>
+      <div>
+        <h5>Suivre ma commande</h5>
+        <ul><li><a href="suivi.html#compte">Espace client</a></li><li><a href="suivi.html">Statut de livraison</a></li></ul>
+      </div>
+      <div>
+        <h5>Réseaux</h5>
+        <div class="socials">
+          <a href="#" aria-label="Réseau social 1"><img src="assets/social-1.svg" width="15.75" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 2"><img src="assets/social-2.svg" width="13.5" height="18" alt=""></a>
+          <a href="#" aria-label="Réseau social 3"><img src="assets/social-3.svg" width="11.25" height="18" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="legal">
+        <a href="cgv.html">Conditions Générales</a>
+        <a href="confidentialite.html">Politique de Confidentialité</a>
+        <a href="mentions-legales.html">Mentions Légales</a>
+      </div>
+      <p>© 2024 Maison Archam Paris</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

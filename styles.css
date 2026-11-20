@@ -354,6 +354,81 @@ a.frame img { cursor: pointer; }
   .cart-head, .cart-lines, .cart-foot { padding-left: 24px; padding-right: 24px; }
 }
 
+/* ===== Pages secondaires ===== */
+.header-actions a { display: inline-flex; }
+.page-hero {
+  padding: 120px var(--pad) 72px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.page-lead { max-width: 520px; font-size: 14px; line-height: 22.75px; color: rgba(31,42,46,.8); }
+.page-404 { min-height: 60vh; justify-content: center; border-bottom: 0; }
+.todo { background: rgba(217,167,155,.25); color: inherit; padding: 0 4px; }
+.maison-text .eyebrow { margin-bottom: -12px; }
+.maison-text p + p { margin-top: -15px; }
+
+.steps, .pillars { padding: 128px var(--pad); display: flex; flex-direction: column; gap: 64px; }
+.steps { background: var(--mist); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.steps-head { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; counter-reset: none; }
+.steps-grid li, .pillars-grid div { display: flex; flex-direction: column; gap: 16px; }
+.step-num { font-family: var(--serif); font-size: 40px; line-height: 1; color: var(--rose); }
+.steps-grid h3, .pillars-grid h3, .help-perks h3 {
+  font-size: 10px; line-height: 15px; letter-spacing: 1.5px; font-weight: 500; text-transform: uppercase;
+}
+.steps-grid p, .pillars-grid p, .help-perks p { font-size: 13px; line-height: 21.13px; }
+.pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.pillars-grid div { padding-top: 24px; border-top: 1px solid var(--ink); }
+
+.journal-page { background: var(--paper); padding-top: 64px; gap: 48px; }
+.filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.chip:hover { border-color: var(--ink); }
+.post[hidden] { display: none; }
+a.post:hover h4 { opacity: .7; }
+.journal-grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+.article { padding: 48px var(--pad) 128px; display: flex; flex-direction: column; align-items: center; gap: 56px; }
+.article-head { max-width: 760px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+.article-media { width: 100%; max-width: 1000px; aspect-ratio: 16 / 9; overflow: hidden; background: var(--mist); }
+.article-media img { width: 100%; height: 100%; object-fit: cover; }
+.prose { overflow-wrap: break-word; max-width: 640px; width: 100%; display: flex; flex-direction: column; gap: 24px; font-size: 15px; line-height: 26px; }
+.prose > p:first-child::first-letter { font-family: var(--serif); font-size: 64px; float: left; line-height: .8; padding: 6px 10px 0 0; }
+.prose-legal { margin: 0 auto; padding: 72px var(--pad) 128px; box-sizing: border-box; max-width: calc(640px + var(--pad) * 2); font-size: 14px; line-height: 23px; }
+.prose-legal > p:first-child::first-letter { all: unset; }
+.prose-legal h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 32px; text-transform: uppercase; margin-top: 16px; }
+.legal-note { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose); }
+
+.form-section { padding: 72px var(--pad) 128px; display: flex; justify-content: center; }
+.form { width: 100%; max-width: 448px; display: flex; flex-direction: column; gap: 24px; }
+.field { display: flex; flex-direction: column; gap: 10px; }
+.field label { font-size: 10px; line-height: 15px; letter-spacing: 1.5px; font-weight: 500; text-transform: uppercase; }
+.field input, .field select, .field textarea {
+  font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0;
+  padding: 8px 0 12px; outline: none; resize: vertical;
+}
+.field input::placeholder { color: rgba(31,42,46,.3); }
+.field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--ink); }
+.form .btn { margin-top: 8px; }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: #fff; }
+.form-link { align-self: center; font-size: 11px; border-bottom: 1px solid currentColor; }
+.form-msg { font-size: 12px; line-height: 19px; color: var(--teal); padding: 12px 16px; background: var(--mist); }
+.newsletter-form .form-msg { position: absolute; left: 0; right: 0; top: 100%; margin-top: 12px; text-align: center; }
+
+.account { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; padding: 128px var(--pad); background: var(--mist); border-top: 1px solid var(--line); }
+.account-col { display: flex; flex-direction: column; gap: 20px; }
+.account-col .form { margin-top: 16px; }
+
+.help-perks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; padding: 96px var(--pad); text-align: center; }
+.help-perks div { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.help-faq { padding: 96px var(--pad) 128px; background: var(--mist); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; gap: 48px; }
+.help-faq .accordion { max-width: 760px; }
+.help-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; padding: 128px var(--pad); }
+.help-contact > div { display: flex; flex-direction: column; gap: 20px; }
+.contact-line { font-size: 13px; line-height: 21px; }
+.help-contact .form { max-width: none; }
+
 /* Tablette / mobile */
 @media (max-width: 1024px) {
   .nav { display: none; }
@@ -381,4 +456,19 @@ a.frame img { cursor: pointer; }
   .post-media { height: 320px; }
   .footer { gap: 56px; padding-top: 64px; padding-bottom: 64px; }
   .footer-cols { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+}
+
+@media (max-width: 1024px) {
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .account, .help-contact { gap: 56px; }
+}
+@media (max-width: 720px) {
+  .page-hero { padding-top: 72px; padding-bottom: 48px; }
+  .steps, .pillars, .account, .help-contact, .help-faq { padding-top: 80px; padding-bottom: 80px; }
+  .steps-grid, .pillars-grid, .help-perks, .journal-grid-2, .account, .help-contact { grid-template-columns: 1fr; }
+  .article { gap: 40px; padding-bottom: 80px; }
+  .article-media { margin: 0 calc(var(--pad) * -1); width: calc(100% + var(--pad) * 2); max-width: none; }
+}
+@media (max-width: 720px) {
+  .page-hero .h2-xl { font-size: 38px; hyphens: auto; overflow-wrap: break-word; }
 }
