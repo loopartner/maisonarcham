@@ -106,7 +106,7 @@ ul { list-style: none; }
   line-height: .85;
   text-transform: uppercase;
 }
-.hero-cta { display: flex; justify-content: flex-end; padding-right: 96px; }
+.hero-cta { display: flex; justify-content: flex-start; }
 /* Flacon détouré : 1180×664, posé à 309px du bord gauche et 69px sous le haut du hero */
 .hero-bottle {
   position: absolute;
@@ -434,7 +434,6 @@ a.post:hover h4 { opacity: .7; }
   .nav { display: none; }
   .hero { height: auto; min-height: 560px; padding-top: 64px; padding-bottom: 64px; }
   .hero-text { width: 60%; }
-  .hero-cta { padding-right: 0; justify-content: flex-start; }
   .frame { height: 360px; }
   .maison-media { height: 520px; margin-right: 40px; }
   .maison-text { padding-left: 0; }
