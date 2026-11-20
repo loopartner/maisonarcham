@@ -12,6 +12,15 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="styles.css">
   <script>
+    // Intro du hero : une seule fois par visite, jamais si l'utilisateur limite les animations
+    try {
+      if (!sessionStorage.getItem('ma-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('intro');
+        sessionStorage.setItem('ma-intro', '1');
+      }
+    } catch (e) {}
+  </script>
+  <script>
     // Masque proprement une image tant que son fichier n'est pas encore dans /assets
     document.addEventListener('error', function (e) {
       if (e.target.tagName === 'IMG') { e.target.style.visibility = 'hidden'; e.target.classList.add('img-missing'); }
@@ -60,7 +69,7 @@
     <section class="hero">
       <img class="hero-botanical" src="assets/botanical-bg.png" alt="">
       <div class="hero-text">
-        <h1>L'art du<br>sillage,<br>L'âme<br>d'Ararat</h1>
+        <h1><span class="line">L'art du</span> <span class="line">sillage,</span> <span class="line">L'âme</span> <span class="line">d'Ararat</span></h1>
         <div class="hero-cta"><a href="produit.html" class="link-underline">Découvrir le parfum →</a></div>
       </div>
       <img class="hero-bottle" src="assets/hero-bottle.webp" alt="Flacon Crème d'Ararat, Maison Archam">
@@ -81,7 +90,7 @@
         <h2 class="h2">Crème d'Ararat</h2>
         <p class="eyebrow">Extrait de parfum</p>
       </div>
-      <div class="product-gallery" data-carousel>
+      <div class="product-gallery" data-carousel data-reveal-group>
         <figure class="frame"><img src="assets/notes-tete.webp" alt="Caramel, miel et note poudrée"></figure>
         <a href="produit.html" class="frame"><img src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat"></a>
         <figure class="frame"><img src="assets/notes-coeur-fond.webp" alt="Vanille de Madagascar, fève de tonka et musc blanc"></figure>
@@ -112,7 +121,7 @@
     </section>
 
     <!-- LA MAISON -->
-    <section class="maison" id="maison">
+    <section class="maison" id="maison" data-reveal-group>
       <div class="maison-media"><img src="assets/maison-portrait.png" alt="Portrait d'une femme entourée de pétales blancs"></div>
       <div class="maison-text">
         <h2 class="h2-xl">La Maison</h2>
@@ -127,7 +136,7 @@
         <h2 class="h2">Le Journal</h2>
         <a href="journal.html" class="link-underline">Tous les articles →</a>
       </div>
-      <div class="journal-grid" data-carousel>
+      <div class="journal-grid" data-carousel data-reveal-group>
         <a href="journal-cueillette-aube.html" class="post">
           <div class="post-media"><img src="assets/journal-jasmine.png" alt="Jasmin en fleur sous la lune"></div>
           <p class="post-cat">Savoir-Faire</p>

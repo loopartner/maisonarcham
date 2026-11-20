@@ -1,5 +1,25 @@
 /* Maison Archam — petites interactions communes */
 (function () {
+  // Apparitions au défilement : 3 moments choisis de l'accueil, une seule fois, jamais en remontant.
+  // Sans JavaScript (ou si l'utilisateur limite les animations), tout reste visible.
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var groups = document.querySelectorAll('[data-reveal-group]');
+  if (groups.length && 'IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('is-revealed');
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    groups.forEach(function (g) {
+      // Déjà à l'écran au chargement : on n'anime pas
+      if (g.getBoundingClientRect().top < window.innerHeight * 0.88) return;
+      g.classList.add('reveal-pending');
+      io.observe(g);
+    });
+  }
+
   // Menu mobile
   var toggle = document.querySelector('.menu-toggle');
   var menu = document.getElementById('mobile-menu');

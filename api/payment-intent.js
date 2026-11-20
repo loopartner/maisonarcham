@@ -7,7 +7,9 @@ import { PRODUCTS, MAX_QTY } from './_lib/catalogue.js';
 
 export const POST = handle(async (request) => {
   const secret = env('STRIPE_SECRET_KEY');
-  const publishableKey = env('STRIPE_PUBLISHABLE_KEY');
+  // La clé publiable est faite pour être publique (elle s'affiche dans le navigateur) : on garde la clé de test par défaut.
+  // La clé SECRÈTE, elle, ne doit jamais être dans le code : uniquement dans les variables d'environnement Vercel.
+  const publishableKey = env('STRIPE_PUBLISHABLE_KEY', 'pk_test_51UcqBlGvSTP81gYItbPGzscKXjYFh1OaFg6WvGhHRb5M3h12pGIdZCBvNQchOl2xpvG2zwNJEepb21NaXe4Yx7wH00VX1CyKxZ');
   if (!secret || !publishableKey) return error("Le paiement en ligne n'est pas encore activé.", 503);
   await rateLimit(request, 'payment', 20, 600);
 
