@@ -24,9 +24,10 @@ export async function POST(request) {
   const secret = env('STRIPE_WEBHOOK_SECRET');
   if (!secret) return error('Webhook non configuré.', 503);
   const payload = await request.text();
-  if (!verify(payload, request.headers.get('stripe-signature'), secret)) return error('Signature invalide.', 400);
+  if (!verify(payload, request.headers.get('stripe-signature'), secret)) { console.error('[webhook] signature invalide : vérifier STRIPE_WEBHOOK_SECRET'); return error('Signature invalide.', 400); }
 
   const event = JSON.parse(payload);
+  console.log('[webhook] événement reçu', event.type, event.data?.object?.id);
   let ref, build;
   if (event.type === 'payment_intent.succeeded') {
     const pi = event.data.object;
@@ -111,6 +112,7 @@ export async function POST(request) {
           <p>${escapeHtml([order.shipping?.line1, order.shipping?.line2, order.shipping?.postal_code, order.shipping?.city, order.shipping?.country].filter(Boolean).join(', '))}</p>`),
       }),
     ]);
+    console.log('[webhook] commande enregistrée', number, ref);
     return json({ received: true, number });
   } catch (e) {
     await redis('DEL', ref); // Stripe réessaiera

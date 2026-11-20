@@ -205,7 +205,7 @@
           stepPay.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       })
-      .catch(function (e) { err1.textContent = e.message; })
+      .catch(function (e) { err1.textContent = e.message; if (window.console) console.error('[commande]', e); })
       .finally(function () { btnContinue.disabled = false; btnContinue.textContent = 'Continuer vers le paiement'; });
   });
 

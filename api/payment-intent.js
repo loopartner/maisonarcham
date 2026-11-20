@@ -14,6 +14,7 @@ export const POST = handle(async (request) => {
   await rateLimit(request, 'payment', 20, 600);
 
   const { items, customer = {} } = await readJson(request);
+  console.log('[paiement] demande reçue', Array.isArray(items) ? items.length : 0, 'article(s)');
   if (!Array.isArray(items) || items.length === 0) throw new HttpError('Votre panier est vide.');
   const lines = items.map((i) => {
     const p = PRODUCTS[i?.id];
@@ -66,6 +67,7 @@ export const POST = handle(async (request) => {
     body: f,
   });
   const data = await res.json();
-  if (!res.ok) { console.error('Stripe PI', data); return error('Le paiement est momentanément indisponible.', 502); }
+  if (!res.ok) { console.error('[paiement] refus Stripe', res.status, data?.error?.code, data?.error?.message); return error('Le paiement est momentanément indisponible.', 502); }
+  console.log('[paiement] PaymentIntent créé', data.id, amount / 100, '€', 'livemode=' + data.livemode);
   return json({ ok: true, clientSecret: data.client_secret, publishableKey, amount });
 });
