@@ -6,7 +6,7 @@
   var PRODUCTS = {
     'creme-dararat-50': {
       name: "Crème d'Ararat",
-      variant: 'Eau de parfum · 50 ml',
+      variant: 'Extrait de parfum · 50 ml',
       price: 185,
       img: 'assets/product-bottle.webp',
       url: 'produit.html'
