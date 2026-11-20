@@ -174,3 +174,22 @@ test('routeur : chemin réécrit par Vercel (/api/auth/[action]?action=…)', as
   const r2 = await router.GET(new Request(`${ORIGIN}/api/[route]?route=health`));
   assert.equal(r2.status, 200);
 });
+
+test('panier : le serveur recalcule les prix et ignore ceux du navigateur', async () => {
+  const req = (body) => new Request(`${ORIGIN}/api/cart/quote`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN }, body: JSON.stringify(body) });
+  let r = await (await router.POST(req({ items: [{ id: 'creme-dararat-50', qty: 2, price: 1 }], shipping: 'express' }))).json();
+  assert.equal(r.quote.subtotal, 37000); assert.equal(r.quote.shipping.price, 1500); assert.equal(r.quote.total, 38500);
+  r = await (await router.POST(req({ items: [{ id: 'creme-dararat-50', qty: 99 }], shipping: 'teleportation' }))).json();
+  assert.equal(r.quote.lines[0].qty, 10, 'quantité plafonnée'); assert.equal(r.quote.shipping.id, 'standard');
+  r = await (await router.POST(req({ items: [{ id: 'creme-dararat-50', qty: 1 }], code: 'FAUX' }))).json();
+  assert.equal(r.quote.discount, 0); assert.ok(r.quote.promoError);
+  fake.kv.set('promo:ARCHAM10', JSON.stringify({ type: 'percent', value: 10, active: true }));
+  r = await (await router.POST(req({ items: [{ id: 'creme-dararat-50', qty: 1 }], code: ' archam10 ' }))).json();
+  assert.equal(r.quote.discount, 1850); assert.equal(r.quote.total, 16650);
+  const bad = await router.POST(req({ items: [{ id: 'inexistant', qty: 1 }] }));
+  assert.equal(bad.status, 400);
+});
+
+test('middleware : n’intervient pas sur les pages publiques', async () => {
+  for (const p of ['/', '/panier', '/parfum', '/administration', '/comptes']) assert.equal(await middleware(get(p)), undefined);
+});

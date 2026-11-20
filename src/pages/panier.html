@@ -1,0 +1,58 @@
+<!--meta {"title":"Votre panier","scripts":["panier.js"],"noindex":true} -->
+<div class="cart-page">
+  <h1 class="cart-h">Votre panier</h1>
+
+  <div class="cart-empty" data-page-empty hidden>
+    <p class="eyebrow muted">Panier vide</p>
+    <p class="serif cart-empty-t">Votre panier attend encore <em>son parfum</em>.</p>
+    <p class="lead">Découvrez {{product.name}}, la signature unique de la Maison.</p>
+    <a class="btn" href="/parfum">Découvrir le parfum</a>
+  </div>
+
+  <div class="cart-layout" data-page-filled hidden>
+    <div class="cart-main">
+      <div class="cart-cols eyebrow muted" aria-hidden="true"><span>Article</span><span>Quantité</span><span>Total</span></div>
+      <ul class="cart-list" data-page-lines aria-label="Articles du panier"></ul>
+      <a class="link-ed cart-back" href="/parfum">← Continuer mes achats</a>
+    </div>
+    <aside class="summary" aria-labelledby="sum-title">
+      <p class="eyebrow" id="sum-title">Récapitulatif</p>
+      <div class="sum-row"><span>Sous-total</span><span data-q-subtotal></span></div>
+      <div class="sum-row" data-q-discount-row hidden><span data-q-discount-label></span><span data-q-discount></span></div>
+      <fieldset class="ship">
+        <legend>Livraison</legend>
+        <div data-q-ships></div>
+      </fieldset>
+      <form class="promo" data-promo novalidate>
+        <label for="promo">Code promotionnel</label>
+        <div class="promo-row">
+          <input id="promo" class="in" name="code" autocomplete="off" autocapitalize="characters" maxlength="32" placeholder="ex. BIENVENUE">
+          <button class="btn ghost promo-btn" type="submit">Appliquer</button>
+        </div>
+        <p class="promo-msg" role="status" data-promo-msg hidden></p>
+      </form>
+      <div class="sum-total"><span class="eyebrow">Total TTC</span><span class="serif" data-q-total></span></div>
+      <a class="btn" href="/commande">Procéder au paiement</a>
+      <p class="sum-note">Paiement sécurisé · Écrin et échantillon offerts · Retours sous 30 jours</p>
+    </aside>
+  </div>
+</div>
+<template id="tpl-page-line">
+  <li class="cart-line">
+    <div class="cl-item">
+      <a class="cl-thumb" href="/parfum" tabindex="-1" aria-hidden="true"><img alt="" width="120" height="150" data-l-img></a>
+      <div class="cl-info">
+        <p class="serif cl-name" data-l-name></p>
+        <p class="muted cl-variant" data-l-variant></p>
+        <p class="cl-unit" data-l-unit></p>
+        <button class="txt-btn cd-remove" type="button" data-l-remove>Supprimer</button>
+      </div>
+    </div>
+    <div class="qty cl-qty">
+      <button class="qbtn" type="button" data-l-dec>−</button>
+      <span class="qval" data-l-qty></span>
+      <button class="qbtn" type="button" data-l-inc>+</button>
+    </div>
+    <span class="cl-total" data-l-total></span>
+  </li>
+</template>

@@ -5,6 +5,7 @@
   "engines": { "node": "22.x" },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "dev": "node scripts/build.mjs && node tests/dev-server.mjs"
   }
 }

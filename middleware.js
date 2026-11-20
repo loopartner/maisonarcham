@@ -68,6 +68,7 @@ export default async function middleware(request) {
   const path = url.pathname.replace(/\/+$/, '') || '/';
   const isAdmin = path === '/admin' || path.startsWith('/admin/');
   const isAccount = path === '/compte' || path.startsWith('/compte/');
+  if (!isAdmin && !isAccount && path !== '/connexion') return undefined;
 
   let role = null;
   try { role = await currentRole(request); }

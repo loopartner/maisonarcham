@@ -19,6 +19,7 @@ import * as authForgot from './_routes/auth/forgot.js';
 import * as authReset from './_routes/auth/reset.js';
 import * as authVerify from './_routes/auth/verify.js';
 import * as authResendVerification from './_routes/auth/resend-verification.js';
+import * as cartQuote from './_routes/cart/quote.js';
 
 // Table de routage explicite : aucune route n'existe sans figurer ici.
 export const ROUTES = {
@@ -38,6 +39,7 @@ export const ROUTES = {
   'auth/reset': authReset,
   'auth/verify': authVerify,
   'auth/resend-verification': authResendVerification,
+  'cart/quote': cartQuote,
 };
 
 const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
