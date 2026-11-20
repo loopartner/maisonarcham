@@ -7,9 +7,14 @@ import { PRODUCTS, MAX_QTY } from './_lib/catalogue.js';
 
 export const POST = handle(async (request) => {
   const secret = env('STRIPE_SECRET_KEY');
-  // La clé publiable est faite pour être publique (elle s'affiche dans le navigateur) : on garde la clé de test par défaut.
-  // La clé SECRÈTE, elle, ne doit jamais être dans le code : uniquement dans les variables d'environnement Vercel.
-  const publishableKey = env('STRIPE_PUBLISHABLE_KEY', 'pk_test_51UcqBlGvSTP81gYItbPGzscKXjYFh1OaFg6WvGhHRb5M3h12pGIdZCBvNQchOl2xpvG2zwNJEepb21NaXe4Yx7wH00VX1CyKxZ');
+  // La clé publiable doit être du même mode que la clé secrète (test avec test, réel avec réel).
+  // En test, on garde la clé publiable de test par défaut ; en réel, STRIPE_PUBLISHABLE_KEY est obligatoire.
+  const TEST_PK = 'pk_test_51UcqBlGvSTP81gYItbPGzscKXjYFh1OaFg6WvGhHRb5M3h12pGIdZCBvNQchOl2xpvG2zwNJEepb21NaXe4Yx7wH00VX1CyKxZ';
+  const publishableKey = env('STRIPE_PUBLISHABLE_KEY') || (secret.startsWith('sk_test_') ? TEST_PK : '');
+  if (secret && publishableKey && secret.slice(0, 8) !== publishableKey.replace('pk_', 'sk_').slice(0, 8)) {
+    console.error('[paiement] clés Stripe de modes différents (test/réel)');
+    return error("Le paiement en ligne n'est pas encore activé.", 503);
+  }
   if (!secret || !publishableKey) return error("Le paiement en ligne n'est pas encore activé.", 503);
   await rateLimit(request, 'payment', 20, 600);
 
