@@ -505,7 +505,7 @@ a.post:hover h4 { opacity: .7; }
   .logo { gap: 10px; }
   .logo-mark { height: 28px; }
 }
-@media (max-width: 380px) { .logo span { display: none; } }
+
 
 /* =====================================================================
    MOBILE & TABLETTE — menu, header centré, carrousels, barre d'achat
@@ -549,7 +549,7 @@ a.post:hover h4 { opacity: .7; }
 }
 
 @media (max-width: 480px) {
-  .logo span { display: none; }
+  .logo { font-size: 15px; letter-spacing: 3px; }
 }
 
 @media (max-width: 720px) {
