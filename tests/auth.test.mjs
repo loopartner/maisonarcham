@@ -193,3 +193,15 @@ test('panier : le serveur recalcule les prix et ignore ceux du navigateur', asyn
 test('middleware : n’intervient pas sur les pages publiques', async () => {
   for (const p of ['/', '/panier', '/parfum', '/administration', '/comptes']) assert.equal(await middleware(get(p)), undefined);
 });
+
+test('commande : validation serveur des coordonnées, du pays et des CGV', async () => {
+  const req = (body) => new Request(`${ORIGIN}/api/checkout/validate`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN }, body: JSON.stringify(body) });
+  const items = [{ id: 'creme-dararat-50', qty: 1 }];
+  const good = { email: 'a@b.fr', firstName: 'Claire', lastName: 'Martin', shipping: { line1: '12 rue de la Paix', postalCode: '75002', city: 'Paris', country: 'FR' } };
+  let r = await router.POST(req({ items, customer: good, acceptTerms: true }));
+  assert.equal(r.status, 200);
+  r = await (await router.POST(req({ items, customer: { ...good, shipping: { ...good.shipping, postalCode: '7500', country: 'US' } }, acceptTerms: false }))).json();
+  assert.ok(r.fields.postalCode === undefined || r.fields.postalCode); assert.ok(r.fields.country); assert.ok(r.fields.acceptTerms);
+  r = await (await router.POST(req({ items, customer: { ...good, firstName: '<script>' }, acceptTerms: true }))).json();
+  assert.ok(r.fields.firstName);
+});

@@ -22,8 +22,9 @@
   // Bouton occupé pendant une requête
   function busy(button, on, label) {
     if (!button) return;
-    if (on) { button.dataset.label = button.textContent; button.textContent = label || 'Un instant…'; button.setAttribute('aria-busy', 'true'); button.disabled = true; }
-    else { button.textContent = button.dataset.label || button.textContent; button.removeAttribute('aria-busy'); button.disabled = false; }
+    // Le contenu d'origine (y compris les zones mises à jour dynamiquement) est conservé tel quel.
+    if (on) { button._orig = Array.from(button.childNodes); button.textContent = label || 'Un instant…'; button.setAttribute('aria-busy', 'true'); button.disabled = true; }
+    else { if (button._orig) button.replaceChildren.apply(button, button._orig); button.removeAttribute('aria-busy'); button.disabled = false; }
   }
 
   // Redirection uniquement vers une adresse interne au site

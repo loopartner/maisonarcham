@@ -71,7 +71,7 @@ async function main() {
 
   // 2. Pages
   const partial = {};
-  for (const name of ['head', 'header', 'footer', 'admin-nav', 'cart-drawer']) {
+  for (const name of ['head', 'header', 'footer', 'admin-nav', 'cart-drawer', 'checkout-header']) {
     partial[name] = await read(path.join(SRC, 'partials', `${name}.html`)).catch(() => '');
   }
 
@@ -85,7 +85,7 @@ async function main() {
     const layout = meta.layout || 'site';
     const nav = meta.nav || 'none';
 
-    const scripts = ['/assets/js/site.js', ...(layout === 'site' ? ['/assets/js/cart.js'] : []), ...(meta.scripts || []).map((s) => `/assets/js/${s}`)]
+    const scripts = ['/assets/js/site.js', ...(['site', 'checkout'].includes(layout) ? ['/assets/js/cart.js'] : []), ...(meta.scripts || []).map((s) => `/assets/js/${s}`)]
       .map((s) => `<script src="${asset(s)}" defer></script>`).join('\n');
 
     const head = partial.head
@@ -106,6 +106,8 @@ async function main() {
       let adminNav = partial['admin-nav'];
       adminNav = adminNav.replace(/\{\{anav\.([a-z]+)\}\}/g, (_, k) => (k === meta.adminNav ? ' aria-current="page"' : ''));
       html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body class="admin">\n<a class="skip" href="#contenu">Aller au contenu</a>\n<div class="admin-shell">\n${adminNav}\n<main id="contenu" class="admin-main">\n${body}\n</main>\n</div>\n</body>\n</html>\n`;
+    } else if (layout === 'checkout') {
+      html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body>\n<a class="skip" href="#contenu">Aller au contenu</a>\n${partial['checkout-header']}\n<main id="contenu">\n${body}\n</main>\n</body>\n</html>\n`;
     } else if (layout === 'bare') {
       html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body>\n${body}\n</body>\n</html>\n`;
     } else {

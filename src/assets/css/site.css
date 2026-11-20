@@ -437,3 +437,45 @@ em { font-style: italic; }
   .cl-name { font-size: 22px; }
   .summary { padding: 28px 20px; }
 }
+
+/* ===== Commande (maquette 05) ===== */
+.ck-hd { height: 88px; border-bottom: 1px solid var(--sable); display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 clamp(20px, 3vw, 48px); }
+.ck-back, .ck-secure { font-size: 12px; color: var(--gris-texte); text-decoration: none; display: flex; gap: 8px; align-items: center; flex: 1; }
+.ck-secure { justify-content: flex-end; }
+.ck-logo { font-family: var(--serif); font-size: 20px; letter-spacing: .2em; color: var(--brun); text-decoration: none; white-space: nowrap; }
+.ck { max-width: 1280px; margin: 0 auto; padding: 64px 32px 120px; display: flex; flex-wrap: wrap; gap: 72px; align-items: flex-start; }
+.ck-main { flex: 1.6 1 560px; display: flex; flex-direction: column; gap: 56px; min-width: 0; }
+.ck-h { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 4.6vw, 64px); line-height: 1; margin: 0 0 24px; }
+.ck-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 28px; flex-wrap: wrap; color: var(--gris-texte); }
+.sec { border-top: 1px solid var(--brun); padding-top: 32px; display: flex; flex-direction: column; gap: 24px; }
+.ck-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
+.ck-grid .full { grid-column: 1 / -1; }
+.ck-billing { background: var(--blanc); border: 1px solid var(--sable); padding: 24px; }
+select.in { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23241A16' stroke-width='1.2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+.ck-ships { display: flex; flex-direction: column; gap: 10px; }
+.ck-ship { display: flex; gap: 16px; align-items: center; min-height: 64px; padding: 12px 18px; border: 1px solid var(--sable); background: var(--blanc); cursor: pointer; font-size: 14px; }
+.ck-ship.on { border-color: var(--brun); }
+.ck-ship input { accent-color: var(--brun); width: 18px; height: 18px; margin: 0; }
+.ck-ship-t { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.ck-ship-d { font-size: 12px; }
+.ck-pay { background: var(--blanc); border: 1px solid var(--sable); padding: 24px; font-size: 14px; line-height: 1.7; color: var(--marron); }
+.ck-sum { flex: 1 1 360px; background: var(--blanc); border: 1px solid var(--sable); padding: 36px; display: flex; flex-direction: column; gap: 18px; position: sticky; top: 24px; }
+.ck-lines { list-style: none; margin: 0; padding: 0 0 18px; border-bottom: 1px solid var(--sable); display: flex; flex-direction: column; gap: 16px; }
+.ck-line { display: flex; gap: 16px; align-items: center; font-size: 14px; }
+.ck-thumb { width: 72px; height: 90px; background: var(--sable-clair); position: relative; flex: none; }
+.ck-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ck-badge { position: absolute; top: -8px; right: -8px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--brun); color: var(--blanc-casse); font-size: 11px; display: flex; align-items: center; justify-content: center; }
+.ck-info { flex: 1; min-width: 0; }
+.ck-name { font-size: 22px; line-height: 1.2; }
+.ck-variant { font-size: 12px; }
+.ck-promo { display: flex; gap: 8px; }
+.ck-promo .in { flex: 1; min-width: 0; text-transform: uppercase; }
+.ck-promo .btn { padding: 0 20px; min-height: 52px; }
+@media (max-width: 700px) {
+  .ck-hd { height: 64px; } .ck-back span, .ck-secure { font-size: 0; } .ck-secure svg { width: 18px; height: 18px; } .ck-back { font-size: 18px; }
+  .ck-logo { font-size: 16px; }
+  .ck { padding: 40px 20px 96px; gap: 48px; flex-direction: column-reverse; }
+  .ck-main, .ck-sum { flex-basis: auto; width: 100%; }
+  .ck-sum { position: static; padding: 24px 20px; }
+  .ck-grid { grid-template-columns: 1fr; }
+}

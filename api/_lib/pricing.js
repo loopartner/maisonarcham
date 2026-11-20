@@ -1,6 +1,7 @@
 // Calcul du montant d'une commande — utilisé par le panier ET par le paiement.
 // Rien de ce qui vient du navigateur n'est cru : seuls les identifiants et quantités sont lus.
 import { PRODUCTS, MAX_QTY, SHIPPING, DEFAULT_SHIPPING } from './catalogue.js';
+import { allowedCountries } from './customer.js';
 import { HttpError, clean } from './http.js';
 import { hasStore, getJson } from './store.js';
 
@@ -52,7 +53,8 @@ export async function quote({ items, shipping, code }) {
   return {
     lines, subtotal, discount, promo, promoError,
     shipping: { id: shipId, label: ship.label, price: ship.price },
-    shippingOptions: Object.entries(SHIPPING).map(([id, s]) => ({ id, label: s.label, price: s.price })),
+    shippingOptions: Object.entries(SHIPPING).map(([id, s]) => ({ id, label: s.label, title: s.title, detail: s.detail, price: s.price })),
+    countries: allowedCountries(),
     total: subtotal - discount + ship.price,
     currency: 'eur',
   };
