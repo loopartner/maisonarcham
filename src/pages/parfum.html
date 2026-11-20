@@ -1,0 +1,94 @@
+<!--meta {"title":"Crème d’Ararat — Extrait de parfum","description":"Crème d’Ararat, extrait de parfum gourmand : caramel, vanille de Madagascar, fève de tonka et musc blanc. Livraison offerte.","nav":"parfum","scripts":["parfum.js"]} -->
+<nav class="crumb" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Le Parfum</span></nav>
+
+<section class="pdp">
+  <div class="pdp-gallery">
+    <div class="pdp-thumbs" role="group" aria-label="Photos du parfum">
+      <button class="pdp-thumb" type="button" aria-pressed="true" aria-label="Flacon sur fond sable" data-img="/assets/img/flacon-produit.webp" data-alt="Flacon Crème d’Ararat sur fond sable"><img src="/assets/img/flacon-produit.webp" alt="" width="84" height="105"></button>
+      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Flacon sur pierre, caramel et vanille" data-img="/assets/img/flacon-hero.webp" data-alt="Flacon Crème d’Ararat sur une pierre, entouré de caramel et de vanille"><img src="/assets/img/flacon-hero.webp" alt="" width="84" height="105"></button>
+      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Matières : vanille et tonka" data-img="/assets/img/notes-coeur-fond.webp" data-alt="Gousses de vanille et fèves de tonka"><img src="/assets/img/notes-coeur-fond.webp" alt="" width="84" height="105"></button>
+      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Matières : miel et caramel" data-img="/assets/img/notes-tete.webp" data-alt="Rayon de miel et caramel sur une pierre"><img src="/assets/img/notes-tete.webp" alt="" width="84" height="105"></button>
+    </div>
+    <div class="pdp-main zoom">
+      <img src="/assets/img/flacon-produit.webp" alt="Flacon Crème d’Ararat sur fond sable" width="1000" height="1250" data-main-img fetchpriority="high">
+      <span class="eyebrow pdp-badge">Édition limitée</span>
+    </div>
+  </div>
+
+  <div class="pdp-info">
+    <p class="eyebrow muted">Maison Archam — Extrait de parfum</p>
+    <h1 class="pdp-title">{{product.name}}</h1>
+    <p class="serif pdp-tag">Une signature gourmande, élégante et enveloppante.</p>
+    <p class="serif t-price" data-price>{{product.price}}</p>
+    <p class="body-l">Une vanille raffinée aux accents caramélisés, pensée pour offrir une gourmandise subtile et sophistiquée. {{product.name}} laisse un sillage chaleureux, crémeux et élégant.</p>
+    <fieldset class="sizes">
+      <legend class="eyebrow muted">Contenance</legend>
+      <div class="sizes-row"><!--size-options--></div>
+    </fieldset>
+    <div class="buy-row">
+      <div class="qty" role="group" aria-label="Quantité">
+        <button class="qbtn" type="button" aria-label="Diminuer la quantité" data-q-dec>−</button>
+        <span class="qval" data-q aria-live="polite">1</span>
+        <button class="qbtn" type="button" aria-label="Augmenter la quantité" data-q-inc>+</button>
+      </div>
+      <button class="btn buy-btn" type="button" data-buy>Ajouter au panier — <span data-line-total>{{product.price}}</span></button>
+    </div>
+    <ul class="reassure">
+      <li>Livraison offerte en 48 h</li>
+      <li>Écrin &amp; échantillon offerts</li>
+      <li>Retours sous 30 jours</li>
+    </ul>
+    <div class="acc-group">
+      <details class="acc" name="pdp" open>
+        <summary>Description<span aria-hidden="true"></span></summary>
+        <p>{{product.name}} révèle une vanille raffinée aux accents caramélisés. L’ouverture associe caramel, cassonade et miel ; en cœur, la vanille de Madagascar se mêle à la fève de tonka et à la coumarine. Le musc blanc dépose un voile doux et enveloppant.</p>
+      </details>
+      <details class="acc" name="pdp">
+        <summary>Famille olfactive &amp; sillage<span aria-hidden="true"></span></summary>
+        <p>Famille : Gourmande · Vanillée · Musquée<br>Sillage : Chaleureux · Enveloppant · Élégant</p>
+      </details>
+      <details class="acc" name="pdp">
+        <summary>Livraison &amp; retours<span aria-hidden="true"></span></summary>
+        <p>Livraison standard offerte (2–3 jours ouvrés).<br>Livraison express 24 h : 15 €.<br>Retours gratuits sous 30 jours, flacon non entamé.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="wrap pad-140">
+    <p class="eyebrow muted">Pyramide olfactive</p>
+    <h2 class="t-xl pyr-h">Gourmande · Vanillée · <em>Musquée</em></h2>
+    <ol class="pyramid">
+      <li><p class="eyebrow muted">Notes de tête</p><p class="serif pyr-notes">Caramel<br>Poudrée<br>Miel</p><p class="pyr-text">Caramel, cassonade et miel : un accord chaleureux et délicatement ambré.</p></li>
+      <li><p class="eyebrow muted">Notes de cœur</p><p class="serif pyr-notes">Vanille de Madagascar<br>Fève de tonka</p><p class="pyr-text">Avec la coumarine, rondeur, profondeur et une facette légèrement poudrée.</p></li>
+      <li><p class="eyebrow muted">Notes de fond</p><p class="serif pyr-notes">Musc blanc</p><p class="pyr-text">Un voile doux et enveloppant déposé sur la peau.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="wrap split">
+  <div class="split-img zoom ratio-45"><img src="/assets/img/atelier-mouillettes.svg" alt="Mouillettes dans l’atelier de la Maison" width="1200" height="1500" loading="lazy"></div>
+  <div class="split-text">
+    <p class="eyebrow muted">Savoir-faire</p>
+    <h2 class="t-xl">Un flacon, <em>des mois</em> de patience.</h2>
+    <p class="body-l">Chaque lot est mis en macération plusieurs semaines avant d’être filtré, contrôlé et mis en flacon à la main. Le bouchon lesté, l’étiquette posée à la main, l’écrin numéroté : rien n’est laissé au hasard.</p>
+    <ol class="steps">
+      <li><span class="serif">01</span><span>Sélection des matières</span></li>
+      <li><span class="serif">02</span><span>Macération lente</span></li>
+      <li><span class="serif">03</span><span>Mise en flacon manuelle</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="wrap pad-140">
+    <div class="sec-head">
+      <h2 class="t-xl">À lire autour du parfum</h2>
+      <a class="link-ed" href="/journal">Le Journal</a>
+    </div>
+    <div class="j-grid">
+<!--journal-cards 3-->
+    </div>
+  </div>
+</section>

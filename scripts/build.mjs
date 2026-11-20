@@ -65,6 +65,8 @@ async function main() {
   };
   const expand = (html) => html
     .replace(/\{\{(product\.[a-z]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m))
+    .replace(/<!--size-options-->/g, () => Object.entries(PRODUCTS).map(([id, p], i) =>
+      `<button class="size-opt" type="button" aria-pressed="${i === 0}" data-size="${esc(id)}" data-price="${p.price}">${esc(p.variant.split('·').pop().trim())} — ${euros(p.price)}</button>`).join(''))
     .replace(/<!--journal-cards (\d+)-->/g, (_, n) => journal.slice(0, Number(n)).map(journalCard).join('\n'));
 
   // 2. Pages

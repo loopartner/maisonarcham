@@ -336,3 +336,48 @@ em { font-style: italic; }
   .immersive::after { background: linear-gradient(to top, rgba(248, 246, 242, .95), rgba(248, 246, 242, .6) 45%, rgba(248, 246, 242, 0) 75%); }
   .immersive-text { padding: 32px 20px; }
 }
+
+/* ===== Fiche parfum (maquette 03) ===== */
+.crumb { max-width: 1376px; margin: 0 auto; padding: 24px 32px; font-size: 12px; color: var(--gris-texte); }
+.crumb a { color: var(--gris-texte); }
+.pdp { max-width: 1376px; margin: 0 auto; padding: 0 32px 120px; display: flex; flex-wrap: wrap; gap: 72px; align-items: flex-start; }
+.pdp-gallery { flex: 1.25 1 560px; display: flex; gap: 16px; min-width: 0; }
+.pdp-thumbs { display: flex; flex-direction: column; gap: 12px; width: 84px; flex: none; }
+.pdp-thumb { width: 84px; height: 105px; padding: 0; cursor: pointer; background: var(--sable-clair); border: 1px solid transparent; opacity: .55; transition: opacity .3s; }
+.pdp-thumb[aria-pressed="true"] { border-color: var(--brun); opacity: 1; }
+.pdp-thumb:hover { opacity: 1; }
+.pdp-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.pdp-main { flex: 1; aspect-ratio: 4 / 5; background: var(--sable-clair); position: relative; min-width: 0; }
+.pdp-main img { width: 100%; height: 100%; object-fit: cover; }
+.pdp-badge { position: absolute; top: 24px; left: 24px; background: var(--blanc-casse); padding: 8px 12px; }
+.pdp-info { flex: 1 1 400px; display: flex; flex-direction: column; gap: 26px; padding-top: 12px; }
+.pdp-title { font-family: var(--serif); font-weight: 300; font-size: clamp(52px, 5vw, 76px); line-height: 1; letter-spacing: -.01em; }
+.pdp-tag { font-size: 24px; font-style: italic; line-height: 1.35; color: var(--marron); }
+.pdp-info .body-l { font-size: 15px; max-width: none; }
+.sizes { border: none; padding: 0; margin: 0; }
+.sizes legend { margin-bottom: 12px; padding: 0; }
+.sizes-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.size-opt { min-height: 48px; padding: 0 22px; font: 400 13px var(--sans); cursor: pointer; background: transparent; color: var(--brun); border: 1px solid var(--sable); }
+.size-opt[aria-pressed="true"] { background: var(--brun); color: var(--blanc-casse); border-color: var(--brun); }
+.buy-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.buy-row .qty { min-height: 56px; }
+.buy-btn { flex: 1 1 240px; }
+.reassure { list-style: none; margin: 0; padding: 20px 0; display: flex; flex-wrap: wrap; gap: 12px 28px; border-top: 1px solid var(--sable); border-bottom: 1px solid var(--sable); font-size: 13px; color: var(--marron); }
+.acc-group { border-bottom: 1px solid var(--sable); }
+.acc { border-top: 1px solid var(--sable); }
+.acc summary { list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 60px; cursor: pointer; font: 500 11px var(--sans); letter-spacing: .2em; text-transform: uppercase; }
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary span::before { content: "+"; font-size: 18px; font-weight: 300; letter-spacing: 0; }
+.acc[open] summary span::before { content: "−"; }
+.acc p { margin: 0 0 24px; font-size: 14px; line-height: 1.8; color: var(--marron); font-weight: 300; }
+.pyr-h { margin: 20px 0 64px; }
+.steps { list-style: none; margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; border-top: 1px solid var(--sable); }
+.steps li { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--marron); }
+.steps .serif { font-size: 30px; color: var(--brun); }
+@media (max-width: 700px) {
+  .crumb { padding: 16px 20px; }
+  .pdp { padding: 0 20px 96px; gap: 40px; }
+  .pdp-gallery { flex-direction: column-reverse; }
+  .pdp-thumbs { flex-direction: row; width: auto; overflow-x: auto; }
+  .pdp-thumb { width: 72px; height: 90px; flex: none; }
+}
