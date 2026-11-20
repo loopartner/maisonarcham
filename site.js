@@ -1,5 +1,51 @@
 /* Maison Archam — petites interactions communes */
 (function () {
+  // Menu mobile
+  var toggle = document.querySelector('.menu-toggle');
+  var menu = document.getElementById('mobile-menu');
+  function setMenu(open) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', open);
+    toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    document.body.classList.toggle('menu-open', open);
+    if (open) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('is-open'); }); }
+    else { menu.classList.remove('is-open'); setTimeout(function () { if (!menu.classList.contains('is-open')) menu.hidden = true; }, 300); }
+  }
+  if (toggle) toggle.addEventListener('click', function () { setMenu(toggle.getAttribute('aria-expanded') !== 'true'); });
+  if (menu) menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  window.addEventListener('resize', function () { if (window.innerWidth > 1024) setMenu(false); });
+
+  // Barre « Ajouter au panier » fixe sur mobile (fiche produit)
+  var mainBuy = document.querySelector('.pdp-info [data-add-to-cart]');
+  var sticky = document.querySelector('.sticky-buy');
+  if (mainBuy && sticky && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      var past = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
+      sticky.classList.toggle('is-visible', past);
+    }).observe(mainBuy);
+  }
+
+  // Points des carrousels mobiles
+  document.querySelectorAll('[data-carousel]').forEach(function (track) {
+    var dots = document.createElement('div');
+    dots.className = 'carousel-dots';
+    var items = Array.prototype.slice.call(track.children);
+    items.forEach(function (_, k) {
+      var d = document.createElement('button');
+      d.type = 'button'; d.setAttribute('aria-label', 'Image ' + (k + 1));
+      d.addEventListener('click', function () { track.scrollTo({ left: items[k].offsetLeft - track.offsetLeft, behavior: 'smooth' }); });
+      dots.appendChild(d);
+    });
+    track.after(dots);
+    function update() {
+      var idx = Math.round(track.scrollLeft / (items[0].offsetWidth + 16));
+      Array.prototype.forEach.call(dots.children, function (d, k) { d.classList.toggle('is-active', k === Math.min(idx, items.length - 1)); });
+    }
+    track.addEventListener('scroll', update, { passive: true });
+    update();
+  });
+
   // Formulaires pas encore reliés à un service : on affiche un message de confirmation
   document.querySelectorAll('form[data-fake-form]').forEach(function (form) {
     form.addEventListener('submit', function (e) {

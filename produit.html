@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crème d'Ararat — Eau de parfum | Maison Archam</title>
-  <meta name="description" content="Crème d'Ararat, eau de parfum 50 ml de Maison Archam Paris. Bergamote, rose de Damas, santal. Livraison et échantillon offerts.">
+  <meta name="description" content="Crème d'Ararat, eau de parfum 50 ml de Maison Archam Paris. Caramel, vanille de Madagascar, musc blanc. Livraison et échantillon offerts.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
   <script>
     // Masque proprement une image tant que son fichier n'est pas encore dans /assets
     document.addEventListener('error', function (e) {
-      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+      if (e.target.tagName === 'IMG') { e.target.style.visibility = 'hidden'; e.target.classList.add('img-missing'); }
     }, true);
   </script>
 </head>
@@ -22,6 +22,7 @@
 
   <!-- HEADER -->
   <header class="header">
+    <button type="button" class="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
     <a href="index.html" class="logo" aria-label="Maison Archam — accueil"><img src="assets/logo-ma.png" width="31" height="36" alt="" class="logo-mark"><span>Maison Archam</span></a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="maison.html">La Maison</a>
@@ -30,14 +31,29 @@
       <a href="suivi.html">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
-      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
-      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <a href="aide.html#faq" class="ha-search" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" class="ha-account" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
       <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
         <span class="bag-count" data-cart-count>0</span>
       </button>
     </div>
   </header>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="mm-inner" aria-label="Menu mobile">
+      <a href="maison.html" class="mm-main">La Maison</a>
+        <a href="produit.html" class="mm-main" aria-current="page">Le Parfum</a>
+        <a href="journal.html" class="mm-main">Journal</a>
+        <a href="suivi.html" class="mm-main">Suivre ma commande</a>
+      <div class="mm-secondary">
+        <a href="suivi.html#compte">Mon compte</a>
+        <a href="aide.html">Aide &amp; contact</a>
+        <a href="aide.html#livraison">Livraison &amp; retours</a>
+      </div>
+      <p class="mm-perks">Livraison offerte · Échantillon offert</p>
+    </nav>
+  </div>
+  <!-- /HEADER -->
 
   <main>
     <nav class="crumbs" aria-label="Fil d'Ariane">
@@ -49,8 +65,8 @@
       <div class="pdp-gallery">
         <div class="pdp-thumbs" role="tablist" aria-label="Photos du produit">
           <button type="button" class="pdp-thumb is-active" data-src="assets/product-bottle.webp" data-alt="Flacon Crème d'Ararat" aria-label="Photo 1 : le flacon"><img src="assets/product-bottle.webp" alt=""></button>
-          <button type="button" class="pdp-thumb" data-src="assets/notes-tete-coeur.webp" data-alt="Notes de tête et de cœur" aria-label="Photo 2 : notes de tête et de cœur"><img src="assets/notes-tete-coeur.webp" alt=""></button>
-          <button type="button" class="pdp-thumb" data-src="assets/notes-fond.webp" data-alt="Notes de fond" aria-label="Photo 3 : notes de fond"><img src="assets/notes-fond.webp" alt=""></button>
+          <button type="button" class="pdp-thumb" data-src="assets/notes-tete.webp" data-alt="Notes de tête : caramel, miel, note poudrée" aria-label="Photo 2 : notes de tête"><img src="assets/notes-tete.webp" alt=""></button>
+          <button type="button" class="pdp-thumb" data-src="assets/notes-coeur-fond.webp" data-alt="Notes de cœur et de fond : vanille, tonka, musc blanc" aria-label="Photo 3 : notes de cœur et de fond"><img src="assets/notes-coeur-fond.webp" alt=""></button>
         </div>
         <div class="pdp-main"><img id="pdp-main-img" src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat"></div>
       </div>
@@ -58,7 +74,7 @@
       <div class="pdp-info">
         <p class="eyebrow">Eau de parfum</p>
         <h1 class="h2-xl">Crème d'Ararat</h1>
-        <p class="pdp-lead">Un sillage lumineux et enveloppant, entre la fraîcheur de la bergamote, la douceur de la rose de Damas et la chaleur du santal.</p>
+        <p class="pdp-lead">Un sillage gourmand et enveloppant, entre la douceur du caramel et du miel, la chaleur de la vanille de Madagascar et la caresse d'un musc blanc.</p>
         <p class="pdp-price">185 €</p>
 
         <div class="pdp-field">
@@ -86,14 +102,14 @@
         <div class="accordion">
           <details open>
             <summary>Description</summary>
-            <p>Né de l'imaginaire du mont Ararat, Crème d'Ararat s'ouvre sur l'éclat de la bergamote relevé d'un soupçon de poivre rose. En son cœur, la rose de Damas se mêle à la rondeur veloutée du pétale d'abricot, avant de se poser sur un fond de santal, de musc blanc et d'ambre.</p>
+            <p>Né de l'imaginaire du mont Ararat, Crème d'Ararat s'ouvre sur un caramel doré, adouci d'une note poudrée et d'un filet de miel. En son cœur, la vanille de Madagascar et la fève de tonka déploient leur chaleur ronde, avant de se fondre dans la caresse d'un musc blanc.</p>
           </details>
           <details>
             <summary>Notes olfactives</summary>
             <dl class="pdp-notes">
-              <dt>Tête</dt><dd>Bergamote, Poivre rose</dd>
-              <dt>Cœur</dt><dd>Rose de Damas, Pétale d'abricot</dd>
-              <dt>Fond</dt><dd>Santal, Musc blanc, Ambre</dd>
+              <dt>Tête</dt><dd>Caramel, Note poudrée, Miel</dd>
+              <dt>Cœur</dt><dd>Vanille de Madagascar, Fève de tonka</dd>
+              <dt>Fond</dt><dd>Musc blanc</dd>
             </dl>
           </details>
           <details>
@@ -111,19 +127,19 @@
     <!-- NOTES -->
     <section class="notes">
       <div class="note">
-        <img src="assets/note-bergamot.png" width="80" height="80" alt="">
+        <img src="assets/note-tete.png" width="80" height="80" alt="">
         <h3>Notes de Tête</h3>
-        <p>Bergamote, Poivre rose</p>
+        <p>Caramel, Note poudrée, Miel</p>
       </div>
       <div class="note">
-        <img src="assets/note-rose.png" width="80" height="80" alt="">
+        <img src="assets/note-coeur.png" width="80" height="80" alt="">
         <h3>Notes de Cœur</h3>
-        <p>Rose de Damas, Pétale d'abricot</p>
+        <p>Vanille de Madagascar, Fève de tonka</p>
       </div>
       <div class="note">
-        <img src="assets/note-sandalwood.png" width="80" height="80" alt="">
+        <img src="assets/note-fond.png" width="80" height="80" alt="">
         <h3>Notes de Fond</h3>
-        <p>Santal, Musc blanc, Ambre</p>
+        <p>Musc blanc</p>
       </div>
     </section>
 
@@ -148,6 +164,11 @@
       </form>
     </section>
   </main>
+
+  <div class="sticky-buy" aria-hidden="true">
+    <div><p class="sticky-name">Crème d'Ararat</p><p class="sticky-price">185 € · 50 ml</p></div>
+    <button type="button" class="btn" data-add-to-cart="creme-dararat-50" data-qty-from="#pdp-qty" tabindex="-1">Ajouter au panier</button>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">

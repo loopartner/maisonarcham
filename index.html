@@ -14,7 +14,7 @@
   <script>
     // Masque proprement une image tant que son fichier n'est pas encore dans /assets
     document.addEventListener('error', function (e) {
-      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+      if (e.target.tagName === 'IMG') { e.target.style.visibility = 'hidden'; e.target.classList.add('img-missing'); }
     }, true);
   </script>
 </head>
@@ -22,6 +22,7 @@
 
   <!-- HEADER -->
   <header class="header">
+    <button type="button" class="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
     <a href="index.html" class="logo" aria-label="Maison Archam — accueil"><img src="assets/logo-ma.png" width="31" height="36" alt="" class="logo-mark"><span>Maison Archam</span></a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="maison.html">La Maison</a>
@@ -30,14 +31,29 @@
       <a href="suivi.html">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
-      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
-      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <a href="aide.html#faq" class="ha-search" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" class="ha-account" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
       <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
         <span class="bag-count" data-cart-count>0</span>
       </button>
     </div>
   </header>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="mm-inner" aria-label="Menu mobile">
+      <a href="maison.html" class="mm-main">La Maison</a>
+        <a href="produit.html" class="mm-main">Le Parfum</a>
+        <a href="journal.html" class="mm-main">Journal</a>
+        <a href="suivi.html" class="mm-main">Suivre ma commande</a>
+      <div class="mm-secondary">
+        <a href="suivi.html#compte">Mon compte</a>
+        <a href="aide.html">Aide &amp; contact</a>
+        <a href="aide.html#livraison">Livraison &amp; retours</a>
+      </div>
+      <p class="mm-perks">Livraison offerte · Échantillon offert</p>
+    </nav>
+  </div>
+  <!-- /HEADER -->
 
   <main>
     <!-- HERO -->
@@ -65,10 +81,10 @@
         <h2 class="h2">Crème d'Ararat</h2>
         <p class="eyebrow">Eau de parfum</p>
       </div>
-      <div class="product-gallery">
-        <figure class="frame"><img src="assets/notes-tete-coeur.webp" alt="Bergamote, poivre rose, rose de Damas et abricot"></figure>
+      <div class="product-gallery" data-carousel>
+        <figure class="frame"><img src="assets/notes-tete.webp" alt="Caramel, miel et note poudrée"></figure>
         <a href="produit.html" class="frame"><img src="assets/product-bottle.webp" alt="Flacon Crème d'Ararat"></a>
-        <figure class="frame"><img src="assets/notes-fond.webp" alt="Santal, ambre et musc blanc"></figure>
+        <figure class="frame"><img src="assets/notes-coeur-fond.webp" alt="Vanille de Madagascar, fève de tonka et musc blanc"></figure>
       </div>
       <div class="product-buy">
         <p class="price">185 €</p>
@@ -79,19 +95,19 @@
     <!-- NOTES -->
     <section class="notes">
       <div class="note">
-        <img src="assets/note-bergamot.png" width="80" height="80" alt="">
+        <img src="assets/note-tete.png" width="80" height="80" alt="">
         <h3>Notes de Tête</h3>
-        <p>Bergamote, Poivre rose</p>
+        <p>Caramel, Note poudrée, Miel</p>
       </div>
       <div class="note">
-        <img src="assets/note-rose.png" width="80" height="80" alt="">
+        <img src="assets/note-coeur.png" width="80" height="80" alt="">
         <h3>Notes de Cœur</h3>
-        <p>Rose de Damas, Pétale d'abricot</p>
+        <p>Vanille de Madagascar, Fève de tonka</p>
       </div>
       <div class="note">
-        <img src="assets/note-sandalwood.png" width="80" height="80" alt="">
+        <img src="assets/note-fond.png" width="80" height="80" alt="">
         <h3>Notes de Fond</h3>
-        <p>Santal, Musc blanc, Ambre</p>
+        <p>Musc blanc</p>
       </div>
     </section>
 
@@ -111,7 +127,7 @@
         <h2 class="h2">Le Journal</h2>
         <a href="journal.html" class="link-underline">Tous les articles →</a>
       </div>
-      <div class="journal-grid">
+      <div class="journal-grid" data-carousel>
         <a href="journal-cueillette-aube.html" class="post">
           <div class="post-media"><img src="assets/journal-jasmine.png" alt="Jasmin en fleur sous la lune"></div>
           <p class="post-cat">Savoir-Faire</p>

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css">
   <script>
     document.addEventListener('error', function (e) {
-      if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden';
+      if (e.target.tagName === 'IMG') { e.target.style.visibility = 'hidden'; e.target.classList.add('img-missing'); }
     }, true);
   </script>
 </head>
@@ -21,6 +21,7 @@
 
   <!-- HEADER -->
   <header class="header">
+    <button type="button" class="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
     <a href="index.html" class="logo" aria-label="Maison Archam — accueil"><img src="assets/logo-ma.png" width="31" height="36" alt="" class="logo-mark"><span>Maison Archam</span></a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="maison.html">La Maison</a>
@@ -29,14 +30,29 @@
       <a href="suivi.html">Suivre ma commande</a>
     </nav>
     <div class="header-actions">
-      <a href="aide.html#faq" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
-      <a href="suivi.html#compte" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
+      <a href="aide.html#faq" class="ha-search" aria-label="Aide et recherche"><img src="assets/icon-search.svg" width="14" height="14" alt=""></a>
+      <a href="suivi.html#compte" class="ha-account" aria-label="Mon compte"><img src="assets/icon-account.svg" width="12.25" height="14" alt=""></a>
       <button type="button" class="bag" data-cart-open aria-label="Panier (0 article)">
         <img src="assets/icon-bag.svg" width="12.25" height="14" alt="">
         <span class="bag-count" data-cart-count>0</span>
       </button>
     </div>
   </header>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="mm-inner" aria-label="Menu mobile">
+      <a href="maison.html" class="mm-main">La Maison</a>
+        <a href="produit.html" class="mm-main">Le Parfum</a>
+        <a href="journal.html" class="mm-main">Journal</a>
+        <a href="suivi.html" class="mm-main">Suivre ma commande</a>
+      <div class="mm-secondary">
+        <a href="suivi.html#compte">Mon compte</a>
+        <a href="aide.html">Aide &amp; contact</a>
+        <a href="aide.html#livraison">Livraison &amp; retours</a>
+      </div>
+      <p class="mm-perks">Livraison offerte · Échantillon offert</p>
+    </nav>
+  </div>
+  <!-- /HEADER -->
 
   <main>
     <section class="page-hero page-404">
