@@ -9,6 +9,12 @@ export function startFakeUpstash() {
     const k = a[0];
     switch (cmd) {
       case 'GET': return alive(k) ? kv.get(k) : null;
+      case 'MGET': return a.map((x) => (alive(x) ? kv.get(x) : null));
+      case 'LTRIM': { if (!alive(k)) return 'OK'; const l = kv.get(k); kv.set(k, l.slice(Number(a[1]), Number(a[2]) === -1 ? undefined : Number(a[2]) + 1)); return 'OK'; }
+      case 'LLEN': return alive(k) ? kv.get(k).length : 0;
+      case 'HGETALL': return alive(k) ? [...kv.get(k)].flat() : [];
+      case 'ZRANGE': { if (!alive(k)) return []; const e = [...kv.get(k)].sort((x, y) => x[1] - y[1]).map((x) => x[0]); return a.includes('REV') ? e.reverse() : e; }
+      case 'ZCARD': return alive(k) ? kv.get(k).size : 0;
       case 'GETDEL': { const v = alive(k) ? kv.get(k) : null; kv.delete(k); exp.delete(k); return v; }
       case 'SET': {
         const opts = a.slice(2).map(String);

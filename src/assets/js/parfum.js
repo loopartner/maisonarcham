@@ -34,5 +34,6 @@
     inc.addEventListener('click', function () { q = Math.min(MAX, q + 1); render(); });
     document.querySelector('[data-buy]').addEventListener('click', function () { MACart.add(size, q); });
     render();
+    document.addEventListener('catalogue:change', render);
   });
 })();

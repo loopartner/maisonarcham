@@ -1,10 +1,10 @@
 // Middleware Vercel — contrôle d'accès exécuté côté serveur AVANT l'envoi de la page.
-//  - /admin…      : réservé aux administrateurs. Sans session → /connexion ; client connecté → page 404
+//  - /admin…      : réservé à l'équipe (propriétaire, administrateurs, gestion commandes, éditeurs). Sans session → /connexion ; client connecté → page 404
 //                   (on ne révèle pas l'existence de l'administration).
 //  - /compte…     : réservé aux comptes connectés.
 //  - /connexion   : une personne déjà connectée est envoyée directement vers son espace.
 // Les API vérifient de nouveau les droits à chaque appel : ce contrôle est une deuxième barrière.
-import { SESSION_COOKIE, roleOf, homeFor } from './api/_lib/roles.js';
+import { SESSION_COOKIE, roleOf, homeFor, isStaff } from './api/_lib/roles.js';
 
 export const config = {
   runtime: 'nodejs',
@@ -85,7 +85,7 @@ export default async function middleware(request) {
     const next = encodeURIComponent(url.pathname + url.search);
     return redirect(request, `/connexion?suite=${next}`);
   }
-  if (isAdmin && role !== 'admin') return notFound(request);
+  if (isAdmin && !isStaff(role)) return notFound(request);
   // Pages privées : jamais mises en cache, ni par le navigateur ni par un intermédiaire.
   return undefined;
 }

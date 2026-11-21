@@ -79,7 +79,6 @@ Ajoute automatiquement `KV_REST_API_URL` et `KV_REST_API_TOKEN`.
 | `ADMIN_EMAILS` | `direction@maison-archam.fr` | Adresse(s) des administrateurs (adresse confirmée obligatoire). |
 | `CONTACT_TO_EMAIL` | `atelier@…` | Reçoit les messages du formulaire de contact |
 | `ORDERS_NOTIFY_EMAIL` | `atelier@…` | Reçoit une alerte à chaque commande |
-| `ADMIN_TOKEN` | longue chaîne aléatoire (32+ caractères) | Protège `/api/admin-order` |
 | `SITE_URL` | `https://maisonarcham.fr` | Adresse du site utilisée dans les liens des e-mails (sinon déduite automatiquement) |
 | `SHIPPING_COUNTRIES` | `FR,BE,LU,MC` | Pays de livraison acceptés (défaut : `FR`) |
 
@@ -87,7 +86,6 @@ Ajoute automatiquement `KV_REST_API_URL` et `KV_REST_API_TOKEN`.
 
 ```bash
 curl -X POST https://VOTRE-DOMAINE/api/admin-order \
-  -H "Authorization: Bearer VOTRE_ADMIN_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"number":"MA-10001","status":"expediee","trackingUrl":"https://www.laposte.fr/outils/suivre-vos-envois?code=XXXX"}'
 ```

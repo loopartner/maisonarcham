@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 import { env } from './env.js';
 import { redis, pipeline, getJson, setJson, hasStore } from './store.js';
 import { HttpError, getCookie, serializeCookie, clientIp, clean } from './http.js';
-import { SESSION_COOKIE, roleOf } from './roles.js';
+import { SESSION_COOKIE, roleOf, isStaff, can } from './roles.js';
 
 const scrypt = promisify(crypto.scrypt);
 
@@ -107,7 +107,7 @@ export async function createSession(request, user) {
   const token = newToken(32);
   const hash = sha256(token);
   const role = effectiveRole(user);
-  const ttl = role === 'admin' ? ADMIN_TTL : CLIENT_TTL;
+  const ttl = isStaff(role) ? ADMIN_TTL : CLIENT_TTL;
   const session = {
     uid: user.id, pv: user.pwdVersion, createdAt: new Date().toISOString(),
     ip: clientIp(request), ua: clean(request.headers.get('user-agent'), 200),
@@ -150,13 +150,20 @@ export async function destroyAllSessions(uid) {
   await pipeline(cmds);
 }
 
-// Exige une session valide (et éventuellement le rôle administrateur).
-// Pour un non-administrateur, l'administration répond « introuvable » : on ne révèle pas son existence.
-export async function requireUser(request, { role } = {}) {
+// Exige une session valide.
+export async function requireUser(request) {
   if (!hasStore()) throw new HttpError("L'espace client n'est pas encore activé.", 503);
   const s = await getSession(request);
   if (!s) throw new HttpError('Votre session a expiré. Merci de vous reconnecter.', 401);
-  if (role === 'admin' && s.role !== 'admin') throw new HttpError('Introuvable.', 404);
+  return s;
+}
+
+// Exige un membre de l'équipe disposant de la permission demandée.
+// Pour un client, l'administration répond « introuvable » : on ne révèle pas son existence.
+export async function requireStaff(request, perm) {
+  const s = await requireUser(request);
+  if (!isStaff(s.role)) throw new HttpError('Introuvable.', 404);
+  if (perm && !can(s.role, perm)) throw new HttpError('Vous n’avez pas accès à cette section.', 403);
   return s;
 }
 

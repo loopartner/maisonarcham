@@ -1,13 +1,14 @@
 // Calcul du montant d'une commande — utilisé par le panier ET par le paiement.
 // Rien de ce qui vient du navigateur n'est cru : seuls les identifiants et quantités sont lus.
-import { PRODUCTS, MAX_QTY, SHIPPING, DEFAULT_SHIPPING } from './catalogue.js';
+import { MAX_QTY, DEFAULT_SHIPPING } from './catalogue.js';
+import { getCatalogue, getShipping } from './settings.js';
 import { allowedCountries } from './customer.js';
 import { HttpError, clean } from './http.js';
 import { hasStore, getJson } from './store.js';
 
 export const normCode = (c) => clean(c, 32).toUpperCase().replace(/[^A-Z0-9_-]/g, '');
 
-export function parseItems(raw) {
+export function parseItems(raw, PRODUCTS) {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > 20) throw new HttpError('Votre panier est vide.', 400);
   const merged = new Map();
   for (const it of raw) {
@@ -31,12 +32,17 @@ export async function findPromo(code) {
 }
 
 export async function quote({ items, shipping, code }) {
-  const lines = parseItems(items).map(({ id, qty }) => {
+  const PRODUCTS = await getCatalogue();
+  const SHIPPING = await getShipping();
+  const lines = parseItems(items, PRODUCTS).map(({ id, qty }) => {
     const p = PRODUCTS[id];
-    return { id, name: p.name.replace(/'/g, '’'), variant: p.variant, image: p.image, unit: p.price, qty, total: p.price * qty };
+    if (p.stock !== null && p.stock !== undefined && qty > p.stock) {
+      throw new HttpError(p.stock > 0 ? `Il ne reste que ${p.stock} exemplaire${p.stock > 1 ? 's' : ''} de ${p.name}.` : `${p.name} est momentanément épuisé.`, 409);
+    }
+    return { id, name: p.name, variant: p.variant, image: p.image, unit: p.price, qty, total: p.price * qty };
   });
   const subtotal = lines.reduce((n, l) => n + l.total, 0);
-  const shipId = Object.prototype.hasOwnProperty.call(SHIPPING, shipping) ? shipping : DEFAULT_SHIPPING;
+  const shipId = Object.prototype.hasOwnProperty.call(SHIPPING, shipping) ? shipping : (SHIPPING[DEFAULT_SHIPPING] ? DEFAULT_SHIPPING : Object.keys(SHIPPING)[0]);
   const ship = SHIPPING[shipId];
 
   let discount = 0, promo = null, promoError = null;

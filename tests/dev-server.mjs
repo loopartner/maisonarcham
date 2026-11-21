@@ -11,6 +11,30 @@ const fake = await startFakeUpstash();
 Object.assign(process.env, { KV_REST_API_URL: fake.url, KV_REST_API_TOKEN: 'test-token', SITE_URL: `http://localhost:${PORT}`, ADMIN_EMAILS: process.env.ADMIN_EMAILS || 'admin@maison.test' });
 const { dispatch } = await import('../api/_router.js');
 const middleware = (await import('../middleware.js')).default;
+
+// Données de démonstration (mémoire locale uniquement) : compte propriétaire admin@maison.test / velours2026
+{
+  const { hashPassword } = await import('../api/_lib/auth.js');
+  const id = 'u_demoowner';
+  fake.kv.set(`user:${id}`, JSON.stringify({ id, email: 'admin@maison.test', firstName: 'Sophie', lastName: 'Arakelian', passwordHash: await hashPassword('velours2026'), pwdVersion: 1, role: 'client', emailVerified: true, createdAt: '2026-01-05T10:00:00Z' }));
+  fake.kv.set('user:email:admin@maison.test', id);
+  const names = ['Claire Martin', 'Jean Dupont', 'Zoé Petit', 'Hugo Bernard', 'Inès Moreau', 'Lucas Laurent', 'Emma Garnier', 'Louis Fabre'];
+  const statuses = ['livree', 'livree', 'livree', 'expediee', 'preparation', 'payee', 'annulee', 'livree'];
+  const nums = [], dates = new Map();
+  for (let i = 0; i < 34; i++) {
+    const n = `MA-${10001 + i}`, d = new Date(Date.now() - (34 - i) * 10.5 * 86400000 + (i % 5) * 3600000);
+    const name = names[i % names.length], qty = 1 + (i % 3 === 0 ? 1 : 0), email = name.toLowerCase().replace(' ', '.').normalize('NFD').replace(/[\u0300-\u036f]/g, '') + '@exemple.fr';
+    const status = i > 30 ? ['payee', 'preparation', 'payee'][i - 31] : statuses[i % statuses.length];
+    fake.kv.set(`order:${n}`, JSON.stringify({ number: n, name, email, phone: '+33 6 12 45 78 90', status, total: 18500 * qty, items: [{ name: 'Crème d’Ararat', variant: 'Extrait de parfum · 50 ml', quantity: qty, amount: 18500 * qty }], shippingMethod: 'Livraison standard', shippingCost: 0, createdAt: d.toISOString(), history: [{ status: 'payee', at: d.toISOString() }], shipping: { line1: '18 rue de Sèvres', postal_code: '75006', city: 'Paris', country: 'FR' } }));
+    nums.unshift(n);
+    fake.kv.set(`orders:email:${email}`, [n, ...(fake.kv.get(`orders:email:${email}`) || [])]);
+    dates.set(`abonne${i}@exemple.fr`, new Date(Date.now() - i * 9 * 86400000).toISOString());
+  }
+  fake.kv.set('orders', nums);
+  fake.kv.set('newsletter', new Set(dates.keys()));
+  fake.kv.set('newsletter:dates', dates);
+  console.log('Démo : admin@maison.test / velours2026 — 34 commandes');
+}
 const vercel = JSON.parse(await readFile(path.join(ROOT, '..', 'vercel.json'), 'utf8'));
 const CSP = vercel.headers.flatMap((x) => x.headers).find((x) => x.key === 'Content-Security-Policy').value.replace('; upgrade-insecure-requests', '');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2', '.json': 'application/json' };

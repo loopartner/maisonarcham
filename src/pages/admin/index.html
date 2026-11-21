@@ -1,10 +1,39 @@
-<!--meta {"title":"Administration","layout":"admin","adminNav":"dashboard","scripts":["admin.js"],"noindex":true} -->
-<div class="admin-head">
-  <div>
-    <p class="eyebrow muted">Tableau de bord</p>
-    <h1 data-greeting>Bonjour</h1>
+<!--meta {"title":"Tableau de bord","layout":"admin","adminNav":"dashboard","scripts":["admin.js","admin-dashboard.js"],"noindex":true} -->
+<header class="adm-head">
+  <div><p class="eyebrow muted" data-today></p><h1 class="adm-h1">Tableau de bord</h1></div>
+  <div class="seg" role="group" aria-label="Période">
+    <button type="button" data-period="today" aria-pressed="false">Aujourd’hui</button>
+    <button type="button" data-period="7d" aria-pressed="false">7 jours</button>
+    <button type="button" data-period="30d" aria-pressed="true">30 jours</button>
+    <button type="button" data-period="12m" aria-pressed="false">12 mois</button>
   </div>
+</header>
+<p class="loading" data-loading>Chargement…</p>
+<div class="kpis" data-kpis></div>
+<div class="adm-2col">
+  <section class="panel">
+    <div class="adm-row"><h2 class="adm-h2">Évolution du chiffre d’affaires</h2><span class="adm-muted" data-hover aria-live="polite">Survolez une barre</span></div>
+    <div class="bars" data-bars role="img" aria-label="Histogramme du chiffre d’affaires"></div>
+    <div class="bars-labels" data-bar-labels aria-hidden="true"></div>
+  </section>
+  <section class="panel">
+    <h2 class="adm-h2">Évolution des commandes &amp; inscriptions newsletter</h2>
+    <svg class="lines" viewBox="0 0 600 240" preserveAspectRatio="none" role="img" aria-label="Courbes des commandes et des inscriptions">
+      <line x1="0" x2="600" y1="60" y2="60" class="grid"/><line x1="0" x2="600" y1="120" y2="120" class="grid"/><line x1="0" x2="600" y1="180" y2="180" class="grid"/><line x1="0" x2="600" y1="239" y2="239" class="axis"/>
+      <polyline data-line-orders class="l-orders" points=""/>
+      <polyline data-line-nl class="l-nl" points=""/>
+    </svg>
+    <div class="legend"><span><span class="lg-orders"></span>Commandes (<span data-tot-orders>0</span>)</span><span><span class="lg-nl"></span>Inscriptions newsletter (<span data-tot-nl>0</span>)</span></div>
+  </section>
 </div>
-<div class="panel">
-  <p class="lead">L’accès à l’administration est actif et protégé. Le tableau de bord et les autres sections arrivent à l’étape 4.</p>
+<div class="adm-2col">
+  <section class="panel">
+    <h2 class="adm-h2">Performance commerciale par période</h2>
+    <div class="adm-table-wrap"><table class="adm-table"><thead><tr><th scope="col">Période</th><th scope="col">CA</th><th scope="col">Commandes</th><th scope="col">Évolution</th></tr></thead><tbody data-perf></tbody></table></div>
+  </section>
+  <section class="panel">
+    <div class="adm-row"><h2 class="adm-h2">Dernières commandes</h2><a class="adm-link" href="/admin/commandes" data-perm="orders">Tout voir</a></div>
+    <div class="adm-table-wrap"><table class="adm-table"><tbody data-recent></tbody></table></div>
+    <p class="adm-muted" data-recent-empty hidden>Aucune commande pour le moment.</p>
+  </section>
 </div>

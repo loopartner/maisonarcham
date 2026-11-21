@@ -3,8 +3,8 @@
 // Chaque route vit dans api/_routes/ et exporte ses méthodes HTTP (GET, POST…).
 import { error } from './_lib/http.js';
 
-import * as adminOrder from './_routes/admin-order.js';
 import * as checkout from './_routes/checkout.js';
+import * as catalogue from './_routes/catalogue.js';
 import * as contact from './_routes/contact.js';
 import * as health from './_routes/health.js';
 import * as newsletter from './_routes/newsletter/subscribe.js';
@@ -23,6 +23,11 @@ import * as authReset from './_routes/auth/reset.js';
 import * as authVerify from './_routes/auth/verify.js';
 import * as authResendVerification from './_routes/auth/resend-verification.js';
 import * as cartQuote from './_routes/cart/quote.js';
+import * as admin_session from './_routes/admin/session.js';
+import * as admin_dashboard from './_routes/admin/dashboard.js';
+import * as admin_orders from './_routes/admin/orders.js';
+import * as admin_order from './_routes/admin/order.js';
+import * as admin_orders_export from './_routes/admin/orders-export.js';
 import * as account_overview from './_routes/account/overview.js';
 import * as account_orders from './_routes/account/orders.js';
 import * as account_order from './_routes/account/order.js';
@@ -36,8 +41,8 @@ import * as checkoutValidate from './_routes/checkout/validate.js';
 
 // Table de routage explicite : aucune route n'existe sans figurer ici.
 export const ROUTES = {
-  'admin-order': adminOrder,
   checkout,
+  catalogue,
   contact,
   health,
   newsletter, // POST /api/newsletter
@@ -57,6 +62,11 @@ export const ROUTES = {
   'auth/verify': authVerify,
   'auth/resend-verification': authResendVerification,
   'cart/quote': cartQuote,
+  'admin/session': admin_session,
+  'admin/dashboard': admin_dashboard,
+  'admin/orders': admin_orders,
+  'admin/order': admin_order,
+  'admin/orders-export': admin_orders_export,
   'account/overview': account_overview,
   'account/orders': account_orders,
   'account/order': account_order,

@@ -42,15 +42,34 @@ async function main() {
   }
   const asset = (rel) => `${rel}?v=${version[rel] || '0'}`;
 
-  // Catalogue (source unique : api/_lib/catalogue.js) et articles du journal
-  const { PRODUCTS, MAX_QTY } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/catalogue.js')).href);
+  // Contenu géré depuis le back-office (Upstash Redis) ; repli sur le contenu du dépôt.
+  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  async function kvGet(key) {
+    if (!kvUrl || !kvToken) return null;
+    try {
+      const r = await fetch(kvUrl, { method: 'POST', headers: { authorization: `Bearer ${kvToken}`, 'content-type': 'application/json' }, body: JSON.stringify(['GET', key]) });
+      const d = await r.json();
+      return d.result ? JSON.parse(d.result) : null;
+    } catch (e) { console.warn(`Contenu ${key} indisponible, repli sur le dépôt :`, e.message); return null; }
+  }
+  const { MAX_QTY } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/catalogue.js')).href);
+  const { defaultProducts, variantOf } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/settings.js')).href);
+  const savedProducts = await kvGet('cms:products');
+  const productList = (Array.isArray(savedProducts) && savedProducts.length ? savedProducts : defaultProducts()).filter((p) => p.status === 'published');
+  if (!productList.length) productList.push(defaultProducts()[0]);
+  const PRODUCTS = Object.fromEntries(productList.map((p) => [p.id, { name: p.name, variant: variantOf(p), price: p.price, image: (p.images || [])[0] || '' }]));
+  console.log(`Catalogue : ${productList.length} fiche(s) ${savedProducts ? 'depuis le back-office' : 'par défaut'}`);
   const typo = (t) => String(t).replace(/'/g, '’');
   const euros = (cents) => (cents % 100 ? (cents / 100).toFixed(2).replace('.', ',') : String(cents / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + '\u00a0€';
   const [productId, product] = Object.entries(PRODUCTS)[0];
   const catalogue = { maxQty: MAX_QTY, products: Object.fromEntries(Object.entries(PRODUCTS).map(([id, p]) => [id, { name: typo(p.name), variant: p.variant, price: p.price, image: p.image }])) };
   const catalogueJson = JSON.stringify(catalogue).replace(/</g, '\\u003c');
-  const journal = JSON.parse(await read(path.join(SRC, 'content/journal.json')))
+  const savedArticles = await kvGet('cms:articles');
+  const today = new Date().toISOString().slice(0, 10);
+  const journal = (Array.isArray(savedArticles) ? savedArticles.filter((a) => a.status === 'published' && a.date <= today) : JSON.parse(await read(path.join(SRC, 'content/journal.json'))))
     .sort((a, b) => b.date.localeCompare(a.date));
+  console.log(`Journal : ${journal.length} article(s) ${savedArticles ? 'depuis le back-office' : 'du dépôt'}`);
   // Dans le contenu, seul <em> est autorisé (titres) ; tout le reste est échappé.
   const rich = (t) => esc(t).replace(/&lt;(\/?)em&gt;/g, '<$1em>');
   const plain = (t) => String(t).replace(/<\/?em>/g, '');
@@ -65,7 +84,7 @@ async function main() {
     'product.id': productId,
     'product.name': esc(typo(product.name)),
     'product.variant': esc(product.variant),
-    'product.price': euros(product.price),
+    'product.price': `<span data-price-of="${esc(productId)}">${euros(product.price)}</span>`,
     'product.image': product.image,
   };
   const expand = (html) => html

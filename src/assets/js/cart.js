@@ -102,8 +102,27 @@
 
   window.MACart = { add: add, setQty: setQty, remove: remove, clear: clear, items: load, totals: function () { return totals(load()); }, euros: euros, products: P, open: open, toast: toast };
 
+  // Prix à jour : le catalogue du serveur remplace celui injecté au build (modifications faites depuis l'admin).
+  async function refreshCatalogue() {
+    try {
+      const res = await fetch('/api/catalogue', { credentials: 'same-origin' });
+      const data = await res.json();
+      if (!data || !data.products) return;
+      Object.keys(P).forEach(function (id) { if (!data.products[id]) delete P[id]; });
+      Object.keys(data.products).forEach(function (id) { P[id] = data.products[id]; });
+      document.querySelectorAll('[data-price-of]').forEach(function (el) { const p = P[el.dataset.priceOf]; if (p) el.textContent = euros(p.price); });
+      document.querySelectorAll('[data-add-to-cart]').forEach(function (b) {
+        const p = P[b.dataset.addToCart];
+        if (p && p.available === false) { b.disabled = true; b.textContent = 'Épuisé'; }
+      });
+      render();
+      document.dispatchEvent(new CustomEvent('catalogue:change'));
+    } catch (e) { /* le catalogue du build reste utilisé */ }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     render();
+    refreshCatalogue();
     // Le pictogramme panier de l'en-tête ouvre le tiroir (lien de secours vers /panier sans JavaScript)
     document.querySelectorAll('[data-cart-link]').forEach(function (a) { a.addEventListener('click', function (e) { if (drawer) { e.preventDefault(); open(); } }); });
     document.querySelectorAll('[data-add-to-cart]').forEach(function (b) {

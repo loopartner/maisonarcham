@@ -111,12 +111,12 @@ test('admin : après confirmation de l’adresse → même formulaire, redirigé
   assert.equal(again.status, 400, 'jeton à usage unique');
   const res = await api.login.POST(post({ email: 'direction@maison.test', password: 'ararat2026maison' }));
   const data = await res.json();
-  assert.equal(data.redirect, '/admin'); assert.equal(data.user.role, 'admin');
+  assert.equal(data.redirect, '/admin'); assert.equal(data.user.role, 'owner');
   assert.match(res.headers.get('set-cookie'), /Max-Age=43200/, 'session admin limitée à 12 h');
   const c = cookieOf(res);
   assert.equal(await middleware(get('/admin', c)), undefined);
   const me = await (await api.me.GET(get('/api/auth/me', c))).json();
-  assert.equal(me.user.role, 'admin');
+  assert.equal(me.user.role, 'owner');
   assert.ok(!('passwordHash' in me.user));
 });
 
