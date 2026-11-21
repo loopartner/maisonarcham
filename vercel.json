@@ -35,7 +35,7 @@
       ]
     },
     {
-      "source": "/(connexion|reinitialiser|verifier|cgv|confidentialite|mentions-legales|compte|compte/.*|admin|admin/.*)",
+      "source": "/((?!suivi(?:\\.html)?$).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",

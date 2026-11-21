@@ -15,7 +15,7 @@ export const POST = handle(async (request) => {
     name: clean(body.name, 120),
     email: clean(body.email, 254).toLowerCase(),
     subject: clean(body.subject, 80) || 'Autre',
-    message: clean(body.message, 5000),
+    message: String(body.message ?? '').replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, ' ').trim().slice(0, 5000), // retours à la ligne conservés
     at: new Date().toISOString(),
   };
   if (!msg.name || !msg.message) return error('Merci de renseigner votre nom et votre message.');

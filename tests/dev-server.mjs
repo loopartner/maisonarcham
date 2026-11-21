@@ -11,6 +11,8 @@ const fake = await startFakeUpstash();
 Object.assign(process.env, { KV_REST_API_URL: fake.url, KV_REST_API_TOKEN: 'test-token', SITE_URL: `http://localhost:${PORT}`, ADMIN_EMAILS: process.env.ADMIN_EMAILS || 'admin@maison.test' });
 const { dispatch } = await import('../api/_router.js');
 const middleware = (await import('../middleware.js')).default;
+const vercel = JSON.parse(await readFile(path.join(ROOT, '..', 'vercel.json'), 'utf8'));
+const CSP = vercel.headers.flatMap((x) => x.headers).find((x) => x.key === 'Content-Security-Policy').value.replace('; upgrade-insecure-requests', '');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2', '.json': 'application/json' };
 
 async function file(p) {
@@ -39,5 +41,8 @@ http.createServer(async (req, res) => {
   }
   const f = await file(path.join(ROOT, path.normalize(url.pathname).replace(/^(\.\.[/\\])+/, '')));
   if (!f) { res.writeHead(404, { 'content-type': TYPES['.html'] }); res.end(await readFile(path.join(ROOT, '404.html'))); return; }
-  res.writeHead(200, { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' }); res.end(await readFile(f));
+  const h = { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' };
+  // Même politique de sécurité du contenu qu'en production (vercel.json), pour détecter les violations en local.
+  if (f.endsWith('.html') && !/suivi/.test(f)) h['content-security-policy'] = CSP;
+  res.writeHead(200, h); res.end(await readFile(f));
 }).listen(PORT, () => console.log(`Maison Archam en local : http://localhost:${PORT}`));
