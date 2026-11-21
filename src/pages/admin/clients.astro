@@ -1,0 +1,42 @@
+---
+import Admin from '../../layouts/Admin.astro';
+---
+<Admin title={"Clients"} active="clients" scripts={["admin.js", "admin-clients.js"]}>
+<header class="adm-head">
+  <div><p class="eyebrow muted">Gestion</p><h1 class="adm-h1">Clients</h1></div>
+  <div class="adm-inline-stats" data-stats></div>
+</header>
+<div class="adm-filters">
+  <label class="adm-search"><span class="sr-only">Rechercher un client</span><input class="in" type="search" placeholder="Rechercher un client (nom ou e-mail)" data-q maxlength="100"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#75695F"/><path d="M11 11l3.5 3.5" stroke="#75695F"/></svg></label>
+</div>
+<section class="panel">
+  <div class="adm-table-wrap">
+    <table class="adm-table">
+      <thead><tr><th scope="col">Client</th><th scope="col">E-mail</th><th scope="col">Compte</th><th scope="col">Commandes</th><th scope="col">Total dépensé</th><th scope="col">Dernière commande</th><th scope="col">Newsletter</th></tr></thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
+  <p class="adm-empty" data-none hidden>Aucun client trouvé.</p>
+  <div class="adm-foot"><span data-count></span><div class="pager"><button type="button" aria-label="Page précédente" data-prev>‹</button><span data-pageinfo></span><button type="button" aria-label="Page suivante" data-next>›</button></div></div>
+</section>
+<div class="dw" data-drawer hidden>
+  <button class="dw-overlay" type="button" aria-label="Fermer" data-drawer-close tabindex="-1"></button>
+  <aside class="dw-panel" role="dialog" aria-modal="true" aria-labelledby="dw-title">
+    <div class="dw-head">
+      <div><p class="eyebrow muted" data-c-since></p><h2 class="dw-h" id="dw-title" data-drawer-title></h2></div>
+      <button class="hd-ico" type="button" aria-label="Fermer la fiche" data-drawer-close><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.2"/></svg></button>
+    </div>
+    <div class="dw-sec"><a class="adm-btn self-start" data-c-mail>Envoyer un e-mail</a></div>
+    <div class="dw-sec dw-kpis">
+      <div><p class="eyebrow muted">Commandes</p><p class="serif kpi-v" data-c-orders></p></div>
+      <div><p class="eyebrow muted">Total dépensé</p><p class="serif kpi-v" data-c-spent></p></div>
+      <div><p class="eyebrow muted">Newsletter</p><p class="serif kpi-v" data-c-nl></p></div>
+    </div>
+    <div class="dw-sec"><p class="eyebrow muted">Coordonnées</p><p data-c-contact></p><p class="adm-muted" data-c-account></p></div>
+    <div class="dw-sec"><p class="eyebrow muted">Adresse principale</p><p data-c-address></p></div>
+    <div class="dw-sec"><p class="eyebrow muted">Historique des commandes</p>
+      <div class="adm-table-wrap"><table class="adm-table"><thead><tr><th scope="col">Commande</th><th scope="col">Date</th><th scope="col">Montant</th><th scope="col">Statut</th></tr></thead><tbody data-c-history></tbody></table></div>
+    </div>
+  </aside>
+</div>
+</Admin>

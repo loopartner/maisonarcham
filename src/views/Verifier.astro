@@ -1,0 +1,10 @@
+---
+import Site from '../layouts/Site.astro';
+import { useT, path } from '../i18n/index.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+<Site lang={lang} route="verifier" title={t('verify.title')} noindex scripts={['verifier.js']}>
+<section class="center-page"><div class="center-stack"><h1 class="h1-s" data-title>{t('nll.confirming')}</h1><p class="lead" data-msg role="status"></p><a class="btn" href={path(lang, 'connexion')} data-cta hidden>{t('verify.cta')}</a></div></section>
+</Site>

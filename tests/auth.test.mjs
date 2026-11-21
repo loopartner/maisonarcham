@@ -245,3 +245,14 @@ test('langue : messages traduits en anglais avec x-lang: en (pas pour le back-of
   assert.equal(q.quote.promoError, 'This code is not valid.');
   assert.equal(q.quote.shippingOptions[0].title, 'Standard shipping');
 });
+
+test('middleware : pages anglaises protégées et redirigées dans la bonne langue', async () => {
+  const r = await middleware(get('/en/account'));
+  assert.equal(r.status, 303); assert.match(r.headers.get('location'), /\/en\/login\?suite=%2Fen%2Faccount$/);
+  const res = await api.login.POST(post({ email: 'claire@exemple.fr', password: 'nouveau2026velours' }));
+  const c = cookieOf(res);
+  const m = await middleware(get('/en/login', c));
+  assert.match(m.headers.get('location'), /\/en\/account$/);
+  assert.equal(await middleware(get('/en/account/order', c)), undefined);
+  assert.equal(await middleware(get('/en/perfume')), undefined);
+});

@@ -114,4 +114,6 @@ Prix, stock, livraison et codes promo enregistrés dans l'admin s'appliquent **i
 Textes, photos et articles sont intégrés aux pages au moment de la publication (bouton « Publier le site », environ une minute).
 Toutes les actions sensibles sont tracées (journal d'audit : qui, quoi, quand, adresse IP).
 
+**Framework** : Astro (site statique bilingue fr/en, images AVIF/WebP), API et middleware en fonctions Vercel.
+
 **En local** : `npm run dev` lance le site avec une base simulée et un compte de démonstration (admin@maison.test / velours2026).

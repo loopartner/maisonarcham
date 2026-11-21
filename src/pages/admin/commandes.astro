@@ -1,0 +1,64 @@
+---
+import Admin from '../../layouts/Admin.astro';
+---
+<Admin title={"Commandes"} active="commandes" scripts={["admin.js", "admin-commandes.js"]}>
+<header class="adm-head">
+  <div><p class="eyebrow muted">Gestion</p><h1 class="adm-h1">Commandes</h1></div>
+  <a class="adm-btn" href="/api/admin/orders-export" data-export download>Exporter CSV</a>
+</header>
+<div class="adm-tabs" role="group" aria-label="Filtrer par statut" data-tabs></div>
+<div class="adm-filters">
+  <label class="adm-search"><span class="sr-only">Rechercher</span><input class="in" type="search" placeholder="Nº de commande, nom ou e-mail" data-q maxlength="100"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#75695F"/><path d="M11 11l3.5 3.5" stroke="#75695F"/></svg></label>
+  <label class="field">Période<select class="in" data-days><option value="0">Toutes</option><option value="7">7 derniers jours</option><option value="30">30 derniers jours</option><option value="90">90 derniers jours</option></select></label>
+</div>
+<section class="panel">
+  <div class="adm-table-wrap">
+    <table class="adm-table">
+      <thead><tr><th scope="col">Commande</th><th scope="col">Date</th><th scope="col">Client</th><th scope="col">E-mail</th><th scope="col">Montant</th><th scope="col">Paiement</th><th scope="col">Statut paiement</th><th scope="col">Livraison</th></tr></thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
+  <p class="adm-empty" data-none hidden>Aucune commande ne correspond à ces critères.</p>
+  <div class="adm-foot"><span data-count></span><div class="pager"><button type="button" aria-label="Page précédente" data-prev>‹</button><span data-pageinfo></span><button type="button" aria-label="Page suivante" data-next>›</button></div></div>
+</section>
+
+<div class="dw" data-drawer hidden>
+  <button class="dw-overlay" type="button" aria-label="Fermer" data-drawer-close tabindex="-1"></button>
+  <aside class="dw-panel" role="dialog" aria-modal="true" aria-labelledby="dw-title">
+    <div class="dw-head">
+      <div><p class="eyebrow muted" data-d-date></p><h2 class="dw-h" id="dw-title" data-drawer-title></h2></div>
+      <button class="hd-ico" type="button" aria-label="Fermer le détail" data-drawer-close><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.2"/></svg></button>
+    </div>
+    <div class="dw-sec">
+      <p class="eyebrow muted">Client</p>
+      <p class="serif dw-name" data-d-name></p>
+      <p data-d-contact></p>
+      <p data-d-address></p>
+      <a class="adm-link" data-d-customer hidden>Voir la fiche client →</a>
+    </div>
+    <div class="dw-sec">
+      <p class="eyebrow muted">Articles</p>
+      <div data-d-items></div>
+      <div class="dw-row" data-d-ship-row><span data-d-ship-label>Livraison</span><span data-d-ship></span></div>
+      <div class="dw-row" data-d-disc-row hidden><span>Remise</span><span data-d-disc></span></div>
+      <div class="dw-row"><strong>Total</strong><strong data-d-total></strong></div>
+    </div>
+    <form class="dw-sec" data-d-form novalidate>
+      <div class="form">
+        <label class="field">Statut de la commande<select class="in" name="status" data-d-status></select></label>
+        <div class="field"><span>Suivi d’expédition</span>
+          <div class="inline-2"><select class="in" name="carrier" aria-label="Transporteur" data-d-carrier><option value="">Transporteur</option></select><input class="in" name="trackingNumber" placeholder="Nº de suivi" maxlength="40" aria-label="Numéro de suivi"></div>
+          <span class="field-err" data-fe="trackingNumber" hidden></span>
+        </div>
+        <label class="check"><input type="checkbox" name="notify" checked><span>Notifier le client par e-mail</span></label>
+        <button class="adm-btn primary" type="submit">Enregistrer</button>
+        <p class="adm-flash" role="status" data-d-flash hidden></p>
+      </div>
+    </form>
+    <div class="dw-sec">
+      <p class="eyebrow muted">Historique</p>
+      <ul class="dw-hist" data-d-history></ul>
+    </div>
+  </aside>
+</div>
+</Admin>

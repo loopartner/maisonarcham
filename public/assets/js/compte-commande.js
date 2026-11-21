@@ -2,22 +2,23 @@
 (function () {
   'use strict';
   const $ = (s) => document.querySelector(s);
-  const STEPS = [['confirmee', 'Confirmée'], ['preparation', 'En préparation'], ['expediee', 'Expédiée'], ['livree', 'Livrée']];
+  const STEPS = [['confirmee', MA.t('st_confirmee')], ['preparation', MA.t('st_preparation')], ['expediee', MA.t('st_expediee')], ['livree', MA.t('st_livree')]];
+  const stLabel = (o) => (MA.lang === 'en' ? MA.t('st_' + o.status) : o.statusLabel);
   const STEP_OF = { payee: 0, confirmee: 0, preparation: 1, expediee: 2, livree: 3 };
   const CLS = { confirmee: 'confirmee', payee: 'payee', preparation: 'preparation', expediee: 'expediee', livree: 'livree', annulee: 'annulee', remboursee: 'remboursee' };
-  const fmt = (d, o) => new Date(d).toLocaleDateString('fr-FR', o || { day: 'numeric', month: 'long', year: 'numeric' });
+  const fmt = (d, o) => new Date(d).toLocaleDateString(MA.locale, o || { day: 'numeric', month: 'long', year: 'numeric' });
   const lines = (el, arr) => { el.replaceChildren(); arr.filter(Boolean).forEach(function (l, i) { if (i) el.append(document.createElement('br')); el.append(document.createTextNode(l)); }); };
 
   document.addEventListener('DOMContentLoaded', async function () {
     const n = new URLSearchParams(location.search).get('n') || '';
     const r = await MA.api('/api/account/order?n=' + encodeURIComponent(n));
     $('[data-loading]').hidden = true;
-    if (!r.ok) { const e = $('[data-error]'); e.textContent = r.status === 404 ? 'Cette commande est introuvable dans votre compte.' : r.error; e.hidden = false; return; }
+    if (!r.ok) { const e = $('[data-error]'); e.textContent = r.status === 404 ? MA.t('orderNotFound') : r.error; e.hidden = false; return; }
     const o = r.order;
-    document.title = 'Commande ' + o.number + ' | Maison Archam';
-    $('[data-o-date]').textContent = 'Passée le ' + fmt(o.createdAt);
-    $('[data-o-title]').textContent = 'Commande ' + o.number;
-    const st = $('[data-o-status]'); st.textContent = o.statusLabel; st.classList.add(CLS[o.status] || 'attente');
+    document.title = MA.t('orderNo', { n: o.number }) + ' | Maison Archam';
+    $('[data-o-date]').textContent = MA.t('placedOn', { date: fmt(o.createdAt) });
+    $('[data-o-title]').textContent = MA.t('orderNo', { n: o.number });
+    const st = $('[data-o-status]'); st.textContent = stLabel(o); st.classList.add(CLS[o.status] || 'attente');
 
     const cur = STEP_OF[o.status] ?? -1, dates = {};
     (o.history || []).forEach(function (h) { if (!dates[h.status]) dates[h.status] = h.at; });
@@ -32,7 +33,7 @@
     }));
     if (o.carrier || o.trackingNumber) {
       $('[data-o-carrier]').hidden = false;
-      $('[data-o-carrier-text]').textContent = 'Transporteur : ' + (o.carrier || '—') + (o.trackingNumber ? ' · Nº de suivi ' + o.trackingNumber : '');
+      $('[data-o-carrier-text]').textContent = MA.t('carrier') + ' : ' + (o.carrier || '—') + (o.trackingNumber ? ' · ' + MA.t('trackingNo') + ' ' + o.trackingNumber : '');
       if (o.trackingUrl && /^https:\/\//.test(o.trackingUrl)) { const a = $('[data-o-tracking]'); a.href = o.trackingUrl; a.hidden = false; }
     }
 
@@ -51,11 +52,11 @@
     $('[data-o-subtotal]').textContent = MACart.euros(o.subtotal);
     $('[data-o-disc-row]').hidden = !o.discount; $('[data-o-disc]').textContent = '− ' + MACart.euros(o.discount || 0);
     if (o.shippingMethod) $('[data-o-ship-label]').textContent = o.shippingMethod;
-    $('[data-o-ship]').textContent = o.shippingCost ? MACart.euros(o.shippingCost) : 'Offerte';
+    $('[data-o-ship]').textContent = o.shippingCost ? MACart.euros(o.shippingCost) : MA.t('free');
     $('[data-o-total]').textContent = MACart.euros(o.total);
     lines($('[data-o-address]'), [o.name].concat(o.address));
-    lines($('[data-o-payment]'), [(o.payment || 'Paiement en ligne') + ' · Payée le ' + fmt(o.paidAt, { day: '2-digit', month: '2-digit', year: 'numeric' })]);
-    $('[data-o-return]').href = '/aide?sujet=Retour&commande=' + encodeURIComponent(o.number) + '#contact';
+    lines($('[data-o-payment]'), [(o.payment || MA.t('onlinePayment')) + ' · ' + MA.t('paidOn') + ' ' + fmt(o.paidAt, { day: '2-digit', month: '2-digit', year: 'numeric' })]);
+    $('[data-o-return]').href = MA.route('aide') + '?sujet=Retour&commande=' + encodeURIComponent(o.number) + '#contact';
     $('[data-order]').hidden = false;
   });
 })();

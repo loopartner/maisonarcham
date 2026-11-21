@@ -32,18 +32,19 @@
   function passwordHint(input, hint) {
     const v = input.value;
     hint.classList.remove('ok', 'err');
-    if (!v) { hint.textContent = '8 caractères minimum, dont un chiffre.'; return; }
+    if (!v) { hint.textContent = MA.t('pwdRule'); return; }
     const valid = v.length >= 8 && /\d/.test(v) && /[A-Za-zÀ-ÿ]/.test(v);
-    if (!valid) { hint.textContent = v.length < 8 ? 'Trop court.' : 'Ajoutez au moins une lettre et un chiffre.'; hint.classList.add('err'); return; }
-    hint.textContent = v.length >= 12 ? 'Mot de passe robuste.' : 'Mot de passe correct.'; hint.classList.add('ok');
+    if (!valid) { hint.textContent = v.length < 8 ? MA.t('pwdShort') : MA.t('pwdMix'); hint.classList.add('err'); return; }
+    hint.textContent = v.length >= 12 ? MA.t('pwdStrong') : MA.t('pwdOk'); hint.classList.add('ok');
   }
 
   // Destination demandée avant la connexion (?suite=…), limitée aux pages internes.
   function nextUrl(serverRedirect) {
     const suite = new URLSearchParams(location.search).get('suite');
-    if (suite && serverRedirect === '/admin' && suite.indexOf('/admin') === 0) return MA.safeRedirect(suite, serverRedirect);
-    if (suite && serverRedirect === '/compte' && suite.indexOf('/compte') === 0) return MA.safeRedirect(suite, serverRedirect);
-    return MA.safeRedirect(serverRedirect, '/compte');
+    // L'équipe ne repart que vers /admin… ; un client vers n'importe quelle page interne hors administration.
+    const isAdminPath = suite && suite.indexOf('/admin') === 0;
+    if (suite && (serverRedirect === '/admin' ? isAdminPath : !isAdminPath)) return MA.safeRedirect(suite, MA.safeRedirect(serverRedirect));
+    return MA.safeRedirect(serverRedirect, MA.route('compte'));
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -51,10 +52,10 @@
     const q = new URLSearchParams(location.search);
     const notice = $('[data-notice]');
     let msg = '';
-    if (q.has('nouveau-mot-de-passe')) msg = 'Votre mot de passe a été modifié. Vous pouvez vous connecter.';
-    else if (q.get('erreur') === 'service') msg = 'Le service est momentanément indisponible. Merci de réessayer dans un instant.';
-    else if (q.has('suite')) msg = 'Connectez-vous pour accéder à cette page.';
-    else if (q.has('deconnecte')) msg = 'Vous êtes déconnecté.';
+    if (q.has('nouveau-mot-de-passe')) msg = MA.t('noticePwd');
+    else if (q.get('erreur') === 'service') msg = MA.t('noticeService');
+    else if (q.has('suite')) msg = MA.t('noticeSuite');
+    else if (q.has('deconnecte')) msg = MA.t('noticeOut');
     if (msg && notice) { notice.textContent = msg; notice.hidden = false; }
     if (q.get('mode') === 'inscription') setMode('signup');
 
@@ -78,9 +79,9 @@
       e.preventDefault();
       showError(login, '');
       const email = login.elements.email.value.trim(), password = login.elements.password.value;
-      if (!email || !password) { showError(login, 'Indiquez votre adresse e-mail et votre mot de passe.'); return; }
+      if (!email || !password) { showError(login, MA.t('loginReq')); return; }
       const btn = $('button[type="submit"]', login);
-      MA.busy(btn, true, 'Connexion…');
+      MA.busy(btn, true, MA.t('signingIn'));
       const r = await MA.api('/api/auth/login', { method: 'POST', body: { email: email, password: password } });
       if (r.ok) { location.assign(nextUrl(r.redirect)); return; }
       MA.busy(btn, false);
@@ -99,15 +100,15 @@
         password: f.password.value, newsletter: f.newsletter.checked, website: f.website.value,
       };
       const local = {};
-      if (!body.firstName) local.firstName = 'Indiquez votre prénom.';
-      if (!body.lastName) local.lastName = 'Indiquez votre nom.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(body.email)) local.email = 'Adresse e-mail invalide.';
-      if (body.password.length < 8 || !/\d/.test(body.password)) local.password = '8 caractères minimum, dont un chiffre.';
+      if (!body.firstName) local.firstName = MA.t('firstReq');
+      if (!body.lastName) local.lastName = MA.t('lastReq');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(body.email)) local.email = MA.t('emailInvalid');
+      if (body.password.length < 8 || !/\d/.test(body.password)) local.password = MA.t('pwdRule');
       if (Object.keys(local).length) { fieldErrors(signup, local); return; }
       const btn = $('button[type="submit"]', signup);
-      MA.busy(btn, true, 'Création…');
+      MA.busy(btn, true, MA.t('creating'));
       const r = await MA.api('/api/auth/register', { method: 'POST', body: body });
-      if (r.ok) { location.assign(MA.safeRedirect(r.redirect, '/compte') + '?bienvenue=1'); return; }
+      if (r.ok) { location.assign(MA.safeRedirect(r.redirect, MA.route('compte')) + '?bienvenue=1'); return; }
       MA.busy(btn, false);
       if (r.fields) fieldErrors(signup, r.fields);
       showError(signup, r.error);
@@ -119,9 +120,9 @@
       e.preventDefault();
       showError(forgot, '');
       const email = forgot.elements.email.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { showError(forgot, 'Adresse e-mail invalide.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { showError(forgot, MA.t('emailInvalid')); return; }
       const btn = $('button[type="submit"]', forgot);
-      MA.busy(btn, true, 'Envoi…');
+      MA.busy(btn, true, MA.t('sending'));
       const r = await MA.api('/api/auth/forgot', { method: 'POST', body: { email: email } });
       MA.busy(btn, false);
       if (r.ok) { $('[data-sent]', forgot).hidden = false; return; }

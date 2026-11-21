@@ -8,7 +8,7 @@ import { SESSION_COOKIE, roleOf, homeFor, isStaff } from './api/_lib/roles.js';
 
 export const config = {
   runtime: 'nodejs',
-  matcher: ['/admin', '/admin/:path*', '/compte', '/compte/:path*', '/connexion'],
+  matcher: ['/admin', '/admin/:path*', '/compte', '/compte/:path*', '/connexion', '/en/account', '/en/account/:path*', '/en/login'],
 };
 
 const env = (k) => (typeof process !== 'undefined' && process.env ? process.env[k] : undefined) || '';
@@ -67,23 +67,27 @@ export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
   const isAdmin = path === '/admin' || path.startsWith('/admin/');
-  const isAccount = path === '/compte' || path.startsWith('/compte/');
-  if (!isAdmin && !isAccount && path !== '/connexion') return undefined;
+  const en = path === '/en/account' || path.startsWith('/en/account/') || path === '/en/login';
+  const isAccount = path === '/compte' || path.startsWith('/compte/') || path === '/en/account' || path.startsWith('/en/account/');
+  const isLogin = path === '/connexion' || path === '/en/login';
+  if (!isAdmin && !isAccount && !isLogin) return undefined;
+  const login = en ? '/en/login' : '/connexion';
+  const home = (role) => (en && homeFor(role) === '/compte' ? '/en/account' : homeFor(role));
 
   let role = null;
   try { role = await currentRole(request); }
   catch (e) {
     console.error('Middleware :', e.message);
     // Base indisponible : on refuse l'accès plutôt que de l'ouvrir.
-    if (isAdmin || isAccount) return redirect(request, '/connexion?erreur=service');
+    if (isAdmin || isAccount) return redirect(request, `${login}?erreur=service`);
     return undefined;
   }
 
-  if (path === '/connexion') return role ? redirect(request, homeFor(role)) : undefined;
+  if (isLogin) return role ? redirect(request, home(role)) : undefined;
 
   if (!role) {
     const next = encodeURIComponent(url.pathname + url.search);
-    return redirect(request, `/connexion?suite=${next}`);
+    return redirect(request, `${login}?suite=${next}`);
   }
   if (isAdmin && !isStaff(role)) return notFound(request);
   // Pages privées : jamais mises en cache, ni par le navigateur ni par un intermédiaire.
