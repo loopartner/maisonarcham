@@ -24,6 +24,11 @@ import * as authReset from './_routes/auth/reset.js';
 import * as authVerify from './_routes/auth/verify.js';
 import * as authResendVerification from './_routes/auth/resend-verification.js';
 import * as cartQuote from './_routes/cart/quote.js';
+import * as admin_stats from './_routes/admin/stats.js';
+import * as admin_settings from './_routes/admin/settings.js';
+import * as admin_promos from './_routes/admin/promos.js';
+import * as admin_team from './_routes/admin/team.js';
+import * as admin_audit from './_routes/admin/audit.js';
 import * as admin_products from './_routes/admin/products.js';
 import * as admin_articles from './_routes/admin/articles.js';
 import * as admin_pages from './_routes/admin/pages.js';
@@ -72,6 +77,11 @@ export const ROUTES = {
   'auth/verify': authVerify,
   'auth/resend-verification': authResendVerification,
   'cart/quote': cartQuote,
+  'admin/stats': admin_stats,
+  'admin/settings': admin_settings,
+  'admin/promos': admin_promos,
+  'admin/team': admin_team,
+  'admin/audit': admin_audit,
   'admin/products': admin_products,
   'admin/articles': admin_articles,
   'admin/pages': admin_pages,

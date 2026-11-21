@@ -70,6 +70,9 @@ async function main() {
   for (const m of MEDIA) { await stat(path.join(SRC, m)).catch(() => { throw new Error(`Image de la médiathèque absente : ${m}`); }); }
   const savedArticles = await kvGet('cms:articles');
   const savedPages = await kvGet('cms:pages');
+  const { DEFAULT_SITE } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/settings.js')).href);
+  const savedSite = await kvGet('cms:site');
+  const siteCfg = { ...DEFAULT_SITE, ...(savedSite || {}), company: { ...DEFAULT_SITE.company, ...(savedSite?.company || {}) } };
   const pagesCfg = { maison: { sections: { ...DEFAULT_PAGES.maison.sections, ...(savedPages?.maison?.sections || {}) } }, newsletter: { ...DEFAULT_PAGES.newsletter, ...(savedPages?.newsletter || {}) } };
   const today = new Date().toISOString().slice(0, 10);
   const journal = (Array.isArray(savedArticles) ? savedArticles.filter((a) => a.status === 'published' && a.date <= today) : DEFAULT_ARTICLES)
@@ -101,7 +104,10 @@ async function main() {
   };
   const thumbs = (main.images || []).map((src, i) => `<button class="pdp-thumb" type="button" aria-pressed="${i === 0}" aria-label="Photo ${i + 1}" data-img="${esc(src)}" data-alt="${esc(typo(product.name))} — photo ${i + 1}"><img src="${esc(src)}" alt="" width="84" height="105"></button>`).join('\n');
   const nlVars = { 'nl.eyebrow': pagesCfg.newsletter.eyebrow, 'nl.title': pagesCfg.newsletter.title, 'nl.text': pagesCfg.newsletter.text, 'nl.confirm': pagesCfg.newsletter.confirm };
+  const todo = (v, label) => (v ? esc(v) : `<mark>${label}</mark>`);
+  const companyVars = { 'company.name': esc(siteCfg.company.name), 'company.siret': todo(siteCfg.company.siret, 'SIRET'), 'company.vat': todo(siteCfg.company.vat, 'numéro de TVA'), 'company.address': todo(siteCfg.company.address, 'adresse'), 'company.email': esc(siteCfg.company.email || 'contact@maison-archam.fr'), 'company.phone': todo(siteCfg.company.phone, 'numéro') };
   const expand = (html) => html
+    .replace(/\{\{(company\.[a-z]+)\}\}/g, (m, k) => (k in companyVars ? companyVars[k] : m))
     .replace(/\{\{(nl\.[a-z]+)\}\}/g, (m, k) => (k in nlVars ? esc(nlVars[k]) : m))
     .replace(/<!--section:([a-z]+)-->([\s\S]*?)<!--\/section:\1-->/g, (m, id, inner) => (pagesCfg.maison.sections[id] === false ? '' : inner))
     .replace(/\{\{(product\.[a-z]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m))
@@ -151,15 +157,17 @@ async function main() {
     const scripts = ['/assets/js/site.js', ...(['site', 'checkout'].includes(layout) ? ['/assets/js/cart.js'] : []), ...(meta.scripts || []).map((s) => `/assets/js/${s}`)]
       .map((s) => `<script src="${asset(s)}" defer></script>`).join('\n');
 
+    if (siteCfg.seoTitle && !meta.title) meta.title = '';
     const head = partial.head
-      .replaceAll('{{title}}', esc(meta.title ? `${meta.title} | Maison Archam` : 'Maison Archam'))
-      .replaceAll('{{description}}', esc(meta.description || 'Maison Archam — Crème d’Ararat, extrait de parfum.'))
+      .replaceAll('{{title}}', esc(meta.title ? `${meta.title} | Maison Archam` : siteCfg.seoTitle || 'Maison Archam'))
+      .replaceAll('{{description}}', esc(meta.description || siteCfg.seoDescription || 'Maison Archam — Crème d’Ararat, extrait de parfum.'))
       .replaceAll('{{robots}}', meta.noindex ? '<meta name="robots" content="noindex, nofollow">' : '')
       .replaceAll('{{css}}', asset('/assets/css/site.css'))
       .replaceAll('{{fonts}}', asset('/assets/css/fonts.css'))
       .replaceAll('{{scripts}}', `<script type="application/json" id="ma-catalogue">${catalogueJson}</script>\n${scripts}`);
 
     let header = expand(partial.header);
+    const footer = expand(partial.footer);
     for (const k of ['accueil', 'parfum', 'journal', 'maison']) {
       header = header.replaceAll(`{{nav.${k}}}`, k === nav ? ' aria-current="page"' : '');
     }
@@ -174,7 +182,7 @@ async function main() {
     } else if (layout === 'bare') {
       html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body>\n${body}\n</body>\n</html>\n`;
     } else {
-      html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body>\n<a class="skip" href="#contenu">Aller au contenu</a>\n${header}\n<main id="contenu">\n${body}\n</main>\n${partial.footer}\n${expand(partial['cart-drawer'])}\n</body>\n</html>\n`;
+      html = `<!DOCTYPE html>\n<html lang="fr">\n<head>\n${head}\n</head>\n<body>\n<a class="skip" href="#contenu">Aller au contenu</a>\n${header}\n<main id="contenu">\n${body}\n</main>\n${footer}\n${expand(partial['cart-drawer'])}\n</body>\n</html>\n`;
     }
     if (/\{\{[a-z.]+\}\}/.test(html)) throw new Error(`Variable non remplacée dans ${file} : ${html.match(/\{\{[a-z.]+\}\}/)[0]}`);
     if (/\sstyle="/.test(html.replace(/<svg[\s\S]*?<\/svg>/g, ''))) throw new Error(`Attribut style interdit (CSP) dans ${file}`);

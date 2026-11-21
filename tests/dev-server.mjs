@@ -18,6 +18,7 @@ const middleware = (await import('../middleware.js')).default;
   const id = 'u_demoowner';
   fake.kv.set(`user:${id}`, JSON.stringify({ id, email: 'admin@maison.test', firstName: 'Sophie', lastName: 'Arakelian', passwordHash: await hashPassword('velours2026'), pwdVersion: 1, role: 'client', emailVerified: true, createdAt: '2026-01-05T10:00:00Z' }));
   fake.kv.set('user:email:admin@maison.test', id);
+  fake.kv.set('users', new Map([[id, Date.parse('2026-01-05')]]));
   const names = ['Claire Martin', 'Jean Dupont', 'Zoé Petit', 'Hugo Bernard', 'Inès Moreau', 'Lucas Laurent', 'Emma Garnier', 'Louis Fabre'];
   const statuses = ['livree', 'livree', 'livree', 'expediee', 'preparation', 'payee', 'annulee', 'livree'];
   const nums = [], dates = new Map();

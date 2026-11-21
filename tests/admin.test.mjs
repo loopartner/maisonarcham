@@ -147,3 +147,30 @@ test('articles : texte converti en blocs, balisage retiré du titre, publication
   assert.ok(st.dirty.journal && st.dirty.produits);
   assert.equal((await call('POST', 'admin/publish', {}, C.orders)).status, 403);
 });
+
+test('équipe : seul propriétaire/administrateur gère les rôles ; protections', async () => {
+  assert.equal((await call('GET', 'admin/team', null, C.editor)).status, 403);
+  let r = await call('POST', 'admin/team', { email: 'client@maison.test', role: 'superadmin' }, C.owner);
+  assert.equal(r.status, 422);
+  r = await call('POST', 'admin/team', { email: 'inconnu@maison.test', role: 'editor' }, C.owner);
+  assert.equal(r.status, 404);
+  r = await call('POST', 'admin/team', { email: 'patronne@maison.test', role: 'editor' }, C.owner);
+  assert.equal(r.status, 422, 'pas son propre rôle');
+  r = await (await call('POST', 'admin/team', { email: 'client@maison.test', role: 'editor' }, C.owner)).json();
+  assert.ok(r.members.some((m) => m.email === 'client@maison.test' && m.role === 'editor'));
+  assert.equal((await call('GET', 'auth/me', null, C.client)).status, 200);
+  const me = await (await call('GET', 'auth/me', null, C.client)).json();
+  assert.equal(me.user, null, 'sessions fermées après changement de rôle');
+});
+
+test('codes promo et livraison : gérés en paramètres, appliqués au calcul', async () => {
+  assert.equal((await call('POST', 'admin/promos', { code: 'NOEL', type: 'percent', value: 15 }, C.orders)).status, 403);
+  assert.equal((await call('POST', 'admin/promos', { code: 'NOEL', type: 'percent', value: 150 }, C.owner)).status, 422);
+  assert.equal((await call('POST', 'admin/promos', { code: 'noel', type: 'percent', value: 15, minSubtotal: '100' }, C.owner)).status, 200);
+  await call('POST', 'admin/settings', { section: 'shipping', methods: { standard: { enabled: true, price: '4,90' }, express: { enabled: false, price: '15' } } }, C.owner);
+  const { products } = await (await call('GET', 'admin/products', null, C.owner)).json();
+  const q = await (await call('POST', 'cart/quote', { items: [{ id: products[0].id, qty: 1 }], shipping: 'express', code: 'NOEL' })).json();
+  assert.equal(q.quote.shipping.id, 'standard', 'express désactivé'); assert.equal(q.quote.shipping.price, 490);
+  assert.equal(q.quote.discount, Math.round(q.quote.subtotal * 0.15));
+  assert.equal((await call('POST', 'admin/settings', { section: 'company', name: 'Maison Archam SAS', siret: '123' }, C.owner)).status, 422);
+});

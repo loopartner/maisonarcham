@@ -1,0 +1,39 @@
+<!--meta {"title":"Statistiques","layout":"admin","adminNav":"stats","scripts":["admin.js","admin-stats.js"],"noindex":true} -->
+<header class="adm-head">
+  <div><p class="eyebrow muted">Analyse</p><h1 class="adm-h1">Statistiques &amp; rapports</h1></div>
+  <div class="acct-actions">
+    <label class="field adm-year">Année<select class="in" data-year></select></label>
+    <button class="adm-btn" type="button" data-print>Télécharger le rapport PDF</button>
+  </div>
+</header>
+<div class="kpis" data-kpis></div>
+<section class="panel">
+  <div class="adm-row"><h2 class="adm-h2">Chiffre d’affaires par mois</h2><div class="legend"><span><span class="lg-cur"></span><span data-y-cur></span></span><span><span class="lg-prev"></span><span data-y-prev></span></span></div></div>
+  <div class="bars bars-pair" data-rev role="img" aria-label="Chiffre d’affaires par mois, comparé à l’année précédente"></div>
+  <div class="bars-labels" data-rev-labels aria-hidden="true"></div>
+</section>
+<div class="adm-2col">
+  <section class="panel">
+    <h2 class="adm-h2">Ventes &amp; nouveaux clients</h2>
+    <svg class="lines" viewBox="0 0 600 240" preserveAspectRatio="none" role="img" aria-label="Flacons vendus et nouveaux clients par mois">
+      <line x1="0" x2="600" y1="60" y2="60" class="grid"/><line x1="0" x2="600" y1="120" y2="120" class="grid"/><line x1="0" x2="600" y1="180" y2="180" class="grid"/><line x1="0" x2="600" y1="239" y2="239" class="axis"/>
+      <polyline data-l-units class="l-orders" points=""/><polyline data-l-cust class="l-nl" points=""/>
+    </svg>
+    <div class="legend"><span><span class="lg-orders"></span>Ventes (<span data-t-units>0</span> flacons)</span><span><span class="lg-nl"></span>Nouveaux clients (<span data-t-cust>0</span>)</span></div>
+  </section>
+  <section class="panel">
+    <h2 class="adm-h2">Produits vendus</h2>
+    <div class="adm-table-wrap"><table class="adm-table"><thead><tr><th scope="col">Référence</th><th scope="col">Unités</th><th scope="col">CA</th><th scope="col">Part</th></tr></thead><tbody data-products></tbody></table></div>
+    <p class="adm-muted" data-no-products hidden>Aucune vente sur cette année.</p>
+  </section>
+</div>
+<div class="adm-2col">
+  <section class="panel">
+    <h2 class="adm-h2">Performance de la newsletter</h2>
+    <div class="dw-kpis stats-nl" data-nl></div>
+  </section>
+  <section class="panel">
+    <h2 class="adm-h2">Tunnel de conversion</h2>
+    <p class="adm-muted">Le tunnel (visites → paniers → commandes) nécessite un outil de mesure d’audience respectueux de la vie privée (par exemple Plausible ou Matomo). Il pourra être branché ici.</p>
+  </section>
+</div>
