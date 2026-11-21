@@ -110,9 +110,7 @@ ul { list-style: none; }
   font-size: 11px; line-height: 1; letter-spacing: 2.4px; font-weight: 500; text-transform: uppercase;
   transition: background .25s ease;
 }
-.btn-hero span { transition: transform .25s ease; }
 .btn-hero:hover { background: #3a2b24; }
-.btn-hero:hover span { transform: translateX(4px); }
 .btn-hero:focus-visible { outline: 2px solid #241a16; outline-offset: 3px; }
 
 /* Produit */
