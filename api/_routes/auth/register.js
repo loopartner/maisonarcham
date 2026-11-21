@@ -1,7 +1,8 @@
 // POST /api/auth/register — création d'un compte client. Corps : { firstName, lastName, email, password, newsletter }
 // Tout nouveau compte est un compte client ; le rôle ne peut jamais être choisi depuis le site.
 import { handle, readJson, json, error, isEmail, normEmail, clean, rateLimit, siteUrl } from '../../_lib/http.js';
-import { hasStore, redis } from '../../_lib/store.js';
+import { hasStore } from '../../_lib/store.js';
+import { requestSubscription } from '../../_lib/newsletter.js';
 import { createUser, createSession, passwordProblem, publicUser } from '../../_lib/auth.js';
 import { sendVerificationEmail } from '../../_lib/account-mail.js';
 import { homeFor } from '../../_lib/roles.js';
@@ -28,10 +29,7 @@ export const POST = handle(async (request) => {
   if (!user) {
     return error('Impossible de créer un compte avec cette adresse. Si vous avez déjà un compte, connectez-vous ou choisissez « Mot de passe oublié ».', 409);
   }
-  if (user.newsletter) {
-    await redis('SADD', 'newsletter', email);
-    await redis('HSET', 'newsletter:dates', email, new Date().toISOString());
-  }
+  if (user.newsletter) await requestSubscription(siteUrl(request), email, 'inscription').catch((e) => console.error('Newsletter :', e.message));
   await sendVerificationEmail(siteUrl(request), user).catch((e) => console.error('E-mail de bienvenue :', e.message));
 
   const { cookie, role } = await createSession(request, user);

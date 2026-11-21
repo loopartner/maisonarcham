@@ -7,7 +7,9 @@ import * as adminOrder from './_routes/admin-order.js';
 import * as checkout from './_routes/checkout.js';
 import * as contact from './_routes/contact.js';
 import * as health from './_routes/health.js';
-import * as newsletter from './_routes/newsletter.js';
+import * as newsletter from './_routes/newsletter/subscribe.js';
+import * as newsletterConfirm from './_routes/newsletter/confirm.js';
+import * as newsletterUnsubscribe from './_routes/newsletter/unsubscribe.js';
 import * as orderTrack from './_routes/order/track.js';
 import * as orderConfirmation from './_routes/order/confirmation.js';
 import * as paymentIntent from './_routes/payment-intent.js';
@@ -29,7 +31,9 @@ export const ROUTES = {
   checkout,
   contact,
   health,
-  newsletter,
+  newsletter, // POST /api/newsletter
+  'newsletter/confirm': newsletterConfirm,
+  'newsletter/unsubscribe': newsletterUnsubscribe,
   order: orderTrack, // ancienne adresse, conservée
   'order/track': orderTrack,
   'order/confirmation': orderConfirmation,

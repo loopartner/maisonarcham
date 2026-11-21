@@ -218,3 +218,22 @@ test('confirmation : détail visible seulement avec le bon secret de paiement', 
   assert.equal((await router.GET(url('pi_TEST123_secret_faux'))).status, 404);
   assert.equal((await router.GET(url('autre'))).status, 400);
 });
+
+test('newsletter : double consentement, déjà inscrit, désinscription signée', async () => {
+  const req = (path, body) => new Request(`${ORIGIN}/api/${path}`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN, 'x-real-ip': '198.51.100.' + Math.floor(Math.random() * 250) }, body: JSON.stringify(body) });
+  let r = await (await router.POST(req('newsletter', { email: 'lettre@exemple.fr' }))).json();
+  assert.equal(r.ok, false, 'consentement obligatoire');
+  r = await (await router.POST(req('newsletter', { email: 'lettre@exemple.fr', consent: true }))).json();
+  assert.equal(r.status, 'pending');
+  assert.equal(fake.kv.get('newsletter')?.has?.('lettre@exemple.fr') || false, false, 'pas inscrit avant confirmation');
+  const token = mails.filter((m) => m.to[0] === 'lettre@exemple.fr').pop().html.match(/jeton=([A-Za-z0-9_-]+)/)[1];
+  r = await (await router.POST(req('newsletter/confirm', { token }))).json();
+  assert.equal(r.email, 'lettre@exemple.fr');
+  r = await (await router.POST(req('newsletter', { email: 'lettre@exemple.fr', consent: true }))).json();
+  assert.equal(r.status, 'already');
+  const { unsubscribeSig } = await import('../api/_lib/newsletter.js');
+  assert.equal((await router.POST(req('newsletter/unsubscribe', { email: 'lettre@exemple.fr', sig: 'faux' }))).status, 400);
+  r = await (await router.POST(req('newsletter/unsubscribe', { email: 'lettre@exemple.fr', sig: unsubscribeSig('lettre@exemple.fr') }))).json();
+  assert.equal(r.ok, true);
+  assert.equal(fake.kv.get('newsletter').has('lettre@exemple.fr'), false);
+});

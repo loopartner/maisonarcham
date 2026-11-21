@@ -26,6 +26,7 @@ export function startFakeUpstash() {
       case 'SISMEMBER': return alive(k) && kv.get(k).has(a[1]) ? 1 : 0;
       case 'SCARD': return alive(k) ? kv.get(k).size : 0;
       case 'ZADD': { const z = alive(k) ? kv.get(k) : new Map(); z.set(a[2], Number(a[1])); kv.set(k, z); return 1; }
+      case 'HDEL': { if (!alive(k)) return 0; return kv.get(k).delete(a[1]) ? 1 : 0; }
       case 'HSET': { const h = alive(k) ? kv.get(k) : new Map(); h.set(a[1], a[2]); kv.set(k, h); return 1; }
       case 'LRANGE': return alive(k) ? kv.get(k).slice(Number(a[1]), Number(a[2]) === -1 ? undefined : Number(a[2]) + 1) : [];
       default: throw new Error('Commande non simulée : ' + cmd);

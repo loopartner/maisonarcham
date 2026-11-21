@@ -96,10 +96,10 @@
     </div>
     <div class="nl-form-wrap">
       <div class="nl-done" data-nl-done hidden>
-        <p class="serif nl-done-t">Merci, votre inscription est confirmée.</p>
-        <p class="nl-sand">La prochaine lettre vous parviendra à <span data-nl-email></span>.</p>
+        <p class="serif nl-done-t" data-nl-done-title>Merci.</p>
+        <p class="nl-sand" data-nl-done-text></p>
       </div>
-      <form class="nl-form" data-newsletter novalidate>
+      <form class="nl-form" data-newsletter data-source="accueil" novalidate>
         <label for="nl-email" class="eyebrow nl-sand">Adresse e-mail</label>
         <div class="nl-row">
           <input id="nl-email" class="nl-field" name="email" type="email" autocomplete="email" inputmode="email" placeholder="votre@email.com" maxlength="254" required>

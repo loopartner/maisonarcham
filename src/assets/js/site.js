@@ -102,11 +102,12 @@
     });
   }
 
-  // ---------- Inscription à la newsletter (consentement explicite obligatoire) ----------
+  // ---------- Inscription à la newsletter (consentement explicite, confirmation par e-mail) ----------
   function initNewsletter() {
     document.querySelectorAll('form[data-newsletter]').forEach(function (form) {
       const err = form.querySelector('[data-error]');
       const show = function (m) { if (err) { err.textContent = m || ''; err.hidden = !m; } };
+      const wrap = form.parentElement, done = wrap.querySelector('[data-nl-done]');
       form.addEventListener('submit', async function (e) {
         e.preventDefault(); show('');
         const email = form.elements.email.value.trim();
@@ -114,12 +115,23 @@
         if (form.elements.consent && !form.elements.consent.checked) { show('Merci d’accepter de recevoir notre correspondance.'); return; }
         const btn = form.querySelector('button[type="submit"]');
         busy(btn, true, 'Inscription…');
-        const r = await api('/api/newsletter', { method: 'POST', body: { email: email, consent: true, website: form.elements.website ? form.elements.website.value : '' } });
+        const r = await api('/api/newsletter', { method: 'POST', body: { email: email, consent: true, source: form.dataset.source || 'site', website: form.elements.website ? form.elements.website.value : '' } });
         busy(btn, false);
         if (!r.ok) { show(r.error); return; }
-        const wrap = form.parentElement, done = wrap.querySelector('[data-nl-done]');
-        if (done) { const s = done.querySelector('[data-nl-email]'); if (s) s.textContent = email; done.hidden = false; form.hidden = true; done.setAttribute('tabindex', '-1'); done.focus(); }
+        if (!done) return;
+        const t = done.querySelector('[data-nl-done-title]'), x = done.querySelector('[data-nl-done-text]'), s = done.querySelector('[data-nl-email]');
+        const texts = {
+          pending: ['Bienvenue dans la correspondance.', 'Un e-mail de confirmation vient d’être envoyé à ' + email + '. Pensez à valider votre inscription.'],
+          subscribed: ['Merci, votre inscription est confirmée.', 'La prochaine lettre vous parviendra à ' + email + '.'],
+          already: ['Vous êtes déjà inscrit.', 'L’adresse ' + email + ' reçoit déjà les lettres de la Maison.'],
+        }[r.status] || ['Merci.', ''];
+        if (t) t.textContent = texts[0];
+        if (x) x.textContent = texts[1];
+        if (s) s.textContent = email;
+        done.hidden = false; form.hidden = true; done.setAttribute('tabindex', '-1'); done.focus();
       });
+      const reset = done && done.querySelector('[data-nl-reset]');
+      if (reset) reset.addEventListener('click', function () { form.reset(); done.hidden = true; form.hidden = false; form.elements.email.focus(); });
     });
   }
 
