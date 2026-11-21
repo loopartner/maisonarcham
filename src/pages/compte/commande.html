@@ -1,0 +1,34 @@
+<!--meta {"title":"Détail de la commande","scripts":["compte-commande.js"],"noindex":true} -->
+<div class="acct">
+  <a class="acct-back" href="/compte#commandes">← Mes commandes</a>
+  <p class="lead" data-loading>Chargement…</p>
+  <p class="note error" data-error hidden></p>
+  <div data-order hidden>
+    <div class="acct-row od-head">
+      <div><p class="eyebrow muted" data-o-date></p><h1 class="od-h" data-o-title></h1></div>
+      <span class="status" data-o-status></span>
+    </div>
+    <section class="card od-track" aria-labelledby="h-track">
+      <h2 class="eyebrow" id="h-track">Suivi de livraison</h2>
+      <ol class="track track-lg" data-o-track></ol>
+      <div class="od-carrier" data-o-carrier hidden><span data-o-carrier-text></span><a data-o-tracking target="_blank" rel="noopener noreferrer" hidden>Suivre sur le site du transporteur ↗</a></div>
+    </section>
+    <div class="od-grid">
+      <section class="card od-card" aria-labelledby="h-items">
+        <h2 class="eyebrow" id="h-items">Articles</h2>
+        <ul class="od-items" data-o-items></ul>
+        <div class="od-sums">
+          <div class="sum-row"><span>Sous-total</span><span data-o-subtotal></span></div>
+          <div class="sum-row" data-o-disc-row hidden><span>Remise</span><span data-o-disc></span></div>
+          <div class="sum-row"><span data-o-ship-label>Livraison</span><span data-o-ship></span></div>
+          <div class="sum-total"><span class="eyebrow">Total TTC</span><span class="serif" data-o-total></span></div>
+        </div>
+      </section>
+      <section class="card od-card">
+        <div><h2 class="eyebrow">Livraison</h2><p class="od-addr" data-o-address></p></div>
+        <div><h2 class="eyebrow">Paiement</h2><p class="od-addr" data-o-payment></p></div>
+        <div class="od-actions"><a class="btn ghost" data-o-return href="/aide#contact">Demander un retour</a></div>
+      </section>
+    </div>
+  </div>
+</div>

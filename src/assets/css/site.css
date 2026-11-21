@@ -637,3 +637,79 @@ select.in { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 .help-form { max-width: none; }
 .help-msg { min-height: 160px; padding: 14px 16px; resize: vertical; line-height: 1.6; }
 @media (max-width: 700px) { .help { padding: 0 20px 96px; gap: 80px; } .page-head { padding: 64px 20px 40px; } }
+
+/* ===== Espace client (maquettes 12 et 13) ===== */
+.acct { max-width: 1280px; margin: 0 auto; padding: 72px 32px 140px; }
+.acct-h { font-family: var(--serif); font-weight: 300; font-size: clamp(48px, 5vw, 72px); line-height: 1; margin: 12px 0 56px; }
+.acct-verify { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between; margin: -24px 0 40px; }
+.acct > .note.info[data-welcome] { margin: -24px 0 40px; }
+.acct-layout { display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start; }
+.acct-nav { flex: 1 1 220px; display: flex; flex-direction: column; border-top: 1px solid var(--brun); }
+.acct-nav a, .acct-nav button { min-height: 52px; display: flex; align-items: center; font: 400 14px var(--sans); color: var(--gris-texte); text-decoration: none; border: none; border-bottom: 1px solid var(--sable); background: none; padding: 0; text-align: left; cursor: pointer; }
+.acct-nav a[aria-current="page"] { color: var(--brun); border-bottom-color: var(--brun); }
+.acct-nav a:hover, .acct-nav button:hover { color: var(--brun); }
+.acct-main { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+.acct-main > section { display: flex; flex-direction: column; gap: 24px; }
+.card { background: var(--blanc); border: 1px solid var(--sable); padding: 32px; }
+.acct-current { border-color: var(--brun); display: flex; flex-direction: column; gap: 24px; }
+.acct-empty { display: flex; flex-direction: column; gap: 16px; }
+.acct-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.acct-small { font-size: 13px; }
+.acct-cur-item { display: flex; gap: 24px; align-items: center; }
+.acct-thumb { width: 80px; height: 100px; background: var(--sable-clair); flex: none; }
+.acct-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.acct-cur-name { font-size: 28px; line-height: 1.2; }
+.acct-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+.acct-stats .card { display: flex; flex-direction: column; gap: 10px; }
+.acct-stat { font-size: 36px; line-height: 1.1; }
+.acct-stats .txt-btn { min-height: 32px; padding: 0; font-size: 12px; }
+.track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.track-bar { display: block; height: 2px; background: var(--sable); }
+.track-step.done .track-bar { background: var(--brun); }
+.track-l { margin-top: 10px; font-size: 12px; color: var(--gris-texte); }
+.track-step.done .track-l { color: var(--brun); }
+.track-step[aria-current="step"] .track-l { font-weight: 500; }
+.track-d { font-size: 12px; color: var(--gris-texte); margin-top: 2px; }
+.acct-h2 { font-family: var(--serif); font-weight: 300; font-size: 36px; line-height: 1.1; }
+.acct-h3 { font-family: var(--serif); font-weight: 300; font-size: 28px; line-height: 1.1; }
+.acct-row-h { align-items: flex-end; }
+.acct-table-wrap { overflow-x: auto; }
+.acct-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+.acct-table th, .acct-table td { text-align: left; padding: 20px 12px 20px 0; border-bottom: 1px solid var(--sable); font-weight: 400; }
+.acct-table thead th { font: 500 11px var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--gris-texte); border-bottom-color: var(--brun); padding-top: 0; }
+.acct-table td:last-child { text-align: right; padding-right: 0; }
+.acct-stack { gap: 24px; }
+.acct-form { display: flex; flex-direction: column; gap: 24px; }
+.acct-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 16px; }
+.acct-grid .full { grid-column: 1 / -1; }
+.acct-actions { display: flex; gap: 16px 24px; align-items: center; flex-wrap: wrap; }
+.acct-ok { font-size: 13px; color: var(--vert); }
+.acct-danger summary { cursor: pointer; font-size: 14px; color: var(--rouge); min-height: 24px; }
+.acct-danger[open] summary { margin-bottom: 20px; }
+.btn.danger { border-color: var(--rouge); color: var(--rouge); }
+.btn.danger:hover { background: var(--rouge); color: var(--blanc); }
+.acct-addrs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.acct-addr { display: flex; flex-direction: column; gap: 14px; }
+.acct-addr.is-default { border-color: var(--brun); }
+.acct-addr-text { font-size: 15px; line-height: 1.8; }
+.acct-addr-acts { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.acct-addr-acts .txt-btn { font-size: 13px; padding: 0; min-height: 36px; }
+.acct-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: var(--gris-texte); text-decoration: none; margin-bottom: 24px; }
+.od-head { align-items: flex-end; margin-bottom: 40px; }
+.od-h { font-family: var(--serif); font-weight: 300; font-size: clamp(40px, 4.4vw, 60px); line-height: 1.05; margin-top: 10px; }
+.od-track { display: flex; flex-direction: column; gap: 28px; margin-bottom: 24px; }
+.od-carrier { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; border-top: 1px solid var(--sable); padding-top: 20px; }
+.od-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.od-card { display: flex; flex-direction: column; gap: 24px; }
+.od-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.od-item { display: flex; gap: 20px; align-items: center; font-size: 15px; }
+.od-info { flex: 1; min-width: 0; }
+.od-name { font-size: 24px; line-height: 1.2; }
+.od-sums { border-top: 1px solid var(--sable); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.od-addr { font-size: 15px; line-height: 1.8; margin-top: 10px; }
+.od-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
+@media (max-width: 700px) {
+  .acct { padding: 48px 20px 96px; } .acct-h { margin-bottom: 40px; }
+  .acct-layout { gap: 32px; } .acct-nav { flex-basis: 100%; } .card { padding: 24px 20px; }
+  .track-l { font-size: 11px; }
+}

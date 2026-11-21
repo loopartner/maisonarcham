@@ -35,7 +35,7 @@
       ]
     },
     {
-      "source": "/((?!suivi(?:\\.html)?$).*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
@@ -99,6 +99,11 @@
     {
       "source": "/journal-chimie-emotions",
       "destination": "/journal/chimie-emotions",
+      "permanent": true
+    },
+    {
+      "source": "/suivi",
+      "destination": "/compte",
       "permanent": true
     }
   ]

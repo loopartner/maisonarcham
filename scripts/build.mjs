@@ -1,5 +1,5 @@
 // Build du site Maison Archam — aucune dépendance npm.
-// 1. copie l'ancien site (legacy/) tant que ses pages ne sont pas remplacées ;
+// 1. (l'ancien site a été entièrement remplacé)
 // 2. assemble chaque page de src/pages avec les gabarits communs (en-tête, pied de page) ;
 // 3. copie les ressources de src/assets en ajoutant une empreinte de version aux CSS/JS.
 //
@@ -30,9 +30,6 @@ async function walk(dir) {
 async function main() {
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
-
-  // 1. Ancien site (servi tant que la page n'a pas d'équivalent dans src/pages)
-  await cp(path.join(ROOT, 'legacy'), OUT, { recursive: true });
 
   // 3. Ressources, avec empreinte de contenu pour le cache
   await cp(path.join(SRC, 'assets'), path.join(OUT, 'assets'), { recursive: true });

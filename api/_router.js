@@ -23,6 +23,15 @@ import * as authReset from './_routes/auth/reset.js';
 import * as authVerify from './_routes/auth/verify.js';
 import * as authResendVerification from './_routes/auth/resend-verification.js';
 import * as cartQuote from './_routes/cart/quote.js';
+import * as account_overview from './_routes/account/overview.js';
+import * as account_orders from './_routes/account/orders.js';
+import * as account_order from './_routes/account/order.js';
+import * as account_profile from './_routes/account/profile.js';
+import * as account_password from './_routes/account/password.js';
+import * as account_email from './_routes/account/email.js';
+import * as account_addresses from './_routes/account/addresses.js';
+import * as account_newsletter from './_routes/account/newsletter.js';
+import * as account_delete from './_routes/account/delete.js';
 import * as checkoutValidate from './_routes/checkout/validate.js';
 
 // Table de routage explicite : aucune route n'existe sans figurer ici.
@@ -48,6 +57,15 @@ export const ROUTES = {
   'auth/verify': authVerify,
   'auth/resend-verification': authResendVerification,
   'cart/quote': cartQuote,
+  'account/overview': account_overview,
+  'account/orders': account_orders,
+  'account/order': account_order,
+  'account/profile': account_profile,
+  'account/password': account_password,
+  'account/email': account_email,
+  'account/addresses': account_addresses,
+  'account/newsletter': account_newsletter,
+  'account/delete': account_delete,
   'checkout/validate': checkoutValidate,
 };
 

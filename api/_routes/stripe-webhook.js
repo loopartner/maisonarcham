@@ -44,6 +44,7 @@ export async function POST(request) {
         total: pi.amount_received || pi.amount,
         currency: pi.currency,
         paymentIntent: pi.id,
+        userId: /^u_[A-Za-z0-9_-]+$/.test(pi.metadata?.uid || '') ? pi.metadata.uid : null,
       };
     };
   } else if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
@@ -89,6 +90,9 @@ export async function POST(request) {
     await saveOrder(order);
     await redis('SET', ref, number);
     await redis('LPUSH', 'orders', number);
+    // Index pour l'espace client (rattachement par compte et par adresse e-mail confirmée)
+    if (email) await redis('LPUSH', `orders:email:${email}`, number);
+    if (order.userId) await redis('LPUSH', `orders:user:${order.userId}`, number);
 
     const rows = order.items.map((i) => `<tr><td style="padding:8px 0">${escapeHtml(i.name)} × ${i.quantity}</td><td align="right">${euro(i.amount)}</td></tr>`).join('');
     const recap = `<table width="100%" style="border-top:1px solid #d6d6d2;margin:16px 0">${rows}

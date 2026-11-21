@@ -3,6 +3,11 @@
   'use strict';
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('[data-contact]'), err = form.querySelector('[data-error]'), sent = document.querySelector('[data-sent]');
+    // Pré-remplissage depuis « Demander un retour » (espace client)
+    const q = new URLSearchParams(location.search);
+    if (q.get('sujet') === 'Retour') form.elements.subject.value = 'Retour';
+    const n = (q.get('commande') || '').toUpperCase();
+    if (/^MA-\d{4,8}$/.test(n)) form.elements.message.value = 'Commande ' + n + ' — ';
     form.addEventListener('submit', async function (e) {
       e.preventDefault(); err.hidden = true;
       const f = form.elements;

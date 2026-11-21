@@ -25,6 +25,8 @@ export function startFakeUpstash() {
       case 'SMEMBERS': return alive(k) ? [...kv.get(k)] : [];
       case 'SISMEMBER': return alive(k) && kv.get(k).has(a[1]) ? 1 : 0;
       case 'SCARD': return alive(k) ? kv.get(k).size : 0;
+      case 'ZREM': { if (!alive(k)) return 0; return kv.get(k).delete(a[1]) ? 1 : 0; }
+      case 'LPUSH': { const l = alive(k) ? kv.get(k) : []; for (const x of a.slice(1)) l.unshift(String(x)); kv.set(k, l); return l.length; }
       case 'ZADD': { const z = alive(k) ? kv.get(k) : new Map(); z.set(a[2], Number(a[1])); kv.set(k, z); return 1; }
       case 'HDEL': { if (!alive(k)) return 0; return kv.get(k).delete(a[1]) ? 1 : 0; }
       case 'HSET': { const h = alive(k) ? kv.get(k) : new Map(); h.set(a[1], a[2]); kv.set(k, h); return 1; }

@@ -50,7 +50,6 @@ Une adresse **non confirmée** n'a jamais accès à l'administration : personne 
 
 - `src/pages/` : pages du nouveau site, assemblées par `scripts/build.mjs` avec `src/partials/` (en-tête, pied de page, navigation admin).
 - `src/assets/` : CSS, JS, polices, images.
-- `legacy/` : ancien site, servi tant que chaque page n'a pas été remplacée (supprimé à la fin de la refonte).
 - `api/` : fonctions serverless. `middleware.js` : contrôle d'accès des pages privées.
 
 ## Mise en route (≈ 20 min)

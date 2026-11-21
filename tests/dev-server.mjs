@@ -43,6 +43,6 @@ http.createServer(async (req, res) => {
   if (!f) { res.writeHead(404, { 'content-type': TYPES['.html'] }); res.end(await readFile(path.join(ROOT, '404.html'))); return; }
   const h = { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' };
   // Même politique de sécurité du contenu qu'en production (vercel.json), pour détecter les violations en local.
-  if (f.endsWith('.html') && !/suivi/.test(f)) h['content-security-policy'] = CSP;
+  if (f.endsWith('.html')) h['content-security-policy'] = CSP;
   res.writeHead(200, h); res.end(await readFile(f));
 }).listen(PORT, () => console.log(`Maison Archam en local : http://localhost:${PORT}`));
