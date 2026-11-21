@@ -845,3 +845,10 @@ a.btn { display: inline-block; text-align: center; }
 .note h3 { color: #e8dccd; }
 .note p { color: rgba(248, 246, 242, .85); }
 @media (max-width: 720px) { .note img { width: 100%; max-width: 220px; height: 150px; margin-bottom: 20px; } }
+
+/* Section Crème d'Ararat : paragraphe sur toute la largeur de la galerie, bouton brun foncé */
+.product-buy { align-self: stretch; }
+.product-intro { max-width: none; width: 100%; text-align: justify; text-align-last: center; }
+@media (max-width: 720px) { .product-intro { text-align: center; } }
+.product-buy .btn { background: #241a16; color: #f8f6f2; }
+.product-buy .btn:hover { background: #3a2b24; }
