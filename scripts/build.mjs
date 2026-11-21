@@ -56,14 +56,15 @@ async function main() {
   const { MAX_QTY } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/catalogue.js')).href);
   const { defaultProducts, variantOf } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/settings.js')).href);
   const savedProducts = await kvGet('cms:products');
-  const productList = (Array.isArray(savedProducts) && savedProducts.length ? savedProducts : defaultProducts()).filter((p) => p.status === 'published');
+  const productList = (Array.isArray(savedProducts) && savedProducts.length ? savedProducts : defaultProducts()).filter((p) => p.status === 'published').sort((a, b) => a.price - b.price);
   if (!productList.length) productList.push(defaultProducts()[0]);
   const PRODUCTS = Object.fromEntries(productList.map((p) => [p.id, { name: p.name, variant: variantOf(p), price: p.price, image: (p.images || [])[0] || '' }]));
   console.log(`Catalogue : ${productList.length} fiche(s) ${savedProducts ? 'depuis le back-office' : 'par défaut'}`);
   const typo = (t) => String(t).replace(/'/g, '’');
   const euros = (cents) => (cents % 100 ? (cents / 100).toFixed(2).replace('.', ',') : String(cents / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + '\u00a0€';
-  const [productId, product] = Object.entries(PRODUCTS)[0];
-  const main = productList[0];
+  const main = productList.find((p) => p.featured) || productList[productList.length - 1];
+  const productId = main.id, product = PRODUCTS[productId];
+  const fromPrice = Math.min(...productList.map((p) => p.price));
   const catalogue = { maxQty: MAX_QTY, products: Object.fromEntries(Object.entries(PRODUCTS).map(([id, p]) => [id, { name: typo(p.name), variant: p.variant, price: p.price, image: p.image }])) };
   const catalogueJson = JSON.stringify(catalogue).replace(/</g, '\\u003c');
   const { DEFAULT_ARTICLES, DEFAULT_PAGES, MEDIA } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/content-default.js')).href);
@@ -94,6 +95,7 @@ async function main() {
     'product.variant': esc(product.variant),
     'product.price': `<span data-price-of="${esc(productId)}">${euros(product.price)}</span>`,
     'product.image': product.image,
+    'product.from': euros(fromPrice),
     'product.tagline': esc(main.tagline || ''),
     'product.description': esc(main.description || ''),
     'product.family': esc(main.family || ''),
@@ -113,7 +115,7 @@ async function main() {
     .replace(/\{\{(product\.[a-z]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m))
     .replace(/<!--product-thumbs-->/g, () => thumbs)
     .replace(/<!--size-options-->/g, () => Object.entries(PRODUCTS).map(([id, p], i) =>
-      `<button class="size-opt" type="button" aria-pressed="${i === 0}" data-size="${esc(id)}" data-price="${p.price}">${esc(p.variant.split('·').pop().trim())} — ${euros(p.price)}</button>`).join(''))
+      `<button class="size-opt" type="button" aria-pressed="${id === productId}" data-size="${esc(id)}" data-price="${p.price}">${esc(p.variant.split('·').pop().trim())} — ${euros(p.price)}</button>`).join(''))
     .replace(/<!--journal-cats-->/g, () => jCats.map((c, i) => `<button class="j-cat" type="button" aria-pressed="${i === 0}" data-filter="${esc(c)}">${esc(c)}</button>`).join(''))
     .replace(/<!--journal-featured-->/g, () => (featured ? jFeatured(featured) : ''))
     .replace(/<!--journal-list-->/g, () => journal.filter((a) => a !== featured).map(jListCard).join('\n'))

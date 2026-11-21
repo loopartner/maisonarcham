@@ -13,7 +13,7 @@ export function defaultProducts() {
     description: 'Une vanille raffinée aux accents caramélisés, pensée pour offrir une gourmandise subtile et sophistiquée.',
     family: 'Gourmande · Vanillée · Musquée', sillage: 'Chaleureux · Enveloppant · Élégant',
     notes: { top: ['Caramel', 'Poudrée', 'Miel'], heart: ['Vanille de Madagascar', 'Fève de tonka'], base: ['Musc blanc'] },
-    price: p.price, comparePrice: null, stock: null, stockAlert: 5, status: 'published',
+    price: p.price, comparePrice: null, stock: null, stockAlert: 5, status: 'published', featured: p.featured === true,
     images: [p.image, '/assets/img/flacon-hero.webp', '/assets/img/notes-coeur-fond.webp', '/assets/img/notes-tete.webp'],
     updatedAt: null,
   }));

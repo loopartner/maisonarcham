@@ -26,7 +26,7 @@ const middleware = (await import('../middleware.js')).default;
     const n = `MA-${10001 + i}`, d = new Date(Date.now() - (34 - i) * 10.5 * 86400000 + (i % 5) * 3600000);
     const name = names[i % names.length], qty = 1 + (i % 3 === 0 ? 1 : 0), email = name.toLowerCase().replace(' ', '.').normalize('NFD').replace(/[\u0300-\u036f]/g, '') + '@exemple.fr';
     const status = i > 30 ? ['payee', 'preparation', 'payee'][i - 31] : statuses[i % statuses.length];
-    fake.kv.set(`order:${n}`, JSON.stringify({ number: n, name, email, phone: '+33 6 12 45 78 90', status, total: 18500 * qty, items: [{ name: 'Crème d’Ararat', variant: 'Extrait de parfum · 50 ml', quantity: qty, amount: 18500 * qty }], shippingMethod: 'Livraison standard', shippingCost: 0, createdAt: d.toISOString(), history: [{ status: 'payee', at: d.toISOString() }], shipping: { line1: '18 rue de Sèvres', postal_code: '75006', city: 'Paris', country: 'FR' } }));
+    fake.kv.set(`order:${n}`, JSON.stringify({ number: n, name, email, phone: '+33 6 12 45 78 90', status, total: 16000 * qty, items: [{ name: 'Crème d’Ararat', variant: 'Extrait de parfum · 100 ml', quantity: qty, amount: 16000 * qty }], shippingMethod: 'Livraison standard', shippingCost: 0, createdAt: d.toISOString(), history: [{ status: 'payee', at: d.toISOString() }], shipping: { line1: '18 rue de Sèvres', postal_code: '75006', city: 'Paris', country: 'FR' } }));
     nums.unshift(n);
     fake.kv.set(`orders:email:${email}`, [n, ...(fake.kv.get(`orders:email:${email}`) || [])]);
     dates.set(`abonne${i}@exemple.fr`, new Date(Date.now() - i * 9 * 86400000).toISOString());

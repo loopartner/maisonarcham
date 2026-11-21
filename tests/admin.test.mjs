@@ -122,7 +122,7 @@ test('newsletter : liste, désinscription, campagne de test ; interdite à la lo
 test('produits : validation, prix modifié appliqué immédiatement au calcul, refusé à la logistique', async () => {
   assert.equal((await call('GET', 'admin/products', null, C.orders)).status, 403);
   const { products } = await (await call('GET', 'admin/products', null, C.editor)).json();
-  const p = products[0];
+  const p = products.find((x) => x.id === 'creme-dararat-50');
   let r = await call('PUT', 'admin/products', { ...p, price: '-3', images: ['/etc/passwd'] }, C.editor);
   const bad = await r.json(); assert.ok(bad.fields.price && bad.fields.images);
   r = await call('PUT', 'admin/products', { ...p, price: '195,00', stock: 2, images: p.images }, C.editor);
@@ -131,8 +131,11 @@ test('produits : validation, prix modifié appliqué immédiatement au calcul, r
   assert.equal(q.quote.subtotal, 19500, 'nouveau prix appliqué');
   const tooMany = await call('POST', 'cart/quote', { items: [{ id: p.id, qty: 3 }] });
   assert.equal(tooMany.status, 409, 'stock respecté');
-  r = await call('PUT', 'admin/products', { ...p, status: 'draft', images: p.images }, C.editor);
+  const big = products.find((x) => x.id === 'creme-dararat-100');
+  await call('PUT', 'admin/products', { ...big, price: '160', status: 'draft', images: big.images }, C.editor);
+  r = await call('PUT', 'admin/products', { ...p, price: '195', stock: 2, status: 'draft', images: p.images }, C.editor);
   assert.equal(r.status, 422, 'au moins une fiche en ligne');
+  await call('PUT', 'admin/products', { ...big, price: '160', status: 'published', images: big.images }, C.editor);
 });
 
 test('articles : texte converti en blocs, balisage retiré du titre, publication non configurée', async () => {
@@ -169,7 +172,7 @@ test('codes promo et livraison : gérés en paramètres, appliqués au calcul', 
   assert.equal((await call('POST', 'admin/promos', { code: 'noel', type: 'percent', value: 15, minSubtotal: '100' }, C.owner)).status, 200);
   await call('POST', 'admin/settings', { section: 'shipping', methods: { standard: { enabled: true, price: '4,90' }, express: { enabled: false, price: '15' } } }, C.owner);
   const { products } = await (await call('GET', 'admin/products', null, C.owner)).json();
-  const q = await (await call('POST', 'cart/quote', { items: [{ id: products[0].id, qty: 1 }], shipping: 'express', code: 'NOEL' })).json();
+  const q = await (await call('POST', 'cart/quote', { items: [{ id: 'creme-dararat-100', qty: 1 }], shipping: 'express', code: 'NOEL' })).json();
   assert.equal(q.quote.shipping.id, 'standard', 'express désactivé'); assert.equal(q.quote.shipping.price, 490);
   assert.equal(q.quote.discount, Math.round(q.quote.subtotal * 0.15));
   assert.equal((await call('POST', 'admin/settings', { section: 'company', name: 'Maison Archam SAS', siret: '123' }, C.owner)).status, 422);

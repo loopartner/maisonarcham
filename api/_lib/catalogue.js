@@ -3,8 +3,15 @@ export const PRODUCTS = {
   'creme-dararat-50': {
     name: "Crème d'Ararat",
     variant: 'Extrait de parfum · 50 ml',
-    price: 18500, // en centimes
+    price: 9000, // en centimes
     image: '/assets/img/flacon-produit.webp',
+  },
+  'creme-dararat-100': {
+    name: "Crème d'Ararat",
+    variant: 'Extrait de parfum · 100 ml',
+    price: 16000,
+    image: '/assets/img/flacon-produit.webp',
+    featured: true, // contenance mise en avant par défaut
   },
 };
 export const MAX_QTY = 10;
