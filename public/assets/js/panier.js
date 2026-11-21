@@ -21,7 +21,7 @@
       n.querySelector('[data-l-qty]').textContent = String(i.qty);
       n.querySelector('[data-l-total]').textContent = MACart.euros(p.price * i.qty);
       const dec = n.querySelector('[data-l-dec]'), inc = n.querySelector('[data-l-inc]');
-      dec.setAttribute('aria-label', 'Diminuer la quantité de ' + p.name); inc.setAttribute('aria-label', 'Augmenter la quantité de ' + p.name);
+      dec.setAttribute('aria-label', MA.t('qtyDecOf', { name: p.name })); inc.setAttribute('aria-label', MA.t('qtyIncOf', { name: p.name }));
       inc.disabled = i.qty >= 10;
       dec.addEventListener('click', function () { if (i.qty <= 1) MACart.remove(i.id); else MACart.setQty(i.id, i.qty - 1); });
       inc.addEventListener('click', function () { MACart.setQty(i.id, i.qty + 1); });
@@ -41,8 +41,8 @@
       const l = document.createElement('label'); l.className = 'ship-opt' + (o.id === current ? ' on' : '');
       const r = document.createElement('input'); r.type = 'radio'; r.name = 'ship'; r.value = o.id; r.checked = o.id === current;
       r.addEventListener('change', function () { state.shipping = o.id; savePrefs(state); refresh(); });
-      const a = document.createElement('span'); a.className = 'ship-l'; a.textContent = o.label;
-      const b = document.createElement('span'); b.textContent = o.price ? MACart.euros(o.price) : 'Offerte';
+      const a = document.createElement('span'); a.className = 'ship-l'; a.textContent = MA.t('ship_' + o.id + '_short') !== 'ship_' + o.id + '_short' && MA.lang === 'en' ? MA.t('ship_' + o.id + '_short') : o.label;
+      const b = document.createElement('span'); b.textContent = o.price ? MACart.euros(o.price) : MA.t('free');
       l.append(r, a, b); return l;
     }));
   }
@@ -68,7 +68,7 @@
     if (q.promoError && state.code) { state.code = ''; savePrefs(state); }
     if (showPromo) {
       msg.hidden = false;
-      msg.textContent = q.promo ? 'Code appliqué : ' + q.promo.label.replace(/^Code \S+ ?/, '').replace(/[()]/g, '') + ' sur votre commande.' : (q.promoError || '');
+      msg.textContent = q.promo ? MA.t('promoApplied', { code: q.promo.code }) : (q.promoError || '');
       msg.className = 'promo-msg ' + (q.promo ? 'ok' : 'err');
     }
   }

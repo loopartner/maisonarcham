@@ -1,5 +1,6 @@
 import { env } from './env.js';
 import { redis, hasStore } from './store.js';
+import { translatePayload } from './messages-en.js';
 
 const SECURITY_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -53,16 +54,25 @@ export function assertSameOrigin(request) {
 
 const UNSAFE = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
+// Réponses en anglais pour les pages anglaises (en-tête « x-lang: en »), hors back-office.
+async function localize(request, res) {
+  if (request.headers.get('x-lang') !== 'en' || new URL(request.url).pathname.startsWith('/api/admin/')) return res;
+  if (!(res.headers.get('content-type') || '').startsWith('application/json')) return res;
+  const data = translatePayload(await res.json());
+  return new Response(JSON.stringify(data), { status: res.status, headers: res.headers });
+}
+
 export function handle(fn, { csrf = true } = {}) {
   return async (request) => {
+    let res;
     try {
       if (csrf && UNSAFE.has(request.method)) assertSameOrigin(request);
-      return await fn(request);
+      res = await fn(request);
     } catch (e) {
-      if (e instanceof HttpError) return error(e.message, e.status);
-      console.error(e);
-      return error('Une erreur est survenue. Merci de réessayer.', 500);
+      if (e instanceof HttpError) res = error(e.message, e.status);
+      else { console.error(e); res = error('Une erreur est survenue. Merci de réessayer.', 500); }
     }
+    return localize(request, res);
   };
 }
 

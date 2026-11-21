@@ -237,3 +237,11 @@ test('newsletter : double consentement, déjà inscrit, désinscription signée'
   assert.equal(r.ok, true);
   assert.equal(fake.kv.get('newsletter').has('lettre@exemple.fr'), false);
 });
+
+test('langue : messages traduits en anglais avec x-lang: en (pas pour le back-office)', async () => {
+  const r = await (await router.POST(new Request(`${ORIGIN}/api/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN, 'x-lang': 'en' }, body: JSON.stringify({ email: 'x@y.fr', password: 'abc' }) }))).json();
+  assert.equal(r.error, 'Incorrect email or password.');
+  const q = await (await router.POST(new Request(`${ORIGIN}/api/cart/quote`, { method: 'POST', headers: { 'content-type': 'application/json', origin: ORIGIN, 'x-lang': 'en' }, body: JSON.stringify({ items: [{ id: 'creme-dararat-50', qty: 1 }], code: 'NOPE' }) }))).json();
+  assert.equal(q.quote.promoError, 'This code is not valid.');
+  assert.equal(q.quote.shippingOptions[0].title, 'Standard shipping');
+});
