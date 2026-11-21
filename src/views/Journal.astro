@@ -1,0 +1,38 @@
+---
+import Site from '../layouts/Site.astro';
+import Img from '../components/Img.astro';
+import JournalCard from '../components/JournalCard.astro';
+import { useT, path, fmtDate } from '../i18n/index.js';
+import { getArticles, loc, rich } from '../lib/data.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+const articles = await getArticles(lang);
+const featured = articles.find((a) => a.featured) || articles[0];
+const rest = articles.filter((a) => a !== featured);
+const cats = [t('jr.all'), ...new Set(articles.map((a) => loc(a, 'category', lang)))];
+const minutes = (a) => Math.max(1, Math.round(((lang === 'en' ? a.bodyEn : a.body) || []).reduce((n, b) => n + (b.x ? b.x.split(/\s+/).length : 0), 0) / 200));
+---
+<Site lang={lang} route="journal" nav="journal" title={t('home.journal')} description={t('jr.description')} scripts={['journal.js']}>
+<div class="jr">
+  <div class="jr-head"><p class="eyebrow muted">{t('jr.eyebrow')}</p><h1 class="jr-h">{t('home.journal')}</h1></div>
+  <nav class="jr-cats" aria-label={t('jr.categories')}>
+    {cats.map((c, i) => <button class="j-cat" type="button" aria-pressed={String(i === 0)} data-filter={i === 0 ? 'Tous' : c}>{c}</button>)}
+  </nav>
+  {featured && (
+  <div data-featured>
+    <a class="j-feat reveal" href={path(lang, 'journal', featured.slug)} data-cat={loc(featured, 'category', lang)}>
+      <div class="j-feat-img zoom"><Img src={featured.image} alt={loc(featured, 'imageAlt', lang)} sizes="(max-width: 700px) 100vw, 60vw" priority /></div>
+      <div class="j-feat-text">
+        <p class="eyebrow muted">{t('jr.featured')} — {loc(featured, 'category', lang)} · {fmtDate(lang, featured.date)}</p>
+        <h2 class="j-feat-title" set:html={rich(loc(featured, 'title', lang))} />
+        <p class="body-m j-feat-ex">{loc(featured, 'excerpt', lang)}</p>
+        <span class="link-ed self-start">{t('jr.read', { n: minutes(featured) })}</span>
+      </div>
+    </a>
+  </div>)}
+  <div class="jr-grid" data-list>{rest.map((a, i) => <JournalCard lang={lang} a={a} variant="list" index={i} />)}</div>
+  <p class="serif jr-none" data-none hidden>{t('jr.none')}</p>
+  <div class="jr-more"><button class="btn ghost" type="button" data-more hidden>{t('jr.more')}</button></div>
+</div>
+</Site>

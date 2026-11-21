@@ -41,7 +41,7 @@
       const li = document.createElement('li'); li.className = 'ck-line';
       const t = document.createElement('div'); t.className = 'ck-thumb';
       const img = document.createElement('img'); img.src = l.image; img.alt = ''; img.width = 72; img.height = 90;
-      const badge = document.createElement('span'); badge.className = 'ck-badge'; badge.textContent = String(l.qty); badge.setAttribute('aria-label', 'Quantité ' + l.qty);
+      const badge = document.createElement('span'); badge.className = 'ck-badge'; badge.textContent = String(l.qty); badge.setAttribute('aria-label', MA.t('qtyN', { n: l.qty }));
       t.append(img, badge);
       const info = document.createElement('div'); info.className = 'ck-info';
       const n = document.createElement('p'); n.className = 'serif ck-name'; n.textContent = l.name;
@@ -54,7 +54,7 @@
     $('[data-discount-row]').hidden = !q.discount;
     $('[data-discount-label]').textContent = q.promo ? q.promo.code : '';
     $('[data-discount]').textContent = '− ' + MACart.euros(q.discount);
-    $('[data-ship-price]').textContent = q.shipping.price ? MACart.euros(q.shipping.price) : 'Offerte';
+    $('[data-ship-price]').textContent = q.shipping.price ? MACart.euros(q.shipping.price) : MA.t('free');
     $$('[data-total]').forEach(function (el) { el.textContent = MACart.euros(q.total); });
 
     const box = $('[data-ships]');
@@ -67,7 +67,7 @@
         const a = document.createElement('span'); a.textContent = o.title || o.label;
         const b = document.createElement('span'); b.className = 'muted ck-ship-d'; b.textContent = o.detail || '';
         txt.append(a, b);
-        const pr = document.createElement('span'); pr.textContent = o.price ? MACart.euros(o.price) : 'Offerte';
+        const pr = document.createElement('span'); pr.textContent = o.price ? MACart.euros(o.price) : MA.t('free');
         l.append(r, txt, pr); box.append(l);
       });
     }
@@ -84,7 +84,7 @@
 
   async function refresh(showPromo) {
     const items = MACart.items();
-    if (!items.length) { location.replace('/panier'); return; }
+    if (!items.length) { location.replace(MA.route('panier')); return; }
     const my = ++seq;
     const r = await MA.api('/api/cart/quote', { method: 'POST', body: { items: items, shipping: prefs.shipping, code: prefs.code || '' } });
     if (my !== seq) return;
@@ -94,7 +94,7 @@
     if (r.quote.promoError && prefs.code) { prefs.code = ''; write(PREFS, prefs); }
     if (showPromo) {
       msg.hidden = false; msg.className = 'promo-msg ' + (r.quote.promo ? 'ok' : 'err');
-      msg.textContent = r.quote.promo ? 'Code appliqué.' : r.quote.promoError;
+      msg.textContent = r.quote.promo ? MA.t('promoOk') : r.quote.promoError;
     }
   }
 
@@ -131,8 +131,8 @@
     }
     function localCheck() {
       const f = form.elements, errs = {};
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) errs.email = 'Adresse e-mail invalide.';
-      ['firstName', 'lastName', 'line1', 'postalCode', 'city'].forEach(function (k) { if (!f[k].value.trim()) errs[k] = 'Ce champ est requis.'; });
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) errs.email = MA.t('emailInvalid');
+      ['firstName', 'lastName', 'line1', 'postalCode', 'city'].forEach(function (k) { if (!f[k].value.trim()) errs[k] = MA.t('required'); });
       return errs;
     }
     $$('[data-go-step]').forEach(function (b) {
@@ -149,14 +149,14 @@
     tg.addEventListener('click', function () {
       const open = tg.getAttribute('aria-expanded') !== 'true';
       tg.setAttribute('aria-expanded', String(open)); sum.classList.toggle('open', open);
-      $('[data-sum-label]').textContent = open ? 'Masquer le récapitulatif' : 'Afficher le récapitulatif';
+      $('[data-sum-label]').textContent = open ? MA.t('sumHide') : MA.t('sumShow');
     });
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const err = $('[data-error]'); err.hidden = true; showFieldErrors(null); $('[data-pay-later]').hidden = true;
       const btn = $('[data-submit]');
-      MA.busy(btn, true, 'Vérification…');
+      MA.busy(btn, true, MA.t('checking'));
       const r = await MA.api('/api/checkout/validate', { method: 'POST', body: payload() });
       MA.busy(btn, false);
       if (!r.ok) {

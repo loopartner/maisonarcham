@@ -1,0 +1,17 @@
+---
+import Base from './Base.astro';
+import { useT, path, LOCALES } from '../i18n/index.js';
+const props = Astro.props;
+const { lang, route } = props;
+const t = useT(lang);
+const alternates = Object.fromEntries(LOCALES.map((l) => [l, path(l, route)]));
+---
+<Base {...props} alternates={alternates}>
+  <a class="skip" href="#contenu">{t('common.skip')}</a>
+  <header class="ck-hd">
+    <a class="ck-back" href={path(lang, 'panier')} aria-label={t('ck.back')}>←<span>&nbsp;{t('ck.back')}</span></a>
+    <a class="ck-logo" href={path(lang, 'home')}>MAISON ARCHAM</a>
+    <span class="ck-secure"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="6" width="10" height="7" stroke="currentColor"/><path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" stroke="currentColor"/></svg>{t('ck.secure')}</span>
+  </header>
+  <main id="contenu"><slot /></main>
+</Base>
