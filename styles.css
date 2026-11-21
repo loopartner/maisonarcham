@@ -71,7 +71,7 @@ ul { list-style: none; }
   white-space: nowrap;
 }
 .nav { flex: 1; display: flex; justify-content: center; gap: 40px; }
-.nav a, .trust span {
+.nav a {
   font-size: 10px; line-height: 15px; letter-spacing: 1.5px;
   text-transform: uppercase; white-space: nowrap;
 }
@@ -84,59 +84,36 @@ ul { list-style: none; }
 }
 
 /* Hero */
+/* Bannière d'accueil : texte à gauche, photo pleine hauteur à droite */
 .hero {
   position: relative;
-  height: 700px;
-  display: flex; align-items: center;
-  padding: 0 var(--pad);
-  isolation: isolate;
-  overflow-x: clip;
+  display: grid; grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  min-height: 700px;
+  border-bottom: 1px solid var(--line);
 }
-.hero-botanical {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: .1;
-  z-index: -1;
-  pointer-events: none;
-}
-.hero-text { position: relative; z-index: 3; width: 50%; display: flex; flex-direction: column; gap: 48px; }
+.hero-text { display: flex; flex-direction: column; justify-content: center; gap: 48px; padding: 96px 64px 96px var(--pad); }
 .hero h1 {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(56px, 6.94vw, 100px);
-  line-height: .85;
+  font-size: clamp(44px, 4.9vw, 76px);
+  line-height: .95;
   text-transform: uppercase;
 }
 .hero-cta { display: flex; justify-content: flex-start; }
-/* Flacon détouré : hauteur fixe (664px comme sur la maquette), calé en bas à droite du hero.
-   Il ne dépend plus de la largeur de l'écran, donc il ne déborde plus sur le bandeau en grand écran. */
-.hero-bottle {
-  position: absolute;
-  right: -49px;
-  bottom: -33px;
-  height: 664px;
-  width: auto;
-  max-width: none;
-  aspect-ratio: 1180 / 664;
-  object-fit: contain;
-  object-position: right bottom;
-  z-index: 2;
-  pointer-events: none;
+.hero-media { position: relative; overflow: hidden; background: #2a2220; }
+.hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; }
+/* Bouton de la bannière */
+.btn-hero {
+  display: inline-flex; align-items: center; gap: 14px;
+  background: #241a16; color: #f8f6f2;
+  padding: 20px 34px; border-radius: 0;
+  font-size: 11px; line-height: 1; letter-spacing: 2.4px; font-weight: 500; text-transform: uppercase;
+  transition: background .25s ease;
 }
-
-/* Bandeau réassurance */
-.trust {
-  margin-top: 33px;
-  display: flex; justify-content: center; flex-wrap: wrap;
-  column-gap: 96px; row-gap: 8px;
-  padding: 24px var(--pad);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  position: relative; z-index: 3;
-  background: var(--paper);
-}
-.trust .dot { color: var(--line); }
+.btn-hero span { transition: transform .25s ease; }
+.btn-hero:hover { background: #3a2b24; }
+.btn-hero:hover span { transform: translateX(4px); }
+.btn-hero:focus-visible { outline: 2px solid #241a16; outline-offset: 3px; }
 
 /* Produit */
 .product { padding: 128px var(--pad); display: flex; flex-direction: column; gap: 64px; }
@@ -464,9 +441,6 @@ a.btn { display: inline-block; text-align: center; }
 /* Tablette / mobile */
 @media (max-width: 1024px) {
   .nav { display: none; }
-  .hero { height: auto; min-height: 560px; padding-top: 64px; padding-bottom: 64px; }
-  .hero-text { width: 60%; }
-  .hero-bottle { height: 92%; right: -80px; }
   .frame { height: 360px; }
   .maison-media { height: 520px; margin-right: 40px; }
   .maison-text { padding-left: 0; }
@@ -474,11 +448,6 @@ a.btn { display: inline-block; text-align: center; }
 }
 @media (max-width: 720px) {
   .logo { font-size: 18px; letter-spacing: 3px; }
-  .hero { flex-direction: column; align-items: flex-start; min-height: 0; padding-bottom: 0; }
-  .hero-text { width: 100%; gap: 32px; }
-  .hero-bottle { position: relative; right: auto; bottom: auto; height: auto; width: 130%; margin: 16px 0 0 -15%; }
-  .trust { margin-top: 0; column-gap: 24px; }
-  .trust .dot { display: none; }
   .product, .maison, .journal, .newsletter { padding-top: 80px; padding-bottom: 80px; }
   .product-gallery, .journal-grid, .notes { grid-template-columns: 1fr; }
   .notes { gap: 48px; padding-top: 64px; padding-bottom: 64px; }
@@ -560,18 +529,8 @@ a.btn { display: inline-block; text-align: center; }
   .field input, .field select, .field textarea, .newsletter-form input { font-size: 16px; }
   .newsletter-form input { letter-spacing: .5px; }
 
-  /* Hero : flacon plus grand, recadré sur la partie utile de l'image */
-  .hero { padding-top: 48px; gap: 0; }
   .hero h1 { font-size: clamp(44px, 13vw, 64px); }
-  .hero-text { gap: 28px; }
-  .hero-bottle {
-    width: calc(100% + var(--pad) * 2); margin: 8px calc(var(--pad) * -1) 0;
-    aspect-ratio: 1 / 1; object-fit: cover; object-position: 76% 100%;
-  }
 
-  /* Bandeau de réassurance : 3 colonnes égales */
-  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 18px 16px; text-align: center; }
-  .trust span { white-space: normal; font-size: 9px; letter-spacing: 1.2px; line-height: 14px; }
 
   /* Carrousels au doigt */
   [data-carousel] {
@@ -642,8 +601,6 @@ a.btn { display: inline-block; text-align: center; }
   .sticky-name { font-size: 16px; white-space: nowrap; }
 }
 @media (max-width: 1024px) {
-  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
-  .trust .dot { display: none; }
 }
 @media (max-width: 720px) { .product-intro { font-size: 14px; line-height: 23px; margin-bottom: 32px; } }
 
@@ -806,8 +763,7 @@ a.btn { display: inline-block; text-align: center; }
 .intro .hero h1 .line:nth-child(3) { animation-delay: 180ms; }
 .intro .hero h1 .line:nth-child(4) { animation-delay: 270ms; }
 .intro .hero-cta { animation: fade 700ms var(--ease-enter) 520ms both; }
-.intro .hero-bottle { animation: settle 1400ms var(--ease-expo) 120ms both; transform-origin: 70% 100%; }
-.intro .hero-botanical { animation: fade 1600ms linear both; }
+.intro .hero-photo { animation: settle 1400ms var(--ease-expo) 120ms both; }
 
 /* 2. Apparitions au défilement (galerie, La Maison, Journal) */
 .reveal-pending > * { opacity: 0; transform: translateY(16px); }
@@ -854,11 +810,26 @@ a.btn { display: inline-block; text-align: center; }
 
 /* Réduire les animations : plus de déplacements, on garde les fondus et les retours d'état */
 @media (prefers-reduced-motion: reduce) {
-  .intro .hero h1 .line, .intro .hero-bottle, .intro .hero-cta { animation: fade 400ms ease both; }
+  .intro .hero h1 .line, .intro .hero-photo, .intro .hero-cta { animation: fade 400ms ease both; }
   .reveal-pending > * { opacity: 1; transform: none; }
   .cart-panel { transition: none; }
   .mobile-menu, .mobile-menu.is-open { transform: none; }
   .frame img, .post-media img, .maison-media img { transition: none; }
   @media (hover: hover) { .frame:hover img, a.post:hover .post-media img { transform: none; } }
   .btn:active, .chip:active, .qty button:active { transform: none; }
+}
+
+/* Bannière : tablette et mobile */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr 1fr; min-height: 560px; }
+  .hero-text { padding: 64px 40px 64px var(--pad); gap: 36px; }
+  .hero h1 { font-size: clamp(32px, 4.4vw, 46px); line-height: 1; }
+}
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; min-height: 0; }
+  .hero-text { padding: 48px var(--pad) 40px; gap: 28px; }
+  .hero h1 { font-size: clamp(38px, 11vw, 56px); }
+  .hero-media { aspect-ratio: 1 / 1; }
+  .hero-photo { object-position: 62% 30%; }
+  .btn-hero { width: 100%; justify-content: center; }
 }
