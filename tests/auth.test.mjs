@@ -205,3 +205,16 @@ test('commande : validation serveur des coordonnées, du pays et des CGV', async
   r = await (await router.POST(req({ items, customer: { ...good, firstName: '<script>' }, acceptTerms: true }))).json();
   assert.ok(r.fields.firstName);
 });
+
+test('confirmation : détail visible seulement avec le bon secret de paiement', async () => {
+  const crypto = await import('node:crypto');
+  const secret = 'pi_TEST123_secret_abcDEF';
+  fake.kv.set('pisecret:pi_TEST123', crypto.createHash('sha256').update(secret).digest('hex'));
+  fake.kv.set('pi:pi_TEST123', 'MA-10001');
+  fake.kv.set('order:MA-10001', JSON.stringify({ number: 'MA-10001', name: 'Claire Martin', email: 'claire@exemple.fr', status: 'confirmee', items: [{ name: 'Crème d’Ararat', quantity: 1, amount: 18500 }], total: 18500, shipping: { line1: '1 rue A', postal_code: '75001', city: 'Paris', country: 'FR' } }));
+  const url = (s) => new Request(`${ORIGIN}/api/order/confirmation?payment_intent=pi_TEST123&secret=${encodeURIComponent(s)}`);
+  const ok = await (await router.GET(url(secret))).json();
+  assert.equal(ok.order.number, 'MA-10001'); assert.equal(ok.order.firstName, 'Claire');
+  assert.equal((await router.GET(url('pi_TEST123_secret_faux'))).status, 404);
+  assert.equal((await router.GET(url('autre'))).status, 400);
+});

@@ -8,7 +8,8 @@ import * as checkout from './_routes/checkout.js';
 import * as contact from './_routes/contact.js';
 import * as health from './_routes/health.js';
 import * as newsletter from './_routes/newsletter.js';
-import * as order from './_routes/order.js';
+import * as orderTrack from './_routes/order/track.js';
+import * as orderConfirmation from './_routes/order/confirmation.js';
 import * as paymentIntent from './_routes/payment-intent.js';
 import * as stripeWebhook from './_routes/stripe-webhook.js';
 import * as authRegister from './_routes/auth/register.js';
@@ -29,7 +30,9 @@ export const ROUTES = {
   contact,
   health,
   newsletter,
-  order,
+  order: orderTrack, // ancienne adresse, conservée
+  'order/track': orderTrack,
+  'order/confirmation': orderConfirmation,
   'payment-intent': paymentIntent,
   'stripe-webhook': stripeWebhook,
   'auth/register': authRegister,

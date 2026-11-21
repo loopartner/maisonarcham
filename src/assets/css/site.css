@@ -479,3 +479,25 @@ select.in { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w
   .ck-sum { position: static; padding: 24px 20px; }
   .ck-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== Confirmation (maquette 06) ===== */
+.conf { max-width: 1120px; margin: 0 auto; padding: 110px 32px 140px; }
+.conf-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; margin-bottom: 88px; }
+.conf-h { font-family: var(--serif); font-weight: 300; font-size: clamp(48px, 5.4vw, 80px); line-height: 1; }
+.conf-lead { max-width: 540px; font-size: 16px; }
+.conf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 64px; }
+.conf-card { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
+.conf-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.conf-name { font-size: 22px; line-height: 1.2; }
+.conf-var { font-size: 13px; }
+.conf-sep { border-top: 1px solid var(--sable); padding-top: 14px; }
+.conf-total { display: flex; justify-content: space-between; align-items: baseline; }
+.conf-total .serif { font-size: 30px; }
+.conf-addr { font-size: 15px; line-height: 1.8; }
+.conf-next { background: var(--marron); color: var(--blanc-casse); padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+.conf-next .eyebrow { color: var(--sable); }
+.conf-next ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; font-size: 14px; line-height: 1.6; }
+.conf-next li { display: flex; gap: 14px; }
+.conf-next .serif { font-size: 22px; line-height: 1.2; }
+.conf-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+@media (max-width: 600px) { .conf { padding: 72px 20px 96px; } .conf-head { margin-bottom: 56px; } }
