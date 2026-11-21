@@ -852,3 +852,5 @@ a.btn { display: inline-block; text-align: center; }
 @media (max-width: 720px) { .product-intro { text-align: center; } }
 .product-buy .btn { background: #241a16; color: #f8f6f2; }
 .product-buy .btn:hover { background: #3a2b24; }
+/* La Maison : photo du flacon, cadrée sur l'étiquette */
+.maison-media img.maison-photo { object-position: 66% 45%; }
