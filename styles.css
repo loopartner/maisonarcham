@@ -832,3 +832,6 @@ a.btn { display: inline-block; text-align: center; }
   .hero-photo { object-position: 62% 30%; }
   .btn-hero { width: 100%; justify-content: center; }
 }
+
+/* Section Crème d'Ararat : espace réduit entre la bannière et le titre */
+.product { padding-top: clamp(40px, 3.4vw, 64px); }
