@@ -115,6 +115,7 @@ ul { list-style: none; }
 
 /* Produit */
 .product { padding: 128px var(--pad); display: flex; flex-direction: column; gap: 64px; }
+.product-eyebrow { color: #4a2f22; }
 .product-head { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
 .product-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding-top: 16px; }
 .frame { height: 500px; border: 1px solid rgba(214,214,210,.5); overflow: hidden; background: var(--mist); }
