@@ -1,0 +1,61 @@
+---
+import { useT, path, LOCALES, LOCALE_NAMES } from '../i18n/index.js';
+import { getProducts, getMainProduct, loc } from '../lib/data.js';
+import { fmtEuros } from '../i18n/index.js';
+interface Props { lang: 'fr' | 'en'; nav?: string; alternates: Record<string, string> }
+const { lang, nav, alternates } = Astro.props;
+const t = useT(lang);
+const main = await getMainProduct();
+const from = Math.min(...(await getProducts()).map((p) => p.price));
+const links = [['home', t('nav.home')], ['parfum', t('nav.parfum')], ['journal', t('nav.journal')], ['maison', t('nav.maison')]];
+---
+<header class="hd">
+  <div class="hd-bar">
+    <div class="hd-left">
+      <button class="hd-ico hd-burger" type="button" aria-label={t('nav.openMenu')} aria-expanded="false" aria-controls="menu-mobile" data-menu-open>
+        <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><path d="M0 1h22M0 7h22M0 13h14" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+      <a class="hd-logo" href={path(lang, 'home')}>MAISON ARCHAM</a>
+    </div>
+    <nav class="hd-nav" aria-label={t('nav.main')}>
+      {links.map(([k, label]) => <a href={path(lang, k)} aria-current={nav === k ? 'page' : undefined}>{label}</a>)}
+    </nav>
+    <div class="hd-right">
+      <details class="lang" data-lang-menu>
+        <summary aria-label={t('nav.language')}>{lang.toUpperCase()}<svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.1"/></svg></summary>
+        <ul class="lang-list">
+          {LOCALES.map((l) => <li><a href={alternates[l] || path(l, 'home')} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LOCALE_NAMES[l]}</a></li>)}
+        </ul>
+      </details>
+      <a class="hd-ico hd-acc" href={path(lang, 'connexion')} aria-label={t('nav.account')}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="6.5" r="3.6" stroke="currentColor" stroke-width="1.1"/><path d="M3 18c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4" stroke="currentColor" stroke-width="1.1"/></svg>
+      </a>
+      <a class="hd-ico" href={path(lang, 'panier')} aria-label={t('nav.cart', { n: 0 })} data-cart-link>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 6.5h13l-1 11h-11z" stroke="currentColor" stroke-width="1.1"/><path d="M7 6.5V5a3 3 0 016 0v1.5" stroke="currentColor" stroke-width="1.1"/></svg>
+        <span class="hd-count" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </div>
+  <div class="hd-m" id="menu-mobile" role="dialog" aria-modal="true" aria-label={t('nav.menu')} hidden>
+    <div class="hd-m-top">
+      <a class="hd-m-logo" href={path(lang, 'home')}>MAISON ARCHAM</a>
+      <button class="hd-ico" type="button" aria-label={t('nav.closeMenu')} data-menu-close>
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+    <nav class="hd-m-nav" aria-label={t('nav.main')}>
+      {links.map(([k, label], i) => <a href={path(lang, k)}>{label} <span>{String(i + 1).padStart(2, '0')}</span></a>)}
+    </nav>
+    <a class="hd-m-card" href={path(lang, 'parfum')}>
+      <span class="hd-m-thumb"><img src={(main.images || [])[0]} alt="" width="64" height="80" loading="lazy"></span>
+      <span><span class="hd-m-pname">{loc(main, 'name', lang)}</span><span class="hd-m-pmeta">{t('nav.from', { price: fmtEuros(lang, from) })}</span></span>
+    </a>
+    <nav class="hd-m-foot" aria-label={t('nav.secondary')}>
+      <a href={path(lang, 'connexion')}>{t('nav.account')}</a>
+      <a href={path(lang, 'panier')}>{t('nav.cartPlain')}</a>
+      <a href={path(lang, 'newsletter')}>{t('nav.newsletter')}</a>
+      <a href={`${path(lang, 'aide')}#contact`}>{t('nav.contact')}</a>
+      <div class="hd-m-lang">{LOCALES.map((l) => <a href={alternates[l] || path(l, 'home')} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LOCALE_NAMES[l]}</a>)}</div>
+    </nav>
+  </div>
+</header>

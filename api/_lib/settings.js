@@ -10,6 +10,10 @@ export function defaultProducts() {
   return Object.entries(PRODUCTS).map(([id, p]) => ({
     id, name: p.name.replace(/'/g, '’'), kind: 'Extrait de parfum', volume: (p.variant.split('·').pop() || '').trim(),
     tagline: 'Une signature gourmande, élégante et enveloppante.',
+    taglineEn: 'A gourmand, elegant and enveloping signature.',
+    descriptionEn: 'A refined vanilla with caramelised accents, conceived to offer a subtle and sophisticated indulgence.',
+    familyEn: 'Gourmand · Vanilla · Musky', sillageEn: 'Warm · Enveloping · Elegant', kindEn: 'Extrait de parfum',
+    notesEn: { top: ['Caramel', 'Powdery', 'Honey'], heart: ['Madagascar vanilla', 'Tonka bean'], base: ['White musk'] },
     description: 'Une vanille raffinée aux accents caramélisés, pensée pour offrir une gourmandise subtile et sophistiquée.',
     family: 'Gourmande · Vanillée · Musquée', sillage: 'Chaleureux · Enveloppant · Élégant',
     notes: { top: ['Caramel', 'Poudrée', 'Miel'], heart: ['Vanille de Madagascar', 'Fève de tonka'], base: ['Musc blanc'] },

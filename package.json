@@ -4,8 +4,12 @@
   "type": "module",
   "engines": { "node": "22.x" },
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "astro build && node scripts/check-build.mjs",
     "test": "node --test tests/*.test.mjs",
-    "dev": "node scripts/build.mjs && node tests/dev-server.mjs"
+    "dev": "npm run build && node tests/dev-server.mjs"
+  },
+  "dependencies": {
+    "astro": "7.4.7",
+    "sharp": "0.35.5"
   }
 }

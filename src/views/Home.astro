@@ -1,0 +1,126 @@
+---
+import Site from '../layouts/Site.astro';
+import Img from '../components/Img.astro';
+import JournalCard from '../components/JournalCard.astro';
+import { useT, path, fmtEuros } from '../i18n/index.js';
+import { getMainProduct, getArticles, getPages, variantOf, loc } from '../lib/data.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+const p = await getMainProduct();
+const notes = lang === 'en' && p.notesEn ? p.notesEn : p.notes;
+const variant = variantOf(lang === 'en' ? { ...p, kind: p.kindEn || p.kind } : p);
+const articles = (await getArticles(lang)).slice(0, 3);
+const nl = (await getPages()).newsletter;
+const nlt = (k) => (lang === 'en' ? nl[`${k}En`] || t(`home.nl.${k}`) : nl[k]);
+---
+<Site lang={lang} route="home" nav="home" description={t('home.description')}>
+<section class="hero">
+  <div class="hero-visual zoom">
+    <Img src="/assets/img/flacon-hero.webp" alt={t('home.heroAlt')} sizes="(max-width: 700px) 100vw, 50vw" priority />
+    <span class="eyebrow hero-tag">{t('home.heroTag')}</span>
+    <span class="eyebrow hero-foot">Nº 01 — {variant}</span>
+  </div>
+  <div class="hero-text">
+    <p class="eyebrow muted">{t('home.eyebrow')}</p>
+    <h1 class="hero-title" set:html={t('home.title')} />
+    <p class="hero-lead">{t('home.lead', { name: loc(p, 'name', lang) })}</p>
+    <div class="row-actions">
+      <a class="btn" href={path(lang, 'parfum')}>{t('home.discover')} <span aria-hidden="true">→</span></a>
+      <a class="link-ed" href={path(lang, 'maison')}>{t('home.story')}</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap split">
+  <div class="split-img zoom ratio-45 reveal"><Img src={(p.images || [])[0]} alt={t('home.bottleAlt')} sizes="(max-width: 700px) 100vw, 50vw" /></div>
+  <div class="split-text reveal">
+    <p class="eyebrow muted">{t('home.perfume')}</p>
+    <h2 class="t-xxl">{loc(p, 'name', lang)}</h2>
+    <p class="serif t-quote">{loc(p, 'tagline', lang)}</p>
+    <p class="body-l">{t('home.perfumeText', { name: loc(p, 'name', lang) })}</p>
+    <dl class="facts">
+      <div><dt class="eyebrow muted">{t('home.family')}</dt><dd>{loc(p, 'family', lang)}</dd></div>
+      <div><dt class="eyebrow muted">{t('home.size')}</dt><dd>{variant}</dd></div>
+    </dl>
+    <div class="row-actions">
+      <span class="serif t-price"><span data-price-of={p.id}>{fmtEuros(lang, p.price)}</span></span>
+      <button class="btn" type="button" data-add-to-cart={p.id}>{t('home.addToCart')}</button>
+      <a class="link-ed" href={path(lang, 'parfum')}>{t('home.seeProduct')}</a>
+    </div>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="wrap pad-140">
+    <div class="sec-head reveal">
+      <div class="sec-head-main">
+        <p class="eyebrow muted">{t('home.compoEyebrow')}</p>
+        <h2 class="t-xl" set:html={t('home.compoTitle')} />
+      </div>
+      <p class="body-m">{t('home.compoText')}</p>
+    </div>
+    <ol class="pyramid">
+      {[['I', 'top', 'home.top', 'home.topText'], ['II', 'heart', 'home.heart', 'home.heartText'], ['III', 'base', 'home.base', 'home.baseText']].map(([n, k, l, x]) => (
+        <li class="reveal"><p class="eyebrow muted">{n} — {t(l)}</p><p class="serif pyr-notes" set:html={notes[k].map((s) => s.replace(/[&<>]/g, '')).join('<br>')} /><p class="pyr-text">{t(x)}</p></li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="immersive zoom">
+  <Img src="/assets/img/notes-coeur-fond.webp" alt={t('home.immersiveAlt')} sizes="100vw" />
+  <div class="immersive-text reveal">
+    <p class="serif immersive-quote">{t('home.quote')}</p>
+    <p class="eyebrow">{t('home.sillage', { sillage: loc(p, 'sillage', lang) })}</p>
+  </div>
+</section>
+
+<section class="wrap split split-univers">
+  <div class="split-text reveal">
+    <p class="eyebrow muted">{t('nav.maison')}</p>
+    <h2 class="t-xl" set:html={t('home.houseTitle')} />
+    <p class="body-l">{t('home.houseText')}</p>
+    <ol class="values">
+      {['1', '2', '3'].map((i) => <li><span class="serif muted">0{i}</span><div><p class="v-t">{t(`home.v${i}t`)}</p><p class="v-d">{t(`home.v${i}d`)}</p></div></li>)}
+    </ol>
+    <a class="link-ed self-start" href={path(lang, 'maison')}>{t('home.discoverHouse')}</a>
+  </div>
+  <div class="univers-img zoom reveal"><Img src="/assets/img/ararat-paysage.svg" alt={t('home.araratAlt')} width={1600} height={1000} /></div>
+</section>
+
+{articles.length > 0 && (
+<section class="band-white">
+  <div class="wrap pad-140">
+    <div class="sec-head reveal"><h2 class="t-xl">{t('home.journal')}</h2><a class="link-ed" href={path(lang, 'journal')}>{t('home.allArticles')}</a></div>
+    <div class="j-grid">{articles.map((a) => <JournalCard lang={lang} a={a} />)}</div>
+  </div>
+</section>
+)}
+
+<section class="nl-band" id="newsletter">
+  <div class="nl-in">
+    <div class="nl-text reveal">
+      <p class="eyebrow nl-sand">{nlt('eyebrow')}</p>
+      <h2 class="t-l">{nlt('title')}</h2>
+      <p class="nl-sand body-m">{nlt('text')}</p>
+    </div>
+    <div class="nl-form-wrap">
+      <div class="nl-done" data-nl-done data-confirm={nlt('confirm')} hidden>
+        <p class="serif nl-done-t" data-nl-done-title></p>
+        <p class="nl-sand" data-nl-done-text></p>
+      </div>
+      <form class="nl-form" data-newsletter data-source="accueil" novalidate>
+        <label for="nl-email" class="eyebrow nl-sand">{t('form.email')}</label>
+        <div class="nl-row">
+          <input id="nl-email" class="nl-field" name="email" type="email" autocomplete="email" inputmode="email" placeholder={t('form.emailPh')} maxlength="254" required>
+          <button class="btn on-dark" type="submit">{t('nl.subscribe')}</button>
+        </div>
+        <label class="check nl-sand"><input type="checkbox" name="consent"><span>{t('nl.consentA')} <a href={path(lang, 'confidentialite')}>{t('nl.consentLink')}</a>.</span></label>
+        <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="nl-err" role="alert" data-error hidden></p>
+      </form>
+    </div>
+  </div>
+</section>
+</Site>

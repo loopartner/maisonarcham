@@ -1,0 +1,15 @@
+---
+// Image : les photos de src/assets/img sont servies en AVIF/WebP, aux tailles adaptées à l'écran.
+// Les autres (illustrations SVG, médiathèque) sont servies telles quelles depuis /assets/img.
+import { Picture } from 'astro:assets';
+const files = import.meta.glob('/src/assets/img/*.{webp,jpg,jpeg,png}', { eager: true });
+interface Props { src: string; alt?: string; width?: number; height?: number; sizes?: string; widths?: number[]; loading?: 'lazy' | 'eager'; priority?: boolean; class?: string }
+const { src, alt = '', width, height, sizes = '100vw', widths = [480, 800, 1200, 1600], loading = 'lazy', priority = false, class: cls } = Astro.props;
+const name = String(src).split('/').pop();
+const mod = files[`/src/assets/img/${name}`];
+const meta = mod?.default;
+const ws = meta ? widths.filter((w) => w <= meta.width).concat(widths.some((w) => w > meta.width) ? [meta.width] : []) : [];
+---
+{meta
+  ? <Picture src={meta} alt={alt} formats={['avif', 'webp']} fallbackFormat="webp" widths={ws} sizes={sizes} loading={priority ? 'eager' : loading} fetchpriority={priority ? 'high' : undefined} class={cls} />
+  : <img src={src} alt={alt} width={width} height={height} loading={priority ? 'eager' : loading} fetchpriority={priority ? 'high' : undefined} decoding="async" class={cls} />}

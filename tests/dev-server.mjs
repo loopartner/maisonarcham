@@ -6,7 +6,7 @@ import path from 'node:path';
 import { startFakeUpstash } from './fake-upstash.mjs';
 
 const PORT = Number(process.env.PORT || 3000);
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'public');
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'dist');
 const fake = await startFakeUpstash();
 Object.assign(process.env, { KV_REST_API_URL: fake.url, KV_REST_API_TOKEN: 'test-token', SITE_URL: `http://localhost:${PORT}`, ADMIN_EMAILS: process.env.ADMIN_EMAILS || 'admin@maison.test' });
 const { dispatch } = await import('../api/_router.js');

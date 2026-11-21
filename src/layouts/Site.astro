@@ -1,0 +1,19 @@
+---
+// Pages publiques : en-tête, pied de page, mini-panier.
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CartDrawer from '../components/CartDrawer.astro';
+import { useT, path, LOCALES } from '../i18n/index.js';
+const props = Astro.props;
+const { lang, nav, route, slug } = props;
+const t = useT(lang);
+const alternates = props.alternates || (route ? Object.fromEntries(LOCALES.map((l) => [l, path(l, route, slug)])) : {});
+---
+<Base {...props} alternates={alternates}>
+  <a class="skip" href="#contenu">{t('common.skip')}</a>
+  <Header lang={lang} nav={nav} alternates={alternates} />
+  <main id="contenu"><slot /></main>
+  <Footer lang={lang} />
+  <CartDrawer lang={lang} />
+</Base>
