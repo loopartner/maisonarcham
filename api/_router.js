@@ -10,6 +10,7 @@ import * as health from './_routes/health.js';
 import * as newsletter from './_routes/newsletter/subscribe.js';
 import * as newsletterConfirm from './_routes/newsletter/confirm.js';
 import * as newsletterUnsubscribe from './_routes/newsletter/unsubscribe.js';
+import * as newsletterOneClick from './_routes/newsletter/one-click.js';
 import * as orderTrack from './_routes/order/track.js';
 import * as orderConfirmation from './_routes/order/confirmation.js';
 import * as paymentIntent from './_routes/payment-intent.js';
@@ -23,6 +24,10 @@ import * as authReset from './_routes/auth/reset.js';
 import * as authVerify from './_routes/auth/verify.js';
 import * as authResendVerification from './_routes/auth/resend-verification.js';
 import * as cartQuote from './_routes/cart/quote.js';
+import * as admin_customers from './_routes/admin/customers.js';
+import * as admin_customer from './_routes/admin/customer.js';
+import * as admin_subscribers from './_routes/admin/subscribers.js';
+import * as admin_campaign from './_routes/admin/campaign.js';
 import * as admin_session from './_routes/admin/session.js';
 import * as admin_dashboard from './_routes/admin/dashboard.js';
 import * as admin_orders from './_routes/admin/orders.js';
@@ -48,6 +53,7 @@ export const ROUTES = {
   newsletter, // POST /api/newsletter
   'newsletter/confirm': newsletterConfirm,
   'newsletter/unsubscribe': newsletterUnsubscribe,
+  'newsletter/one-click': newsletterOneClick,
   order: orderTrack, // ancienne adresse, conservée
   'order/track': orderTrack,
   'order/confirmation': orderConfirmation,
@@ -62,6 +68,10 @@ export const ROUTES = {
   'auth/verify': authVerify,
   'auth/resend-verification': authResendVerification,
   'cart/quote': cartQuote,
+  'admin/customers': admin_customers,
+  'admin/customer': admin_customer,
+  'admin/subscribers': admin_subscribers,
+  'admin/campaign': admin_campaign,
   'admin/session': admin_session,
   'admin/dashboard': admin_dashboard,
   'admin/orders': admin_orders,

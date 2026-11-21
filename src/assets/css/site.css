@@ -787,3 +787,16 @@ select.in { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 @media (max-width: 960px) { .admin-main { padding-top: 24px; } }
 .linkbtn { border: none; background: none; padding: 0; font: inherit; color: var(--brun); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .dw-name { font-size: 24px; line-height: 1.2; }
+.adm-inline-stats { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--gris-texte); align-items: baseline; }
+.adm-inline-stats strong { font-weight: 300; font-size: 28px; color: var(--brun); margin-right: 4px; }
+.dw-kpis { flex-direction: row; flex-wrap: wrap; gap: 24px; }
+.dw-kpis > div { flex: 1 1 120px; display: flex; flex-direction: column; gap: 6px; }
+.dw-kpis .kpi-v { font-size: 26px; }
+.adm-stack { display: flex; flex-direction: column; gap: 18px; }
+.adm-stack .field { max-width: none; }
+.adm-textarea { min-height: 200px; padding: 14px 16px; resize: vertical; line-height: 1.6; }
+.nl-preview { background: var(--blanc-casse); border: 1px solid var(--sable); padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+.nl-preview-logo { font-family: var(--serif); letter-spacing: .2em; font-size: 16px; text-align: center; border-bottom: 1px solid var(--sable); padding-bottom: 16px; }
+.nl-preview-t { font-size: 28px; line-height: 1.2; }
+.nl-preview-b { font-size: 14px; line-height: 1.7; color: var(--marron); display: flex; flex-direction: column; gap: 12px; }
+.nl-preview-f { font-size: 11px; color: var(--gris-texte); border-top: 1px solid var(--sable); padding-top: 12px; }

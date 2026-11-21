@@ -94,3 +94,27 @@ test('export CSV : formules neutralisées (anti-injection)', async () => {
   assert.ok(csv.includes(`"'=HYPERLINK(""http://x"")"`), 'la formule est préfixée');
   assert.ok(!/;=HYPERLINK/.test(csv));
 });
+
+test('clients : agrégés par e-mail (comptes et sans compte), réservés aux bons rôles', async () => {
+  assert.equal((await call('GET', 'admin/customers', null, C.editor)).status, 403);
+  const r = await (await call('GET', 'admin/customers', null, C.orders)).json();
+  const emails = r.customers.map((c) => c.email);
+  assert.ok(emails.includes('claire@exemple.fr') && emails.includes('client@maison.test'));
+  assert.ok(!emails.includes('patronne@maison.test'), 'l’équipe n’apparaît pas parmi les clients');
+  const d = await (await call('GET', 'admin/customer?email=claire@exemple.fr', null, C.orders)).json();
+  assert.equal(d.customer.orders.length, 1); assert.equal(d.customer.account, false);
+});
+
+test('newsletter : liste, désinscription, campagne de test ; interdite à la logistique', async () => {
+  assert.equal((await call('GET', 'admin/subscribers', null, C.orders)).status, 403);
+  fake.kv.set('newsletter', new Set(['a@exemple.fr', 'claire@exemple.fr']));
+  let r = await (await call('GET', 'admin/subscribers', null, C.editor)).json();
+  assert.equal(r.stats.active, 2);
+  await call('POST', 'admin/subscribers', { email: 'a@exemple.fr' }, C.editor);
+  r = await (await call('GET', 'admin/subscribers?status=desinscrit', null, C.editor)).json();
+  assert.deepEqual(r.subscribers.map((s) => s.email), ['a@exemple.fr']);
+  const camp = await (await call('GET', 'admin/campaign', null, C.editor)).json();
+  assert.equal(camp.audiences.customers, 1);
+  const t = await (await call('POST', 'admin/campaign', { subject: 'Lettre de décembre', body: 'Bonjour <script>x</script>', mode: 'test' }, C.editor)).json();
+  assert.equal(t.sent, 1);
+});
