@@ -21,10 +21,10 @@
   <div class="split-text">
     <p class="eyebrow muted">Le parfum</p>
     <h2 class="t-xxl">{{product.name}}</h2>
-    <p class="serif t-quote">Une signature gourmande, élégante et enveloppante.</p>
+    <p class="serif t-quote">{{product.tagline}}</p>
     <p class="body-l">{{product.name}} révèle une vanille raffinée aux accents caramélisés, pensée pour offrir une gourmandise subtile et sophistiquée. Une fragrance riche et réconfortante, où la gourmandise reste parfaitement maîtrisée.</p>
     <dl class="facts">
-      <div><dt class="eyebrow muted">Famille</dt><dd>Gourmande · Vanillée · Musquée</dd></div>
+      <div><dt class="eyebrow muted">Famille</dt><dd>{{product.family}}</dd></div>
       <div><dt class="eyebrow muted">Contenance</dt><dd>{{product.variant}}</dd></div>
     </dl>
     <div class="row-actions">
@@ -45,9 +45,9 @@
       <p class="body-m">L’ouverture associe caramel, cassonade et miel dans un accord chaleureux et délicatement ambré. Le musc blanc dépose enfin un voile doux sur la peau.</p>
     </div>
     <ol class="pyramid">
-      <li><p class="eyebrow muted">I — Notes de tête</p><p class="serif pyr-notes">Caramel<br>Poudrée<br>Miel</p><p class="pyr-text">Une ouverture chaleureuse et délicatement ambrée.</p></li>
-      <li><p class="eyebrow muted">II — Notes de cœur</p><p class="serif pyr-notes">Vanille de Madagascar<br>Fève de tonka</p><p class="pyr-text">Rondeur, profondeur et une facette légèrement poudrée.</p></li>
-      <li><p class="eyebrow muted">III — Notes de fond</p><p class="serif pyr-notes">Musc blanc</p><p class="pyr-text">Un voile doux et enveloppant déposé sur la peau.</p></li>
+      <li><p class="eyebrow muted">I — Notes de tête</p><p class="serif pyr-notes">{{product.top}}</p><p class="pyr-text">Une ouverture chaleureuse et délicatement ambrée.</p></li>
+      <li><p class="eyebrow muted">II — Notes de cœur</p><p class="serif pyr-notes">{{product.heart}}</p><p class="pyr-text">Rondeur, profondeur et une facette légèrement poudrée.</p></li>
+      <li><p class="eyebrow muted">III — Notes de fond</p><p class="serif pyr-notes">{{product.base}}</p><p class="pyr-text">Un voile doux et enveloppant déposé sur la peau.</p></li>
     </ol>
   </div>
 </section>
@@ -90,12 +90,12 @@
 <section class="nl-band" id="newsletter">
   <div class="nl-in">
     <div class="nl-text">
-      <p class="eyebrow nl-sand">La Correspondance</p>
-      <h2 class="t-l">Recevoir les lettres de la Maison</h2>
-      <p class="nl-sand body-m">Avant-premières des séries limitées, invitations privées et récits du Journal. Une lettre par mois, jamais davantage.</p>
+      <p class="eyebrow nl-sand">{{nl.eyebrow}}</p>
+      <h2 class="t-l">{{nl.title}}</h2>
+      <p class="nl-sand body-m">{{nl.text}}</p>
     </div>
     <div class="nl-form-wrap">
-      <div class="nl-done" data-nl-done hidden>
+      <div class="nl-done" data-nl-done data-confirm="{{nl.confirm}}" hidden>
         <p class="serif nl-done-t" data-nl-done-title>Merci.</p>
         <p class="nl-sand" data-nl-done-text></p>
       </div>

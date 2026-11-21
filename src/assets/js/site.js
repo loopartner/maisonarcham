@@ -122,7 +122,7 @@
         const t = done.querySelector('[data-nl-done-title]'), x = done.querySelector('[data-nl-done-text]'), s = done.querySelector('[data-nl-email]');
         const texts = {
           pending: ['Bienvenue dans la correspondance.', 'Un e-mail de confirmation vient d’être envoyé à ' + email + '. Pensez à valider votre inscription.'],
-          subscribed: ['Merci, votre inscription est confirmée.', 'La prochaine lettre vous parviendra à ' + email + '.'],
+          subscribed: [(done && done.dataset.confirm) || 'Merci, votre inscription est confirmée.', 'La prochaine lettre vous parviendra à ' + email + '.'],
           already: ['Vous êtes déjà inscrit.', 'L’adresse ' + email + ' reçoit déjà les lettres de la Maison.'],
         }[r.status] || ['Merci.', ''];
         if (t) t.textContent = texts[0];

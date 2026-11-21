@@ -1,9 +1,10 @@
 // Données gérées depuis le back-office : fiches produits, livraison, réglages de la maison.
 // Tant que rien n'a été enregistré en base, les valeurs par défaut du code (catalogue.js) s'appliquent.
 import { PRODUCTS, SHIPPING } from './catalogue.js';
-import { hasStore, getJson, setJson } from './store.js';
+import { hasStore, getJson, setJson, redis } from './store.js';
+import { DEFAULT_ARTICLES, DEFAULT_PAGES } from './content-default.js';
 
-const KEYS = { products: 'cms:products', shipping: 'cms:shipping', site: 'cms:site' };
+const KEYS = { products: 'cms:products', shipping: 'cms:shipping', site: 'cms:site', articles: 'cms:articles', pages: 'cms:pages' };
 
 export function defaultProducts() {
   return Object.entries(PRODUCTS).map(([id, p]) => ({
@@ -61,3 +62,18 @@ export async function getSite() {
   return { ...DEFAULT_SITE, ...(saved || {}), company: { ...DEFAULT_SITE.company, ...(saved?.company || {}) }, notifications: { ...DEFAULT_SITE.notifications, ...(saved?.notifications || {}) } };
 }
 export const saveSite = (v) => setJson(KEYS.site, v);
+
+export async function getArticles() {
+  const saved = hasStore() ? await getJson(KEYS.articles).catch(() => null) : null;
+  return Array.isArray(saved) ? saved : DEFAULT_ARTICLES.map((a) => ({ ...a }));
+}
+export const saveArticles = (list) => setJson(KEYS.articles, list);
+
+export async function getPages() {
+  const saved = hasStore() ? await getJson(KEYS.pages).catch(() => null) : null;
+  return { maison: { sections: { ...DEFAULT_PAGES.maison.sections, ...(saved?.maison?.sections || {}) } }, newsletter: { ...DEFAULT_PAGES.newsletter, ...(saved?.newsletter || {}) } };
+}
+export const savePages = (v) => setJson(KEYS.pages, v);
+
+// Contenu modifié depuis la dernière publication du site ?
+export async function markDirty(what) { await redis('HSET', 'cms:dirty', what, new Date().toISOString()); }

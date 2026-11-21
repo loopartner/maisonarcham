@@ -69,7 +69,28 @@
     return s;
   }
 
-  window.MAAdmin = { $: $, $$: $$, h: h, euros: euros, date: date, time: time, pct: pct, badge: badge, fieldErrors: fieldErrors, flash: flash, drawer: drawer, session: session, guard: guard };
+  // Bandeau de publication (contenu et fiches produits) : <div data-publish-bar></div>
+  async function publishBar() {
+    const bar = $('[data-publish-bar]'); if (!bar) return;
+    const r = await MA.api('/api/admin/publish'); if (!r.ok) { bar.hidden = true; return; }
+    const LABELS = { journal: 'Journal', produits: 'fiches produits', pages: 'pages' };
+    const dirty = Object.keys(r.dirty || {});
+    const msg = h('p', null, dirty.length ? 'Modifications en attente de publication : ' + dirty.map(function (d) { return LABELS[d] || d; }).join(', ') + '. Les prix et le stock s’appliquent déjà aux commandes.' : 'Le site est à jour.' + (r.last ? ' Dernière publication le ' + time(r.last.at) + ' par ' + r.last.by + '.' : ''));
+    const btn = h('button', { type: 'button', class: 'adm-btn primary', disabled: !dirty.length || !r.ready }, 'Publier le site');
+    const out = h('p', { class: 'adm-flash', role: 'status', hidden: true });
+    btn.addEventListener('click', async function () {
+      if (!confirm('Publier les modifications sur le site ? La mise en ligne prend environ une minute.')) return;
+      MA.busy(btn, true, 'Publication…');
+      const x = await MA.api('/api/admin/publish', { method: 'POST', body: {} });
+      MA.busy(btn, false);
+      if (!x.ok) { flash(out, x.error, false); return; }
+      flash(out, '✓ Publication lancée : le site sera à jour dans une minute environ.'); btn.disabled = true;
+    });
+    bar.className = 'publish-bar' + (dirty.length ? ' dirty' : ''); bar.hidden = false;
+    bar.replaceChildren(msg, r.ready ? btn : h('p', { class: 'adm-muted' }, 'Publication automatique non configurée (variable VERCEL_DEPLOY_HOOK).'), out);
+  }
+
+  window.MAAdmin = { $: $, $$: $$, h: h, euros: euros, date: date, time: time, pct: pct, badge: badge, fieldErrors: fieldErrors, flash: flash, drawer: drawer, session: session, guard: guard, publishBar: publishBar };
 
   document.addEventListener('DOMContentLoaded', async function () {
     const toggle = $('[data-an-toggle]'), body = document.getElementById('an-nav');

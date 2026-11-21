@@ -4,13 +4,10 @@
 <section class="pdp">
   <div class="pdp-gallery">
     <div class="pdp-thumbs" role="group" aria-label="Photos du parfum">
-      <button class="pdp-thumb" type="button" aria-pressed="true" aria-label="Flacon sur fond sable" data-img="/assets/img/flacon-produit.webp" data-alt="Flacon Crème d’Ararat sur fond sable"><img src="/assets/img/flacon-produit.webp" alt="" width="84" height="105"></button>
-      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Flacon sur pierre, caramel et vanille" data-img="/assets/img/flacon-hero.webp" data-alt="Flacon Crème d’Ararat sur une pierre, entouré de caramel et de vanille"><img src="/assets/img/flacon-hero.webp" alt="" width="84" height="105"></button>
-      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Matières : vanille et tonka" data-img="/assets/img/notes-coeur-fond.webp" data-alt="Gousses de vanille et fèves de tonka"><img src="/assets/img/notes-coeur-fond.webp" alt="" width="84" height="105"></button>
-      <button class="pdp-thumb" type="button" aria-pressed="false" aria-label="Matières : miel et caramel" data-img="/assets/img/notes-tete.webp" data-alt="Rayon de miel et caramel sur une pierre"><img src="/assets/img/notes-tete.webp" alt="" width="84" height="105"></button>
+<!--product-thumbs-->
     </div>
     <div class="pdp-main zoom">
-      <img src="/assets/img/flacon-produit.webp" alt="Flacon Crème d’Ararat sur fond sable" width="1000" height="1250" data-main-img fetchpriority="high">
+      <img src="{{product.image}}" alt="{{product.name}} — photo 1" width="1000" height="1250" data-main-img fetchpriority="high">
       <span class="eyebrow pdp-badge">Édition limitée</span>
     </div>
   </div>
@@ -18,9 +15,9 @@
   <div class="pdp-info">
     <p class="eyebrow muted">Maison Archam — Extrait de parfum</p>
     <h1 class="pdp-title">{{product.name}}</h1>
-    <p class="serif pdp-tag">Une signature gourmande, élégante et enveloppante.</p>
+    <p class="serif pdp-tag">{{product.tagline}}</p>
     <p class="serif t-price" data-price>{{product.price}}</p>
-    <p class="body-l">Une vanille raffinée aux accents caramélisés, pensée pour offrir une gourmandise subtile et sophistiquée. {{product.name}} laisse un sillage chaleureux, crémeux et élégant.</p>
+    <p class="body-l">{{product.description}}</p>
     <fieldset class="sizes">
       <legend class="eyebrow muted">Contenance</legend>
       <div class="sizes-row"><!--size-options--></div>
@@ -45,7 +42,7 @@
       </details>
       <details class="acc" name="pdp">
         <summary>Famille olfactive &amp; sillage<span aria-hidden="true"></span></summary>
-        <p>Famille : Gourmande · Vanillée · Musquée<br>Sillage : Chaleureux · Enveloppant · Élégant</p>
+        <p>Famille : {{product.family}}<br>Sillage : {{product.sillage}}</p>
       </details>
       <details class="acc" name="pdp">
         <summary>Livraison &amp; retours<span aria-hidden="true"></span></summary>
@@ -58,11 +55,11 @@
 <section class="band-white">
   <div class="wrap pad-140">
     <p class="eyebrow muted">Pyramide olfactive</p>
-    <h2 class="t-xl pyr-h">Gourmande · Vanillée · <em>Musquée</em></h2>
+    <h2 class="t-xl pyr-h">{{product.family}}</h2>
     <ol class="pyramid">
-      <li><p class="eyebrow muted">Notes de tête</p><p class="serif pyr-notes">Caramel<br>Poudrée<br>Miel</p><p class="pyr-text">Caramel, cassonade et miel : un accord chaleureux et délicatement ambré.</p></li>
-      <li><p class="eyebrow muted">Notes de cœur</p><p class="serif pyr-notes">Vanille de Madagascar<br>Fève de tonka</p><p class="pyr-text">Avec la coumarine, rondeur, profondeur et une facette légèrement poudrée.</p></li>
-      <li><p class="eyebrow muted">Notes de fond</p><p class="serif pyr-notes">Musc blanc</p><p class="pyr-text">Un voile doux et enveloppant déposé sur la peau.</p></li>
+      <li><p class="eyebrow muted">Notes de tête</p><p class="serif pyr-notes">{{product.top}}</p><p class="pyr-text">Caramel, cassonade et miel : un accord chaleureux et délicatement ambré.</p></li>
+      <li><p class="eyebrow muted">Notes de cœur</p><p class="serif pyr-notes">{{product.heart}}</p><p class="pyr-text">Avec la coumarine, rondeur, profondeur et une facette légèrement poudrée.</p></li>
+      <li><p class="eyebrow muted">Notes de fond</p><p class="serif pyr-notes">{{product.base}}</p><p class="pyr-text">Un voile doux et enveloppant déposé sur la peau.</p></li>
     </ol>
   </div>
 </section>

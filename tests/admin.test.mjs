@@ -118,3 +118,32 @@ test('newsletter : liste, désinscription, campagne de test ; interdite à la lo
   const t = await (await call('POST', 'admin/campaign', { subject: 'Lettre de décembre', body: 'Bonjour <script>x</script>', mode: 'test' }, C.editor)).json();
   assert.equal(t.sent, 1);
 });
+
+test('produits : validation, prix modifié appliqué immédiatement au calcul, refusé à la logistique', async () => {
+  assert.equal((await call('GET', 'admin/products', null, C.orders)).status, 403);
+  const { products } = await (await call('GET', 'admin/products', null, C.editor)).json();
+  const p = products[0];
+  let r = await call('PUT', 'admin/products', { ...p, price: '-3', images: ['/etc/passwd'] }, C.editor);
+  const bad = await r.json(); assert.ok(bad.fields.price && bad.fields.images);
+  r = await call('PUT', 'admin/products', { ...p, price: '195,00', stock: 2, images: p.images }, C.editor);
+  assert.equal(r.status, 200);
+  const q = await (await call('POST', 'cart/quote', { items: [{ id: p.id, qty: 1 }] })).json();
+  assert.equal(q.quote.subtotal, 19500, 'nouveau prix appliqué');
+  const tooMany = await call('POST', 'cart/quote', { items: [{ id: p.id, qty: 3 }] });
+  assert.equal(tooMany.status, 409, 'stock respecté');
+  r = await call('PUT', 'admin/products', { ...p, status: 'draft', images: p.images }, C.editor);
+  assert.equal(r.status, 422, 'au moins une fiche en ligne');
+});
+
+test('articles : texte converti en blocs, balisage retiré du titre, publication non configurée', async () => {
+  const r = await (await call('POST', 'admin/articles', { title: 'Hiver <em>doré</em><script>x</script>', category: 'Parfumerie', excerpt: 'Chapô', image: '/assets/img/flacon-hero.webp', body: 'Premier paragraphe.\n\n## Intertitre\n\n> Une citation\n— La Maison\n\nSuite.', status: 'draft' }, C.editor)).json();
+  assert.equal(r.article.slug, 'hiver-dorex');
+  assert.equal(r.article.title, 'Hiver <em>doré</em>x');
+  assert.deepEqual(r.article.body.map((b) => b.t), ['lead', 'h2', 'quote', 'p']);
+  assert.equal(r.article.body[2].by, 'La Maison');
+  const pub = await call('POST', 'admin/publish', {}, C.editor);
+  assert.equal(pub.status, 503);
+  const st = await (await call('GET', 'admin/publish', null, C.editor)).json();
+  assert.ok(st.dirty.journal && st.dirty.produits);
+  assert.equal((await call('POST', 'admin/publish', {}, C.orders)).status, 403);
+});

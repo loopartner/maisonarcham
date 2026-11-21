@@ -76,7 +76,9 @@ Ajoute automatiquement `KV_REST_API_URL` et `KV_REST_API_TOKEN`.
 ### Autres variables
 | Variable | Exemple | Rôle |
 |---|---|---|
-| `ADMIN_EMAILS` | `direction@maison-archam.fr` | Adresse(s) des administrateurs (adresse confirmée obligatoire). |
+| `ADMIN_EMAILS` | `direction@maison-archam.fr` | Adresse(s) du ou des **propriétaires** du back-office (adresse confirmée obligatoire). |
+| `VERCEL_DEPLOY_HOOK` | `https://api.vercel.com/v1/integrations/deploy/…` | Bouton « Publier le site » du back-office (Vercel → Settings → Git → Deploy Hooks, branche de production). |
+| `NEWSLETTER_SECRET` | longue chaîne aléatoire | Signature des liens de désinscription (facultatif, sinon dérivé du jeton Redis). |
 | `CONTACT_TO_EMAIL` | `atelier@…` | Reçoit les messages du formulaire de contact |
 | `ORDERS_NOTIFY_EMAIL` | `atelier@…` | Reçoit une alerte à chaque commande |
 | `SITE_URL` | `https://maisonarcham.fr` | Adresse du site utilisée dans les liens des e-mails (sinon déduite automatiquement) |
@@ -96,3 +98,20 @@ curl -X POST https://VOTRE-DOMAINE/api/admin-order \
 ## Pas encore fait
 - **Espace client** (connexion / création de compte) : formulaires visuels uniquement. Le suivi se fait par numéro + e-mail, sans compte.
 - **Modifier le prix ou ajouter un produit** : `api/_lib/catalogue.js` (prix serveur) **et** `cart.js` (affichage).
+
+## Back-office
+
+Accès : `/admin`, avec le même formulaire de connexion que les clients. Rôles (Paramètres → Administrateurs) :
+
+| Rôle | Accès |
+|---|---|
+| Propriétaire (`ADMIN_EMAILS`) | Tout |
+| Administrateur | Tout, sauf modifier un propriétaire |
+| Gestion commandes | Tableau de bord, commandes, clients |
+| Éditeur | Tableau de bord, contenu, fiches produits, newsletter |
+
+Prix, stock, livraison et codes promo enregistrés dans l'admin s'appliquent **immédiatement** au calcul des commandes.
+Textes, photos et articles sont intégrés aux pages au moment de la publication (bouton « Publier le site », environ une minute).
+Toutes les actions sensibles sont tracées (journal d'audit : qui, quoi, quand, adresse IP).
+
+**En local** : `npm run dev` lance le site avec une base simulée et un compte de démonstration (admin@maison.test / velours2026).

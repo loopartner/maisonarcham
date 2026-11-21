@@ -63,11 +63,16 @@ async function main() {
   const typo = (t) => String(t).replace(/'/g, '’');
   const euros = (cents) => (cents % 100 ? (cents / 100).toFixed(2).replace('.', ',') : String(cents / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + '\u00a0€';
   const [productId, product] = Object.entries(PRODUCTS)[0];
+  const main = productList[0];
   const catalogue = { maxQty: MAX_QTY, products: Object.fromEntries(Object.entries(PRODUCTS).map(([id, p]) => [id, { name: typo(p.name), variant: p.variant, price: p.price, image: p.image }])) };
   const catalogueJson = JSON.stringify(catalogue).replace(/</g, '\\u003c');
+  const { DEFAULT_ARTICLES, DEFAULT_PAGES, MEDIA } = await import(pathToFileURL(path.join(ROOT, 'api/_lib/content-default.js')).href);
+  for (const m of MEDIA) { await stat(path.join(SRC, m)).catch(() => { throw new Error(`Image de la médiathèque absente : ${m}`); }); }
   const savedArticles = await kvGet('cms:articles');
+  const savedPages = await kvGet('cms:pages');
+  const pagesCfg = { maison: { sections: { ...DEFAULT_PAGES.maison.sections, ...(savedPages?.maison?.sections || {}) } }, newsletter: { ...DEFAULT_PAGES.newsletter, ...(savedPages?.newsletter || {}) } };
   const today = new Date().toISOString().slice(0, 10);
-  const journal = (Array.isArray(savedArticles) ? savedArticles.filter((a) => a.status === 'published' && a.date <= today) : JSON.parse(await read(path.join(SRC, 'content/journal.json'))))
+  const journal = (Array.isArray(savedArticles) ? savedArticles.filter((a) => a.status === 'published' && a.date <= today) : DEFAULT_ARTICLES)
     .sort((a, b) => b.date.localeCompare(a.date));
   console.log(`Journal : ${journal.length} article(s) ${savedArticles ? 'depuis le back-office' : 'du dépôt'}`);
   // Dans le contenu, seul <em> est autorisé (titres) ; tout le reste est échappé.
@@ -86,13 +91,25 @@ async function main() {
     'product.variant': esc(product.variant),
     'product.price': `<span data-price-of="${esc(productId)}">${euros(product.price)}</span>`,
     'product.image': product.image,
+    'product.tagline': esc(main.tagline || ''),
+    'product.description': esc(main.description || ''),
+    'product.family': esc(main.family || ''),
+    'product.sillage': esc(main.sillage || ''),
+    'product.top': (main.notes?.top || []).map(esc).join('<br>'),
+    'product.heart': (main.notes?.heart || []).map(esc).join('<br>'),
+    'product.base': (main.notes?.base || []).map(esc).join('<br>'),
   };
+  const thumbs = (main.images || []).map((src, i) => `<button class="pdp-thumb" type="button" aria-pressed="${i === 0}" aria-label="Photo ${i + 1}" data-img="${esc(src)}" data-alt="${esc(typo(product.name))} — photo ${i + 1}"><img src="${esc(src)}" alt="" width="84" height="105"></button>`).join('\n');
+  const nlVars = { 'nl.eyebrow': pagesCfg.newsletter.eyebrow, 'nl.title': pagesCfg.newsletter.title, 'nl.text': pagesCfg.newsletter.text, 'nl.confirm': pagesCfg.newsletter.confirm };
   const expand = (html) => html
+    .replace(/\{\{(nl\.[a-z]+)\}\}/g, (m, k) => (k in nlVars ? esc(nlVars[k]) : m))
+    .replace(/<!--section:([a-z]+)-->([\s\S]*?)<!--\/section:\1-->/g, (m, id, inner) => (pagesCfg.maison.sections[id] === false ? '' : inner))
     .replace(/\{\{(product\.[a-z]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m))
+    .replace(/<!--product-thumbs-->/g, () => thumbs)
     .replace(/<!--size-options-->/g, () => Object.entries(PRODUCTS).map(([id, p], i) =>
       `<button class="size-opt" type="button" aria-pressed="${i === 0}" data-size="${esc(id)}" data-price="${p.price}">${esc(p.variant.split('·').pop().trim())} — ${euros(p.price)}</button>`).join(''))
     .replace(/<!--journal-cats-->/g, () => jCats.map((c, i) => `<button class="j-cat" type="button" aria-pressed="${i === 0}" data-filter="${esc(c)}">${esc(c)}</button>`).join(''))
-    .replace(/<!--journal-featured-->/g, () => jFeatured(featured))
+    .replace(/<!--journal-featured-->/g, () => (featured ? jFeatured(featured) : ''))
     .replace(/<!--journal-list-->/g, () => journal.filter((a) => a !== featured).map(jListCard).join('\n'))
     .replace(/<!--journal-cards (\d+)-->/g, (_, n) => journal.slice(0, Number(n)).map(journalCard).join('\n'));
 
