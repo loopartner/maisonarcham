@@ -835,3 +835,6 @@ a.btn { display: inline-block; text-align: center; }
 
 /* Section Crème d'Ararat : espace réduit entre la bannière et le titre */
 .product { padding-top: clamp(40px, 3.4vw, 64px); }
+/* Section Crème d'Ararat : espace réduit entre les photos et le texte */
+@media (min-width: 721px) { .product > .carousel-dots { display: none; } }
+@media (max-width: 720px) { .product-buy { margin-top: -12px; } }
