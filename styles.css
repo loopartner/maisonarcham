@@ -838,3 +838,10 @@ a.btn { display: inline-block; text-align: center; }
 /* Section Crème d'Ararat : espace réduit entre les photos et le texte */
 @media (min-width: 721px) { .product > .carousel-dots { display: none; } }
 @media (max-width: 720px) { .product-buy { margin-top: -12px; } }
+
+/* Notes olfactives : fond brun foncé (couleur du bouton de la bannière) et illustrations des matières */
+.notes { background: #241a16; color: #f8f6f2; border-color: #241a16; }
+.note img { width: 100%; max-width: 260px; height: 180px; object-fit: contain; opacity: 1; margin-bottom: 32px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, .35)); }
+.note h3 { color: #e8dccd; }
+.note p { color: rgba(248, 246, 242, .85); }
+@media (max-width: 720px) { .note img { width: 100%; max-width: 220px; height: 150px; margin-bottom: 20px; } }
