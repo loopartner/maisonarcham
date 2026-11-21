@@ -1,0 +1,28 @@
+---
+import Site from '../layouts/Site.astro';
+import Img from '../components/Img.astro';
+import { useT, path } from '../i18n/index.js';
+import { getPages, getMainProduct, loc } from '../lib/data.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+const sec = (await getPages()).maison.sections;
+const name = loc(await getMainProduct(), 'name', lang);
+---
+<Site lang={lang} route="maison" nav="maison" title={t('nav.maison')} description={t('m.description')}>
+<section class="m-hero zoom">
+  <Img src="/assets/img/ararat-paysage.svg" alt={t('m.heroAlt')} width={1600} height={1000} priority />
+  <div class="m-hero-text"><p class="eyebrow">{t('nav.maison')}</p><h1 class="m-hero-h">Archam</h1><p class="serif m-hero-sub">{t('m.sub')}</p></div>
+</section>
+{sec.histoire && <section class="m-story"><div class="reveal"><p class="eyebrow muted">{t('m.c1')}</p><h2 class="m-h2" set:html={t('m.c1t')} /></div><div class="m-story-text reveal"><p class="m-p">{t('m.c1p1')}</p><p class="m-p">{t('m.c1p2')}</p></div></section>}
+{sec.philosophie && <section class="m-philo"><div class="m-philo-text reveal"><p class="eyebrow nl-sand">{t('m.c2')}</p><p class="serif m-philo-q" set:html={t('m.c2q')} /><p class="m-p nl-sand">{t('m.c2p')}</p></div><div class="m-philo-img zoom"><Img src="/assets/img/flacon-hero.webp" alt={t('home.heroAlt')} sizes="(max-width: 700px) 100vw, 50vw" /></div></section>}
+{sec.savoirfaire && <section class="m-craft"><div class="m-craft-head reveal"><p class="eyebrow muted">{t('m.c3')}</p><h2 class="m-h2">{t('m.c3t')}</h2></div><div class="m-craft-grid">
+  <div class="m-craft-item reveal"><div class="zoom m-34"><Img src="/assets/img/notes-coeur-fond.webp" sizes="(max-width: 700px) 100vw, 33vw" /></div><p class="serif m-craft-t">{t('m.k1')}</p><p class="m-craft-d">{t('m.k1d')}</p></div>
+  <div class="m-craft-item m-off1 reveal"><div class="zoom m-34"><Img src="/assets/img/atelier-mouillettes.svg" width={1200} height={1500} /></div><p class="serif m-craft-t">{t('m.k2')}</p><p class="m-craft-d">{t('m.k2d')}</p></div>
+  <div class="m-craft-item m-off2 reveal"><div class="zoom m-34"><Img src="/assets/img/flacon-produit.webp" sizes="(max-width: 700px) 100vw, 33vw" /></div><p class="serif m-craft-t">{t('m.k3')}</p><p class="m-craft-d">{t('m.k3d')}</p></div>
+</div></section>}
+{sec.inspirations && <section class="m-insp zoom"><Img src="/assets/img/creme-ondes.svg" width={1600} height={900} /><div class="m-insp-text"><div class="reveal"><p class="eyebrow">{t('m.c4')}</p><p class="serif m-insp-q" set:html={t('m.c4q')} /></div></div></section>}
+{sec.engagements && <section class="band-white"><div class="m-eng"><p class="eyebrow muted">{t('m.c5')}</p><h2 class="m-h2 m-eng-h">{t('m.c5t')}</h2>
+  <ul class="m-eng-grid">{[1, 2, 3, 4].map((i) => <li class="reveal"><p class="serif">{t(`m.e${i}`)}</p><p>{t(`m.e${i}d`)}</p></li>)}</ul>
+  <div class="m-cta"><a class="btn" href={path(lang, 'parfum')}>{t('cart.discover', { name })}</a></div></div></section>}
+</Site>

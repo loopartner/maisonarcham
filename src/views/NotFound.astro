@@ -1,0 +1,10 @@
+---
+import Site from '../layouts/Site.astro';
+import { useT, path } from '../i18n/index.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+<Site lang={lang} title={t('nf.title')} noindex alternates={{}}>
+<section class="center-page"><div class="center-stack"><p class="eyebrow muted">{t('nf.eyebrow')}</p><h1 class="h1">{t('nf.title')}</h1><p class="lead">{t('nf.text')}</p><a class="btn" href={path(lang, 'home')}>{t('nf.home')}</a></div></section>
+</Site>

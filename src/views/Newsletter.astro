@@ -1,0 +1,33 @@
+---
+import Site from '../layouts/Site.astro';
+import Img from '../components/Img.astro';
+import { useT, path } from '../i18n/index.js';
+import { getPages } from '../lib/data.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = useT(lang);
+const nl = (await getPages()).newsletter;
+const nlt = (k) => (lang === 'en' ? nl[`${k}En`] || t(`home.nl.${k}`) : nl[k]);
+---
+<Site lang={lang} route="newsletter" title={nlt('eyebrow')} description={nlt('text')}>
+<div class="auth nlp">
+  <div class="auth-visual nlp-visual"><Img src="/assets/img/creme-ondes.svg" width={1200} height={1500} /></div>
+  <div class="auth-panel nlp-panel">
+    <p class="eyebrow muted">{nlt('eyebrow')}</p>
+    <h1 class="nlp-h" set:html={t('nlp.title')} />
+    <ul class="nlp-list"><li><span class="serif">I</span>{t('nlp.l1')}</li><li><span class="serif">II</span>{t('nlp.l2')}</li><li><span class="serif">III</span>{t('nlp.l3')}</li></ul>
+    <div class="nlp-done" data-nl-done data-confirm={nlt('confirm')} role="status" tabindex="-1" hidden>
+      <p class="serif nlp-done-t" data-nl-done-title></p><p data-nl-done-text></p>
+      <button class="txt-btn nlp-reset" type="button" data-nl-reset>{t('nlp.another')}</button>
+    </div>
+    <form class="form nlp-form" data-newsletter data-source="page" novalidate>
+      <label for="nl" class="eyebrow">{t('form.email')}</label>
+      <input id="nl" class="in" name="email" type="email" autocomplete="email" inputmode="email" placeholder={t('form.emailPh')} maxlength="254" required>
+      <label class="check"><input type="checkbox" name="consent"><span>{t('nlp.consent')} <a href={path(lang, 'confidentialite')}>{t('ft.privacy')}</a>.</span></label>
+      <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p class="field-err" role="alert" data-error hidden></p>
+      <button class="btn" type="submit">{t('nl.subscribe')}</button>
+    </form>
+  </div>
+</div>
+</Site>
