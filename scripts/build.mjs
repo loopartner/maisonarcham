@@ -54,8 +54,16 @@ async function main() {
   const catalogueJson = JSON.stringify(catalogue).replace(/</g, '\\u003c');
   const journal = JSON.parse(await read(path.join(SRC, 'content/journal.json')))
     .sort((a, b) => b.date.localeCompare(a.date));
+  // Dans le contenu, seul <em> est autorisé (titres) ; tout le reste est échappé.
+  const rich = (t) => esc(t).replace(/&lt;(\/?)em&gt;/g, '<$1em>');
+  const plain = (t) => String(t).replace(/<\/?em>/g, '');
+  const readMin = (a) => Math.max(1, Math.round(a.body.reduce((n, b) => n + (b.x ? b.x.split(/\s+/).length : 0), 0) / 200));
   const frDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-  const journalCard = (a) => `<a class="j-card" href="/journal/${esc(a.slug)}"><div class="j-img zoom"><img src="${esc(a.image)}" alt="" loading="lazy" width="800" height="1000"></div><p class="eyebrow muted">${esc(a.category)} — ${esc(frDate(a.date))}</p><p class="j-title">${esc(a.title)}</p></a>`;
+  const journalCard = (a) => `<a class="j-card" href="/journal/${esc(a.slug)}"><div class="j-img zoom"><img src="${esc(a.image)}" alt="" loading="lazy" width="800" height="1000"></div><p class="eyebrow muted">${esc(a.category)} — ${esc(frDate(a.date))}</p><p class="j-title">${rich(a.title)}</p></a>`;
+  const jCats = ['Tous', ...new Set(journal.map((a) => a.category))];
+  const jListCard = (a, i) => `<a class="j-card" href="/journal/${esc(a.slug)}" data-cat="${esc(a.category)}"><div class="j-img zoom${i % 3 === 1 ? ' r34' : ''}"><img src="${esc(a.image)}" alt="" loading="lazy" width="800" height="1000"></div><p class="eyebrow muted">${esc(a.category)} · ${esc(frDate(a.date))}</p><h3 class="j-title">${rich(a.title)}</h3><p class="j-excerpt">${esc(a.excerpt)}</p></a>`;
+  const featured = journal.find((a) => a.featured) || journal[0];
+  const jFeatured = (a) => `<a class="j-feat" href="/journal/${esc(a.slug)}" data-cat="${esc(a.category)}"><div class="j-feat-img zoom"><img src="${esc(a.image)}" alt="${esc(a.imageAlt || '')}" width="1600" height="1100"></div><div class="j-feat-text"><p class="eyebrow muted">À la une — ${esc(a.category)} · ${esc(frDate(a.date))}</p><h2 class="j-feat-title">${rich(a.title)}</h2><p class="body-m j-feat-ex">${esc(a.excerpt)}</p><span class="link-ed self-start">Lire l’article · ${readMin(a)} min</span></div></a>`;
   const vars = {
     'product.id': productId,
     'product.name': esc(typo(product.name)),
@@ -67,6 +75,9 @@ async function main() {
     .replace(/\{\{(product\.[a-z]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m))
     .replace(/<!--size-options-->/g, () => Object.entries(PRODUCTS).map(([id, p], i) =>
       `<button class="size-opt" type="button" aria-pressed="${i === 0}" data-size="${esc(id)}" data-price="${p.price}">${esc(p.variant.split('·').pop().trim())} — ${euros(p.price)}</button>`).join(''))
+    .replace(/<!--journal-cats-->/g, () => jCats.map((c, i) => `<button class="j-cat" type="button" aria-pressed="${i === 0}" data-filter="${esc(c)}">${esc(c)}</button>`).join(''))
+    .replace(/<!--journal-featured-->/g, () => jFeatured(featured))
+    .replace(/<!--journal-list-->/g, () => journal.filter((a) => a !== featured).map(jListCard).join('\n'))
     .replace(/<!--journal-cards (\d+)-->/g, (_, n) => journal.slice(0, Number(n)).map(journalCard).join('\n'));
 
   // 2. Pages
@@ -75,9 +86,28 @@ async function main() {
     partial[name] = await read(path.join(SRC, 'partials', `${name}.html`)).catch(() => '');
   }
 
-  const pages = (await walk(path.join(SRC, 'pages'))).filter((f) => f.endsWith('.html'));
-  for (const file of pages) {
-    const raw = await read(file);
+  const pageFiles = (await walk(path.join(SRC, 'pages'))).filter((f) => f.endsWith('.html'));
+  const pages = await Promise.all(pageFiles.map(async (file) => ({ file, raw: await read(file), rel: path.relative(path.join(SRC, 'pages'), file) })));
+  const articleTpl = await read(path.join(SRC, 'templates/article.html'));
+  for (const a of journal) {
+    const block = (b) => ({
+      lead: () => `<p class="a-lead serif">${esc(b.x)}</p>`,
+      p: () => `<p>${esc(b.x)}</p>`,
+      h2: () => `<h2 class="a-h2">${esc(b.x)}</h2>`,
+      quote: () => `</div><blockquote class="a-quote"><p class="serif">${esc(b.x)}</p>${b.by ? `<footer class="eyebrow muted">${esc(b.by)}</footer>` : ''}</blockquote><div class="a-body">`,
+      gallery: () => (a.gallery || []).length ? `</div><div class="a-gallery">${a.gallery.map((g) => `<figure class="zoom"><img src="${esc(g.src)}" alt="${esc(g.alt)}" width="800" height="1000" loading="lazy"></figure>`).join('')}</div><div class="a-body">` : '',
+    }[b.t] || (() => ''))();
+    const related = journal.filter((x) => x !== a).slice(0, 3).map((x) => `<a class="j-card" href="/journal/${esc(x.slug)}"><div class="j-img zoom r32"><img src="${esc(x.image)}" alt="" loading="lazy" width="900" height="600"></div><p class="eyebrow muted">${esc(x.category)}</p><p class="j-title">${rich(x.title)}</p></a>`).join('\n');
+    const meta = { title: plain(a.title), description: a.excerpt, nav: 'journal', ogImage: a.image };
+    const raw = `<!--meta ${JSON.stringify(meta)} -->\n` + articleTpl
+      .replaceAll('{{a.title}}', rich(a.title)).replaceAll('{{a.category}}', esc(a.category))
+      .replaceAll('{{a.date}}', esc(frDate(a.date))).replaceAll('{{a.datetime}}', esc(a.date))
+      .replaceAll('{{a.read}}', String(readMin(a))).replaceAll('{{a.image}}', esc(a.image)).replaceAll('{{a.imageAlt}}', esc(a.imageAlt || ''))
+      .replaceAll('{{a.caption}}', a.caption ? `<figcaption>${esc(a.caption)}</figcaption>` : '')
+      .replaceAll('{{a.body}}', a.body.map(block).join('\n')).replaceAll('{{a.related}}', related);
+    pages.push({ file: `article:${a.slug}`, raw, rel: `journal/${a.slug}.html` });
+  }
+  for (const { file, raw, rel } of pages) {
     const m = raw.match(/^<!--meta\s+([\s\S]*?)\s*-->\s*/);
     if (!m) throw new Error(`Métadonnées manquantes : ${file}`);
     const meta = JSON.parse(m[1]);
@@ -117,7 +147,6 @@ async function main() {
     if (/\sstyle="/.test(html.replace(/<svg[\s\S]*?<\/svg>/g, ''))) throw new Error(`Attribut style interdit (CSP) dans ${file}`);
     if (/<script(?![^>]*\ssrc=)(?![^>]*type="application\/json")[^>]*>/.test(html)) throw new Error(`Script inline interdit (CSP) dans ${file}`);
 
-    const rel = path.relative(path.join(SRC, 'pages'), file);
     const dest = path.join(OUT, rel);
     await mkdir(path.dirname(dest), { recursive: true });
     await writeFile(dest, html);

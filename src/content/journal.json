@@ -1,5 +1,60 @@
 [
-  { "slug": "heritage-ararat", "category": "Inspiration", "date": "2024-03-28", "title": "L’héritage d’Ararat", "excerpt": "Aux sources de notre nom, une montagne mythique et les parfums de ses vallées.", "image": "/assets/img/ararat-paysage.svg" },
-  { "slug": "cueillette-aube", "category": "Savoir-faire", "date": "2024-05-12", "title": "La cueillette de l’aube", "excerpt": "Certaines fleurs ne livrent leur parfum qu’aux premières heures du jour. Récit d’un geste ancestral.", "image": "/assets/img/notes-tete.webp" },
-  { "slug": "chimie-emotions", "category": "Coulisses", "date": "2024-04-04", "title": "La chimie des émotions", "excerpt": "Entre science et intuition, comment une formule devient un souvenir.", "image": "/assets/img/atelier-mouillettes.svg" }
+  {
+    "slug": "vanille-de-madagascar", "category": "Parfumerie", "date": "2026-11-12", "featured": true,
+    "title": "La vanille de Madagascar, <em>de la fleur à la gousse</em>",
+    "excerpt": "Neuf mois de culture, une pollinisation à la main, des semaines d’affinage : voyage au cœur de la matière qui signe Crème d’Ararat.",
+    "image": "/assets/img/notes-coeur-fond.webp", "imageAlt": "Gousses de vanille et fèves de tonka sur une pierre claire",
+    "caption": "Gousses de vanille Bourbon et fèves de tonka.",
+    "gallery": [
+      { "src": "/assets/img/notes-tete.webp", "alt": "Rayon de miel et caramel sur une pierre" },
+      { "src": "/assets/img/flacon-produit.webp", "alt": "Flacon Crème d’Ararat" }
+    ],
+    "body": [
+      { "t": "lead", "x": "Avant d’être un accord, la vanille est une orchidée capricieuse : une fleur qui ne s’ouvre qu’une matinée, et qu’il faut polliniser à la main." },
+      { "t": "p", "x": "Dans la région de la Sava, au nord-est de Madagascar, la vanille se cultive au rythme des saisons et des gestes transmis. Chaque fleur est fécondée à l’aide d’une fine baguette de bambou, puis la gousse mûrit pendant neuf mois avant d’être cueillie, encore verte, et de commencer sa lente transformation." },
+      { "t": "p", "x": "Échaudage, étuvage, séchage au soleil puis à l’ombre, affinage en malles : il faut des mois pour que se développent les notes boisées, ambrées et légèrement fumées que l’on retrouve dans le cœur de Crème d’Ararat." },
+      { "t": "quote", "x": "« Une gourmandise ne devient élégante que lorsqu’elle sait se retenir. »", "by": "Carnet de création, Maison Archam" },
+      { "t": "gallery" },
+      { "t": "h2", "x": "Le dialogue avec la tonka" },
+      { "t": "p", "x": "Dans Crème d’Ararat, la vanille n’est jamais seule. La fève de tonka et la coumarine viennent l’arrondir et lui donner cette facette légèrement poudrée, presque crémeuse, qui fait la signature du parfum." },
+      { "t": "p", "x": "En tête, le caramel et le miel accueillent la peau avec chaleur ; au fond, le musc blanc vient tout envelopper d’un voile doux. Le résultat : une gourmandise riche mais parfaitement maîtrisée." }
+    ]
+  },
+  {
+    "slug": "cueillette-aube", "category": "Savoir-faire", "date": "2024-05-12",
+    "title": "La cueillette de l’aube",
+    "excerpt": "Certaines fleurs ne livrent leur parfum qu’aux premières heures du jour. Récit d’un geste ancestral.",
+    "image": "/assets/img/notes-tete.webp", "imageAlt": "Matières premières sur une pierre claire",
+    "body": [
+      { "t": "lead", "x": "Certaines fleurs ne livrent leur parfum qu’aux premières heures du jour." },
+      { "t": "p", "x": "Avant que le soleil ne réchauffe les champs, les fleurs sont gorgées de rosée et de leurs molécules les plus délicates. C’est à ce moment précis, quand l’air est encore frais, que la cueillette commence." },
+      { "t": "p", "x": "Le geste est rapide, précis, presque silencieux. Chaque fleur est détachée à la main puis déposée dans des paniers aérés pour ne pas être écrasée. Quelques heures de trop, et la fleur perd une part de son éclat." },
+      { "t": "p", "x": "Pour un parfumeur, cette rigueur fait toute la différence : elle conditionne la fraîcheur d’une absolue, sa luminosité, la façon dont elle s’épanouira sur la peau." },
+      { "t": "p", "x": "Chez Maison Archam, nous aimons rappeler que derrière chaque goutte se trouve ce travail patient, à l’heure où le monde dort encore." }
+    ]
+  },
+  {
+    "slug": "chimie-emotions", "category": "Coulisses", "date": "2024-04-04",
+    "title": "La chimie des émotions",
+    "excerpt": "Entre science et intuition, comment une formule devient un souvenir.",
+    "image": "/assets/img/atelier-mouillettes.svg", "imageAlt": "Mouillettes dans l’atelier de la Maison",
+    "body": [
+      { "t": "lead", "x": "L’odorat est le sens le plus intimement lié à la mémoire. Une note suffit parfois à faire resurgir un lieu, une saison, un visage." },
+      { "t": "p", "x": "Composer un parfum, c’est jouer avec cette mécanique. Au laboratoire, les essais se succèdent : quelques gouttes de plus d’une matière, un accord qu’on adoucit, une note qu’on fait disparaître." },
+      { "t": "p", "x": "La technique ne suffit pas. Il faut sentir, attendre, revenir le lendemain, porter l’essai sur la peau. Car un parfum ne se juge pas sur une mouillette, mais sur la durée." },
+      { "t": "p", "x": "C’est cette rencontre entre précision et émotion qui donne naissance à un sillage habité." }
+    ]
+  },
+  {
+    "slug": "heritage-ararat", "category": "Inspiration", "date": "2024-03-28",
+    "title": "L’héritage d’Ararat",
+    "excerpt": "Aux sources de notre nom, une montagne mythique et les parfums de ses vallées.",
+    "image": "/assets/img/ararat-paysage.svg", "imageAlt": "Silhouette du mont Ararat au lever du jour",
+    "body": [
+      { "t": "lead", "x": "Le mont Ararat domine l’horizon de toute une région. Ses sommets enneigés veillent sur des vallées où poussent abricotiers, roses et herbes sauvages." },
+      { "t": "p", "x": "Ce paysage est au cœur de notre imaginaire. Il a inspiré Crème d’Ararat, notre première fragrance : la douceur dorée du caramel et du miel, la chaleur de la vanille de Madagascar et de la fève de tonka, la caresse d’un musc blanc au crépuscule." },
+      { "t": "p", "x": "Plus qu’une référence géographique, Ararat est pour nous une idée : celle d’un repère immuable, d’une élégance qui traverse le temps." },
+      { "t": "p", "x": "Porter Crème d’Ararat, c’est emporter avec soi un fragment de cette lumière." }
+    ]
+  }
 ]

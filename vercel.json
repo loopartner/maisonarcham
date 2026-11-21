@@ -85,6 +85,21 @@
       "source": "/merci",
       "destination": "/confirmation",
       "permanent": true
+    },
+    {
+      "source": "/journal-heritage-ararat",
+      "destination": "/journal/heritage-ararat",
+      "permanent": true
+    },
+    {
+      "source": "/journal-cueillette-aube",
+      "destination": "/journal/cueillette-aube",
+      "permanent": true
+    },
+    {
+      "source": "/journal-chimie-emotions",
+      "destination": "/journal/chimie-emotions",
+      "permanent": true
     }
   ]
 }
