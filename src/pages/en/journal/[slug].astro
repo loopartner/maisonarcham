@@ -1,6 +1,0 @@
----
-import V from '../../../views/Article.astro';
-import { getArticles } from '../../../lib/data.js';
-export async function getStaticPaths() { return (await getArticles('en')).map((a) => ({ params: { slug: a.slug }, props: { a } })); }
----
-<V lang="en" a={Astro.props.a} />
