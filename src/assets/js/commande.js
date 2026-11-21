@@ -119,6 +119,39 @@
     $('[data-apply]').addEventListener('click', function () { prefs.code = $('[data-code]').value.trim().toUpperCase(); write(PREFS, prefs); refresh(true); });
     $('[data-code]').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('[data-apply]').click(); } });
 
+    // ---------- Parcours en 3 étapes sur mobile (maquette « Commande mobile ») ----------
+    const mobile = window.matchMedia('(max-width: 700px)');
+    const STEP_FIELDS = { 1: ['email', 'phone', 'firstName', 'lastName', 'line1', 'postalCode', 'city', 'country', 'billing.line1', 'billing.postalCode', 'billing.city', 'billing.country'], 2: [], 3: ['acceptTerms'] };
+    let step = 1;
+    function goStep(n, focus) {
+      step = n;
+      $$('[data-step]').forEach(function (s) { s.classList.toggle('step-off', mobile.matches && Number(s.dataset.step) !== n); });
+      $$('[data-step-dot]').forEach(function (d) { if (Number(d.dataset.stepDot) === n) d.setAttribute('aria-current', 'step'); else d.removeAttribute('aria-current'); d.classList.toggle('done', Number(d.dataset.stepDot) < n); });
+      if (focus && mobile.matches) { const h = $('[data-step="' + n + '"] h2'); h.setAttribute('tabindex', '-1'); h.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    }
+    function localCheck() {
+      const f = form.elements, errs = {};
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) errs.email = 'Adresse e-mail invalide.';
+      ['firstName', 'lastName', 'line1', 'postalCode', 'city'].forEach(function (k) { if (!f[k].value.trim()) errs[k] = 'Ce champ est requis.'; });
+      return errs;
+    }
+    $$('[data-go-step]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        const n = Number(b.dataset.goStep);
+        if (n > step && step === 1) { const errs = localCheck(); showFieldErrors(errs); if (Object.keys(errs).length) { const first = $('[aria-invalid="true"]'); if (first) first.focus(); return; } }
+        goStep(n, true);
+      });
+    });
+    mobile.addEventListener('change', function () { goStep(step); });
+    goStep(1);
+    // Récapitulatif repliable sur mobile
+    const tg = $('[data-sum-toggle]'), sum = $('.ck-sum');
+    tg.addEventListener('click', function () {
+      const open = tg.getAttribute('aria-expanded') !== 'true';
+      tg.setAttribute('aria-expanded', String(open)); sum.classList.toggle('open', open);
+      $('[data-sum-label]').textContent = open ? 'Masquer le récapitulatif' : 'Afficher le récapitulatif';
+    });
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const err = $('[data-error]'); err.hidden = true; showFieldErrors(null); $('[data-pay-later]').hidden = true;
@@ -129,6 +162,9 @@
       if (!r.ok) {
         showFieldErrors(r.fields);
         err.textContent = r.error; err.hidden = false;
+        // Sur mobile, revenir à l'étape qui contient la première erreur
+        const bad = Object.keys(r.fields || {});
+        if (bad.length) goStep([1, 2, 3].find(function (n) { return bad.some(function (k) { return STEP_FIELDS[n].includes(k); }); }) || step);
         const first = $('[aria-invalid="true"]'); (first || err).focus();
         return;
       }

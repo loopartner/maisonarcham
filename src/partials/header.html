@@ -24,20 +24,26 @@
   </div>
   <div class="hd-m" id="menu-mobile" role="dialog" aria-modal="true" aria-label="Menu" hidden>
     <div class="hd-m-top">
-      <span class="hd-m-logo">MAISON ARCHAM</span>
+      <a class="hd-m-logo" href="/">MAISON ARCHAM</a>
       <button class="hd-ico" type="button" aria-label="Fermer le menu" data-menu-close>
         <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.2"/></svg>
       </button>
     </div>
-    <nav class="hd-m-nav" aria-label="Menu mobile">
-      <a href="/">Accueil</a>
-      <a href="/parfum">Le Parfum</a>
-      <a href="/journal">Journal</a>
-      <a href="/maison">La Maison</a>
+    <nav class="hd-m-nav" aria-label="Menu principal">
+      <a href="/">Accueil <span>01</span></a>
+      <a href="/parfum">Le Parfum <span>02</span></a>
+      <a href="/journal">Journal <span>03</span></a>
+      <a href="/maison">La Maison <span>04</span></a>
     </nav>
-    <div class="hd-m-foot">
+    <a class="hd-m-card" href="/parfum">
+      <span class="hd-m-thumb"><img src="{{product.image}}" alt="" width="64" height="80" loading="lazy"></span>
+      <span><span class="hd-m-pname">{{product.name}}</span><span class="hd-m-pmeta">{{product.variant}} · {{product.price}}</span></span>
+    </a>
+    <nav class="hd-m-foot" aria-label="Liens secondaires">
       <a href="/connexion">Mon compte</a>
+      <a href="/panier">Panier</a>
       <a href="/newsletter">Newsletter</a>
-    </div>
+      <a href="/aide#contact">Contact</a>
+    </nav>
   </div>
 </header>

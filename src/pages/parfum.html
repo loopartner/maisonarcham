@@ -9,6 +9,9 @@
     <div class="pdp-main zoom">
       <img src="{{product.image}}" alt="{{product.name}} — photo 1" width="1000" height="1250" data-main-img fetchpriority="high">
       <span class="eyebrow pdp-badge">Édition limitée</span>
+      <button class="pdp-nav prev" type="button" aria-label="Image précédente" data-img-prev></button>
+      <button class="pdp-nav next" type="button" aria-label="Image suivante" data-img-next></button>
+      <div class="pdp-dots" aria-hidden="true" data-dots></div>
     </div>
   </div>
 
@@ -89,3 +92,11 @@
     </div>
   </div>
 </section>
+<div class="m-buy" data-mbuy>
+  <div class="qty" role="group" aria-label="Quantité">
+    <button class="qbtn" type="button" aria-label="Diminuer la quantité" data-q-dec>−</button>
+    <span class="qval" data-q>1</span>
+    <button class="qbtn" type="button" aria-label="Augmenter la quantité" data-q-inc>+</button>
+  </div>
+  <button class="btn m-buy-btn" type="button" data-buy>Ajouter · <span data-line-total>{{product.price}}</span></button>
+</div>
